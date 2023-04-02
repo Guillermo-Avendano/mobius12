@@ -1,0 +1,451 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2023-03-03T19:55:18Z"
+  generateName: asg-mobius-view-74b5ccf8cb-
+  labels:
+    app.kubernetes.io/instance: zenith
+    app.kubernetes.io/name: mobiusview
+    pod-template-hash: 74b5ccf8cb
+  name: asg-mobius-view-74b5ccf8cb-wdn4b
+  namespace: zenith
+  ownerReferences:
+  - apiVersion: apps/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: ReplicaSet
+    name: asg-mobius-view-74b5ccf8cb
+    uid: f411aea5-0b76-428e-8a3a-c3f6545d4eb3
+  resourceVersion: "50640"
+  uid: becd99c1-7e01-48ec-babc-ae93dcff8673
+spec:
+  containers:
+  - command:
+    - /bin/sh
+    - -c
+    - /opt/tomcat/bin/init-repository.sh 2>&1 ; tail -f /dev/null
+    env:
+    - name: MOBIUS_LICENSE
+      valueFrom:
+        secretKeyRef:
+          key: license
+          name: mobius-license
+    - name: MOBIUS_HOST
+      value: mobius
+    - name: MOBIUS_INIT_REPOSITORY
+      value: "true"
+    - name: MOBIUS_PORT
+      value: "8080"
+    - name: LOG_LEVEL
+      value: ERROR
+    - name: MOBIUS_DOC_SERVER_NAME
+      value: vdrnetds
+    - name: MOBIUS_SERVER_ADMIN_USER
+      value: ADMIN
+    - name: DEFAULT_SSO_KEY
+      value: ADASDFASDFXGGEG25585
+    - name: ASG_CLUSTERING_PORT
+      value: "5701"
+    - name: ASG_CLUSTERING_KUBERNETES_ENABLED
+      value: "true"
+    - name: ASG_CLUSTERING_KUBERNETES_NAMESPACE
+      value: zenith
+    - name: ASG_CLUSTERING_KUBERNETES_SERVICENAME
+      value: asg-mobius-view
+    - name: allowForwardedUri
+      value: "true"
+    - name: CURR_POD_UID
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: metadata.uid
+    - name: MOBIUS_VIEW_EXTERNAL_SHARED_DIRECTORY
+      value: /nfs/mobius_view_cluster
+    - name: SPRING_DATASOURCE_URL
+      value: jdbc:postgresql://postgresql.shared:5432/zenith_mobiusview
+    - name: SPRING_DATASOURCE_USERNAME
+      value: postgres
+    - name: SPRING_DATASOURCE_PASSWORD
+      value: postgres
+    - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
+      value: org.postgresql.Driver
+    - name: SPRING_DATASOURCE_HIKARI_AUTO_COMMIT
+      value: "false"
+    - name: SPRING_JPA_DATABASE_PLATFORM
+      value: org.hibernate.dialect.PostgreSQL95Dialect
+    - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+      value: none
+    - name: ASG_AUDIT_KAFKA_TOPIC
+      value: audit
+    - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+      value: kafka.shared.svc.cluster.local:9092
+    - name: SPRING_KAFKA_PRODUCER_ACKS
+      value: all
+    - name: SPRING_KAFKA_PRODUCER_PROPERTIES_ENABLE_IDEMPOTENCE
+      value: "true"
+    - name: SPRING_KAFKA_SECURITY_PROTOCOL
+      value: PLAINTEXT
+    - name: ASG_BOOTSTRAP_VENDOR_TYPE
+      value: ASG
+    - name: ASG_BOOTSTRAP_SEARCH_RESULTCACHE_ENABLED
+      value: "true"
+    - name: ASG_BOOTSTRAP_SEARCH_RESULTCACHE_MAXSIZE
+      value: "5000"
+    - name: ASG_BOOTSTRAP_SEARCH_RESULTCACHE_TIMETOLIVE
+      value: "3600"
+    - name: ASG_BOOTSTRAP_SEARCH_RESULTCACHE_IDLETIME
+      value: "1800"
+    - name: ASG_EXTERNALMAPPING_TYPE
+      value: restserver
+    - name: ASG_WORKFLOW_PROCESSCONTEXTROOT
+      value: http://asg-process-engine:8522/flowable-rest
+    - name: ASG_WORKFLOW_PROCESSURLPATH
+      value: /repository/process-definitions
+    - name: ASG_WORKFLOW_PROCESSINSTANCESURLPATH
+      value: /runtime/process-instances
+    - name: ASG_WORKFLOW_INBOXURLPATH
+      value: /portal/inbox
+    - name: ASG_WORKFLOW_PROCESSNOTIFICATIONSURLPATH
+      value: /process/rest/query/tasks
+    - name: ASG_WORKFLOW_INDEXUPDATEWORKFLOWPROCESSNAME
+      value: MobiusAppsProject-IndexUpdateProcess
+    - name: ASG_EMAIL_TYPE
+      value: embedded
+    - name: ASG_EMAIL_LINK_HOST
+      value: http://localhost:8080
+    - name: ASG_EMAIL_SMTPCONFIG_FROMADDRESS
+      value: admin@asg.com
+    - name: ASG_EMAIL_SMTPCONFIG_FROMADDRESSREADONLY
+    - name: ASG_EMAIL_SMTPCONFIG_REPLYTOADDRESS
+      value: admin@asg.com
+    - name: ASG_EMAIL_SMTPCONFIG_REPLYTOADDRESSREADONLY
+      value: "true"
+    - name: ASG_EMAIL_SMTPCONFIG_LINKTEXT
+      value: Click here to open
+    - name: ASG_EMAIL_SMTPCONFIG_SMTPADDRESS
+      value: smtp.asg.com
+    - name: ASG_EMAIL_SMTPCONFIG_SMTPPORT
+      value: "25"
+    - name: ASG_EMAIL_SMTPCONFIG_SMTPPROTOCOL
+    - name: ASG_EMAIL_SMTPCONFIG_SMTPAUTHENTICATIONREQUIRED
+      value: "false"
+    - name: ASG_EMAIL_SMTPCONFIG_SMTPUSER
+      value: admin
+    - name: ASG_EMAIL_SMTPCONFIG_SMTPPASSWD
+    - name: ASG_EMAIL_SMTPCONFIG_AUTOGENERATEEMAIL
+      value: "true"
+    - name: ASG_EMAIL_SMTPCONFIG_EMAILDOMAINADDRESS
+      value: asg.com
+    - name: ASG_EMAIL_SMTPCONFIG_COPYSMTPCONFIGFROMGLOBAL
+      value: "true"
+    - name: SPRING_CLOUD_DISCOVERY_CLIENT_SIMPLE_INSTANCES_AUDITS_0_URI
+      value: http://zenith-eventanalytics:8500
+    - name: SPRING_CLOUD_DISCOVERY_CLIENT_SIMPLE_INSTANCES_AUTHORIZATION_0_URI
+      value: http://authorization:8888
+    - name: SPRING_CLOUD_DISCOVERY_CLIENT_SIMPLE_INSTANCES_ASGDIRSERVICE_0_URI
+      value: http://asg-directory-service:80
+    - name: SPRING_CLOUD_DISCOVERY_CLIENT_SIMPLE_INSTANCES_METRICS_0_URI
+      value: http://localhost:9500
+    - name: ASG_BOOTSTRAP_MOBIUSADMINISTRATORS_0_USER
+      value: admin
+    - name: ASG_BOOTSTRAP_AUTHORIZED_MOBIUS_VIEW_ADMINISTRATOR_GROUPS
+      value: zenithadmin,mobiusadmin
+    - name: ASG_SECURITY_BASICAUTH_USERS_0_USERNAME
+      value: admin
+    - name: ASG_SECURITY_BASICAUTH_USERS_0_PASSWORD
+      value: asg!tWo3
+    - name: ASG_SECURITY_BASICAUTH_USERS_0_GROUPS
+      value: zenithadmin
+    - name: ASG_METRICS_TRACKER_ENABLED
+      value: "false"
+    - name: ASG_METRICS_TRACKER_CACHETIME
+      value: "60000"
+    - name: ASG_METRICS_TRACKER_DATABASETIME
+      value: "120000"
+    - name: ASG_METRICS_TRACKER_DATARETENTIONPERIOD
+      value: "15"
+    - name: ASG_METRICS_SCHEDULER_ENABLED
+      value: "false"
+    - name: ASG_METRICS_SCHEDULER_JOBTIME
+      value: "180000"
+    - name: ASG_METRICS_TYPE
+      value: embedded
+    - name: LOGGING_PATTERN_CONSOLE
+      value: '%d %-5level %logger : %msg%n'
+    - name: LOGGING_PATTERN_FILE
+      value: '%d{yyyy-MM-dd HH:mm:ss,SSS}  %-5level [%thread] - (%logger{36}) - %msg%n'
+    - name: LOGGING_LEVEL_ORG.SPRINGFRAMEWORK
+      value: ERROR
+    - name: LOGGING_LEVEL_ORG.HIBERNATE
+      value: ERROR
+    - name: LOGGING_LEVEL_ORG.GLASSFISH
+      value: ERROR
+    - name: ASG_AUTHORIZATION_TYPE
+      value: rest
+    - name: ASG_AUTHORIZATION_ENABLED
+      value: "true"
+    - name: ASG_AUTHORIZATION_USERNAME
+    - name: ASG_AUTHORIZATION_TENANTNAME
+      value: zenith
+    - name: ASG_AUTHORIZATION_GROUP
+      value: "false"
+    - name: ASG_AUTHORIZATION_ASSIGNADMINISTRATOR
+      value: "false"
+    - name: ASG_AUTHORIZATION_REGISTERAPPLICATION
+      value: "true"
+    - name: ASG_AUTHORIZATION_REGISTERTENANT
+      value: "true"
+    - name: AUTHENTICATION_TYPE
+      value: STANDARD
+    - name: ASG_SECURITY_ENABLED
+      value: "true"
+    - name: ASG_SECURITY_URL_PATTERNS
+      value: /rest/*,/adminrest/*
+    - name: ASG_SECURITY_OPENIDCONNECTTWO_ENABLED
+      value: "true"
+    - name: ASG_SECURITY_OPENIDCONNECTTWO_TYPE
+      value: identity
+    - name: ASG_SECURITY_OPENIDCONNECTTWO_VALIDATE
+      value: "true"
+    - name: ASG_SECURITY_OPENIDCONNECTTWO_IAMGROUPS
+      value: "true"
+    - name: ASG_SECURITY_OPENIDCONNECTTWO_OUTBOUND
+      value: "true"
+    - name: ASG_SECURITY_OPENIDCONNECTTWO_MAPPING_USERNAME
+      value: preferred_username
+    - name: ASG_SECURITY_OPENIDCONNECTTWO_MAPPING_USERID
+      value: zenith-user-id
+    - name: ASG_SECURITY_OPENIDCONNECTTWO_MAPPING_TENANTNAME
+      value: zenith-tenant-code
+    - name: ASG_SECURITY_OPENIDCONNECTTWO_MAPPING_TENANTID
+      value: zenith-tenant-id
+    - name: ASG_SECURITY_OPENIDCONNECTTWO_MAPPING_GROUPS
+      value: groups
+    - name: ASG_SECURITY_OIDC_NPM_URLCONFIG
+      value: config/static-resource/oauth-oidc.json
+    - name: ASG_SECURITY_OIDC_NPM_OIDCCONFIG_ISSUER
+    - name: ASG_SECURITY_OIDC_NPM_OIDCCONFIG_REDIRECTURI
+    - name: ASG_SECURITY_OIDC_NPM_OIDCCONFIG_CLIENTID
+      value: zenith-spa
+    - name: ASG_SECURITY_OIDC_NPM_OIDCCONFIG_RESPONSETYPE
+      value: code
+    - name: ASG_SECURITY_OIDC_NPM_OIDCCONFIG_SCOPE
+      value: openid profile email zenith-api
+    - name: ASG_SECURITY_OIDC_NPM_OIDCCONFIG_LOGOUTURL
+    - name: ASG_SECURITY_OIDC_NPM_OIDCCONFIG_KEYCLOAK
+      value: "true"
+    - name: ASG_SECURITY_OPENIDCONNECTTWO_CLIENT_JWKBASE
+      value: http://asg-idp-service-http:80/auth/realms
+    - name: ASG_SECURITY_OPENIDCONNECTTWO_SERVICETOKENSETTINGS_OIDCCONFIG_SERVICETOKENURL
+      value: http://asg-idp-service-http:80/auth/realms/master/protocol/openid-connect/token
+    - name: ASG_SECURITY_OPENIDCONNECTTWO_SERVICETOKENSETTINGS_OIDCCONFIG_TENANTCODE
+      value: zenith
+    - name: ASG_SECURITY_OPENIDCONNECTTWO_SERVICETOKENSETTINGS_OIDCCONFIG_SERVICETOKENS_0_NAME
+      value: mobiusview
+    - name: ASG_SECURITY_OPENIDCONNECTTWO_SERVICETOKENSETTINGS_OIDCCONFIG_SERVICETOKENS_0_CLIENTID
+      value: zenith-mobius-view-s2s
+    - name: ASG_SECURITY_OPENIDCONNECTTWO_SERVICETOKENSETTINGS_OIDCCONFIG_SERVICETOKENS_0_CLIENTSECRET
+      valueFrom:
+        secretKeyRef:
+          key: value
+          name: asg-mobius-view-service-client-secret
+    - name: ASG_SECURITY_OPENIDCONNECTTWO_SERVICETOKENSETTINGS_OIDCCONFIG_SERVICETOKENS_0_SCOPES_0
+      value: authorization.fullaccess
+    - name: ASG_SECURITY_OPENIDCONNECTTWO_SERVICETOKENSETTINGS_OIDCCONFIG_GENERATETOKENS_0_NAME
+      value: mobiusview
+    - name: ASG_SECURITY_OPENIDCONNECTTWO_SERVICETOKENSETTINGS_OIDCCONFIG_GENERATETOKENS_0_URLPATTERNS_0
+      value: /rest/authorization/*
+    - name: ASG_IAM_DIRECTORY_ENABLED
+      value: "true"
+    - name: JAVA_OPTS
+    - name: DEFAULT_SSO_KEY
+      value: ADASDFASDFXGGEG25585
+    - name: MATOMO_ENABLE
+      value: "false"
+    - name: MOBIUS_UNUSED_LOG_PURGE_IN_MINUTES
+      value: "2880"
+    - name: MOBIUS_LOG_DEL_JOB_INITIAL_DELAY_MS
+      value: "43200000"
+    - name: MOBIUS_LOG_DEL_JOB_FIXED_DELAY_MS
+      value: "3600000"
+    image: 375537116202.dkr.ecr.us-east-1.amazonaws.com/mobius-view:12.1.0006
+    imagePullPolicy: IfNotPresent
+    livenessProbe:
+      failureThreshold: 25
+      httpGet:
+        httpHeaders:
+        - name: Accept
+          value: image/ico
+        path: /mobius/view/favicon.ico
+        port: 8080
+        scheme: HTTP
+      initialDelaySeconds: 200
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 8
+    name: mobiusview
+    ports:
+    - containerPort: 8080
+      name: http
+      protocol: TCP
+    readinessProbe:
+      failureThreshold: 25
+      httpGet:
+        httpHeaders:
+        - name: Accept
+          value: image/ico
+        path: /mobius/view/favicon.ico
+        port: 8080
+        scheme: HTTP
+      initialDelaySeconds: 200
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 8
+    resources:
+      limits:
+        cpu: 1750m
+        memory: 3584Mi
+      requests:
+        cpu: 250m
+        memory: 1Gi
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /mnt/efs
+      name: mobius-pv-storage
+    - mountPath: /home/mobius/asg/mobius/logs
+      name: mobius-view-diagnostics
+      subPathExpr: mobius_view_cluster/$(CURR_POD_UID)
+    - mountPath: /home/mobius/asg/mobius/mobius_view_cluster
+      name: mobius-view-diagnostics
+      subPath: mobius_view_cluster
+    - mountPath: /home/mobius/asg/mobius/data/images
+      name: mobius-pv-presentation-images
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-klhbn
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  imagePullSecrets:
+  - name: zenith-pull-secret
+  initContainers:
+  - command:
+    - bash
+    - -c
+    - ' IFS=","; read -ra URLS <<< http://authorization:8888/actuator/health,http://mobius:8080/vdrws/services/IVDRServiceMonitoring;
+      for uri in "${URLS[@]}"; do echo "Processing $uri"; HTTP_CODE=$(curl --write-out
+      "%{http_code}\n" "${uri}" --output output.txt --silent); while [[ "$HTTP_CODE"
+      != "200" ]]; do HTTP_CODE=$(curl --write-out "%{http_code}\n" "${uri}" --output
+      output.txt --silent); sleep 5; done; echo "${uri} is up"; done; echo "all dependencies
+      are up"; '
+    image: centos:7
+    imagePullPolicy: IfNotPresent
+    name: dependency-wait
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-klhbn
+      readOnly: true
+  nodeName: k3d-zenith-server-0
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - emptyDir: {}
+    name: mobius-pv-storage
+  - emptyDir: {}
+    name: mobius-view-diagnostics
+  - emptyDir: {}
+    name: mobius-pv-presentation-images
+  - name: kube-api-access-klhbn
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2023-03-08T13:47:35Z"
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2023-03-08T13:51:04Z"
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2023-03-08T13:51:04Z"
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2023-03-03T19:55:18Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: containerd://1eb8179e8aa5c594dd8ce0844baaf7889c07cc591be878e281f74c0c14d4e75d
+    image: 375537116202.dkr.ecr.us-east-1.amazonaws.com/mobius-view:12.1.0006
+    imageID: 375537116202.dkr.ecr.us-east-1.amazonaws.com/mobius-view@sha256:7193e3a495c90a2c7b02cde79ecafa129ea6af5c248a5014f44c491a9b840b0e
+    lastState:
+      terminated:
+        containerID: containerd://faec0c624fd04bdaed84c7cdcf2463cb9cb9c827eab88e132608ac0dd6cbd15b
+        exitCode: 255
+        finishedAt: "2023-03-08T13:33:06Z"
+        reason: Unknown
+        startedAt: "2023-03-08T11:51:28Z"
+    name: mobiusview
+    ready: true
+    restartCount: 7
+    started: true
+    state:
+      running:
+        startedAt: "2023-03-08T13:47:35Z"
+  hostIP: 172.18.0.3
+  initContainerStatuses:
+  - containerID: containerd://b59b02cb954083efc296e43ecb3ca606e01f5ce46bc20141c68b7fe6e2f00e82
+    image: docker.io/library/centos:7
+    imageID: docker.io/library/centos@sha256:be65f488b7764ad3638f236b7b515b3678369a5124c47b8d32916d6487418ea4
+    lastState: {}
+    name: dependency-wait
+    ready: true
+    restartCount: 7
+    state:
+      terminated:
+        containerID: containerd://b59b02cb954083efc296e43ecb3ca606e01f5ce46bc20141c68b7fe6e2f00e82
+        exitCode: 0
+        finishedAt: "2023-03-08T13:47:34Z"
+        reason: Completed
+        startedAt: "2023-03-08T13:33:15Z"
+  phase: Running
+  podIP: 10.42.0.133
+  podIPs:
+  - ip: 10.42.0.133
+  qosClass: Burstable
+  startTime: "2023-03-03T19:55:18Z"

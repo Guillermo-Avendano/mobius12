@@ -1,0 +1,11 @@
+apiVersion: v2
+name: shared-kafka
+description: A simple Kafka Helm chart for MobiusView 12
+type: application
+version: 3.3.1
+appVersion: "3.3.1-debian-11-r3"
+home: https://asg.com/
+keywords:
+- asg
+- kafka
+- shared

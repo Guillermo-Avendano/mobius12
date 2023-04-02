@@ -1,0 +1,11 @@
+asg:
+  mobius:
+    cli:
+      repos:
+      - repositoryName: "@MV_REPOSITORY@"
+        repositoryUrl: "@MV_URL@"
+        userName: "ADMIN"
+      user:
+        basicauth:
+          userName: "admin"
+          password: "ASG_ENC(IzrmGPXQqWV3/d6f1kq/Bw==)"

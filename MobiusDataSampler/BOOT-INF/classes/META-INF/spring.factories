@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.asg.mobiuscli.MobiusCliAutoConfiguration
+org.springframework.boot.env.EnvironmentPostProcessor=com.asg.mobiuscli.MobiusCliConfigProcessor

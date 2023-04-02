@@ -1,0 +1,22 @@
+Configuration:
+  name: app
+  status: info
+  monitorInterval: 0
+  Appenders:
+    File:
+      - name: File_Appender
+        fileName: mobiuscli.log
+        PatternLayout: {Pattern: '%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] %X{CORRELATION_ID} %X{USER} %X{SERVICE} [%t] %c:%M - %msg%n'}
+
+  Loggers:
+    Logger:
+      - name: com.asg.mobiuscli
+        additivity: true
+        level: error
+        AppenderRef:
+          ref: File_Appender
+
+    Root:
+      level: error
+      AppenderRef:
+        ref: File_Appender

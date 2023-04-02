@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VDRNET_DB_MASS_UPDATE VDRNET_VERSION="12.0">
+<POLICY action="delete">
+   <POLICY_NAME>AP_AC2000_v1</POLICY_NAME>
+   <POLICY_TYPE>ARCHIVING</POLICY_TYPE>
+</POLICY>
+<TOPIC action="delete">
+   <TOPIC_ID>AcctCode</TOPIC_ID>
+</TOPIC>
+<TOPIC action="delete">
+   <TOPIC_ID>Amount</TOPIC_ID>
+</TOPIC>
+<TOPIC action="delete">
+   <TOPIC_ID>CustomID</TOPIC_ID>
+</TOPIC>
+<TOPIC action="delete">
+   <TOPIC_ID>HRID</TOPIC_ID>
+</TOPIC>
+<TOPIC action="delete">
+   <TOPIC_ID>PatientID</TOPIC_ID>
+</TOPIC>
+<TOPIC_GROUP action="delete">
+   <TOPIC_GROUP_ID>AC2000_Idx</TOPIC_GROUP_ID>
+</TOPIC_GROUP>
+<TOPIC_GROUP action="delete">
+   <TOPIC_GROUP_ID>Accounts</TOPIC_GROUP_ID>
+</TOPIC_GROUP>
+<TOPIC_GROUP action="delete">
+   <TOPIC_GROUP_ID>AddrData</TOPIC_GROUP_ID>
+</TOPIC_GROUP>
+<TOPIC_GROUP action="delete">
+   <TOPIC_GROUP_ID>AutoPol</TOPIC_GROUP_ID>
+</TOPIC_GROUP>
+<TOPIC_GROUP action="delete">
+   <TOPIC_GROUP_ID>CertifData</TOPIC_GROUP_ID>
+</TOPIC_GROUP>
+<TOPIC_GROUP action="delete">
+   <TOPIC_GROUP_ID>CheckData</TOPIC_GROUP_ID>
+</TOPIC_GROUP>
+<TOPIC_GROUP action="delete">
+   <TOPIC_GROUP_ID>ClaimData</TOPIC_GROUP_ID>
+</TOPIC_GROUP>
+<TOPIC_GROUP action="delete">
+   <TOPIC_GROUP_ID>ContractData</TOPIC_GROUP_ID>
+</TOPIC_GROUP>
+<TOPIC_GROUP action="delete">
+   <TOPIC_GROUP_ID>DoctorData</TOPIC_GROUP_ID>
+</TOPIC_GROUP>
+<TOPIC_GROUP action="delete">
+   <TOPIC_GROUP_ID>DrLicData</TOPIC_GROUP_ID>
+</TOPIC_GROUP>
+<TOPIC_GROUP action="delete">
+   <TOPIC_GROUP_ID>Exams</TOPIC_GROUP_ID>
+</TOPIC_GROUP>
+<TOPIC_GROUP action="delete">
+   <TOPIC_GROUP_ID>Invoices</TOPIC_GROUP_ID>
+</TOPIC_GROUP>
+<TOPIC_GROUP action="delete">
+   <TOPIC_GROUP_ID>PassptData</TOPIC_GROUP_ID>
+</TOPIC_GROUP>
+<TOPIC_GROUP action="delete">
+   <TOPIC_GROUP_ID>Payroll</TOPIC_GROUP_ID>
+</TOPIC_GROUP>
+<TOPIC_GROUP action="delete">
+   <TOPIC_GROUP_ID>PersonData</TOPIC_GROUP_ID>
+</TOPIC_GROUP>
+<TOPIC_GROUP action="delete">
+   <TOPIC_GROUP_ID>StmtData</TOPIC_GROUP_ID>
+</TOPIC_GROUP>
+<REPORT action="delete">
+   <REPORT_ID>AC2000</REPORT_ID>
+</REPORT>
+<REPORT action="delete">
+   <REPORT_ID>Passport</REPORT_ID>
+</REPORT>
+<REPORT action="delete">
+   <REPORT_ID>DrvLics</REPORT_ID>
+</REPORT>
+<REPORT action="delete">
+   <REPORT_ID>Certifs</REPORT_ID>
+</REPORT>
+<REPORT action="delete">
+   <REPORT_ID>Prescripts</REPORT_ID>
+</REPORT>
+<REPORT action="delete">
+   <REPORT_ID>HealthCard</REPORT_ID>
+</REPORT>
+<REPORT action="delete">
+   <REPORT_ID>InsAuto</REPORT_ID>
+</REPORT>
+<REPORT action="delete">
+   <REPORT_ID>ClaimsAuto</REPORT_ID>
+</REPORT>
+<REPORT action="delete">
+   <REPORT_ID>Payslips</REPORT_ID>
+</REPORT>
+<REPORT action="delete">
+   <REPORT_ID>SignCards</REPORT_ID>
+</REPORT>
+<REPORT action="delete">
+   <REPORT_ID>HomeContr</REPORT_ID>
+</REPORT>
+<REPORT action="delete">
+   <REPORT_ID>AutoContr</REPORT_ID>
+</REPORT>
+<REPORT action="delete">
+   <REPORT_ID>Deposits</REPORT_ID>
+</REPORT>
+<REPORT action="delete">
+   <REPORT_ID>Withdrawal</REPORT_ID>
+</REPORT>
+<REPORT action="delete">
+   <REPORT_ID>Checks</REPORT_ID>
+</REPORT>
+<REPORT action="delete">
+   <REPORT_ID>WebTran</REPORT_ID>
+</REPORT>
+<REPORT action="delete">
+   <REPORT_ID>PSavStmt</REPORT_ID>
+</REPORT>
+<REPORT action="delete">
+   <REPORT_ID>PCheckStmt</REPORT_ID>
+</REPORT>
+<REPORT action="delete">
+   <REPORT_ID>CreditStmt</REPORT_ID>
+</REPORT>
+<REPORT action="delete">
+   <REPORT_ID>HomeStmt</REPORT_ID>
+</REPORT>
+<REPORT action="delete">
+   <REPORT_ID>AutoStmt</REPORT_ID>
+</REPORT>
+<REPORT action="delete">
+   <REPORT_ID>Invoices</REPORT_ID>
+</REPORT>
+<REPORT action="delete">
+   <REPORT_ID>MRIs</REPORT_ID>
+</REPORT>
+<REPORT action="delete">
+   <REPORT_ID>XRays</REPORT_ID>
+</REPORT>
+</VDRNET_DB_MASS_UPDATE>
