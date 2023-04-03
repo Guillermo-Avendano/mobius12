@@ -54,10 +54,15 @@ resource "helm_release" "elastic" {
     value = "7.17.3"
    }
 
-  set {
-    name  = "persistence.enabled"
-    value = "true"
-   }
+ # set {
+ #   name  = "podSecurityPolicy.create"
+ #   value = "true"
+ #  }
+
+ # set {
+ #   name  = "persistence.enabled"
+ #   value = "true"
+ #  }
 
   set {
     name  = "ingress.hosts[0].host"
