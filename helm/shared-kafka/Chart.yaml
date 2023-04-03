@@ -3,9 +3,9 @@ name: shared-kafka
 description: A simple Kafka Helm chart for MobiusView 12
 type: application
 version: 3.3.1
-appVersion: "3.3.1-debian-11-r3"
-home: https://asg.com/
+appVersion: "3.3.2-debian-11-r22"
+home: https://www.rocketsoftware.com
 keywords:
-- asg
+- rocket
 - kafka
 - shared
