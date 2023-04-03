@@ -1,3 +1,4 @@
+
 data "template_file" "create_db" {
   template = <<-EOF
     CREATE ROLE "mobiusserver12" WITH LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE INHERIT NOREPLICATION CONNECTION LIMIT -1 PASSWORD 'M0biu$2023';
@@ -8,13 +9,11 @@ data "template_file" "create_db" {
     CREATE DATABASE "eventanalytics" WITH OWNER = "eventanalytics" TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'C' LC_CTYPE = 'C' TABLESPACE = pg_default CONNECTION LIMIT = -1;
   EOF
 }
-
 resource "helm_release" "postgres" {
   name       = "postgres"
-  repository = "https://charts.bitnami.com/bitnami"
-  chart      = "postgresql"
-  version    = "10.4.1"
+  chart      = "${path.module}/helm/shared-postgres"
   namespace  = "shared"
+  create_namespace = true
 
   set {
     name  = "postgresqlPassword"
