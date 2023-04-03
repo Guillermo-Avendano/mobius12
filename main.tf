@@ -16,12 +16,7 @@ resource "helm_release" "postgres" {
   create_namespace = true
 
   set {
-    name  = "postgresqlUsername"
-    value = "postgres"
-  }
-
-  set {
-    name  = "postgresqlPassword"
+    name  = "global.postgresql.auth.postgresPassword"
     value = "postgres"
   }
 
