@@ -55,6 +55,11 @@ resource "helm_release" "elastic" {
    }
 
   set {
+    name  = "persistence.enabled"
+    value = "true"
+   }
+
+  set {
     name  = "ingress.hosts[0].host"
     value = "elastic.local.net"
    }
