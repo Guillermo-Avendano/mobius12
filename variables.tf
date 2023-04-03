@@ -5,5 +5,10 @@ variable "kube_config" {
 
 variable "namespace" {
   type    = string
-  default = "mobius-prod"
+  default = "mobius-tech"
+}
+
+variable "namespace_shared" {
+  type    = string
+  default = "shared"
 }
