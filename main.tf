@@ -1,20 +1,3 @@
-resource "helm_release" "postgres" {
-  name       = "postgres"
-  repository = "https://charts.bitnami.com/bitnami"
-  chart      = "postgresql"
-  version    = "10.4.1"
-  namespace  = "default"
-
-  set {
-    name  = "postgresqlPassword"
-    value = "postgres"
-  }
-
-  set {
-    name  = "postgresqlInitdbSql"
-    value = "${data.template_file.create_db.rendered}"
-  }
-
 data "template_file" "create_db" {
   template = <<-EOF
     CREATE ROLE "mobiusserver12" WITH LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE INHERIT NOREPLICATION CONNECTION LIMIT -1 PASSWORD 'M0biu$2023';
@@ -26,5 +9,21 @@ data "template_file" "create_db" {
   EOF
 }
 
+resource "helm_release" "postgres" {
+  name       = "postgres"
+  repository = "https://charts.bitnami.com/bitnami"
+  chart      = "postgresql"
+  version    = "10.4.1"
+  namespace  = "shared"
+
+  set {
+    name  = "postgresqlPassword"
+    value = "postgres"
+  }
+
+  set {
+    name  = "postgresqlInitdbSql"
+    value = "${data.template_file.create_db.rendered}"
+  }
 
 }
