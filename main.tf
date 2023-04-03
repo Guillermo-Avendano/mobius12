@@ -1,3 +1,13 @@
+resource "kubernetes_secret" "postgres" {
+  metadata {
+    name = "postgres-secrets"
+  }
+
+  data = {
+    postgres-password = "${base64encode("password")}"
+  }
+}
+
 resource "helm_release" "postgres" {
   name       = "postgres"
   chart      = "${path.module}/helm/shared-postgres"
@@ -6,7 +16,7 @@ resource "helm_release" "postgres" {
 
   set {
     name  = "global.postgresql.auth.postgresPassword"
-    value = "postgres"
+    value = "${kubernetes_secret.postgres.data["postgres-password"]}"
   }
 
   set {
