@@ -64,6 +64,7 @@ resource "helm_release" "elastic" {
  #   value = "true"
  #  }
 
+ 
   set {
     name  = "ingress.hosts[0].host"
     value = "elastic.local.net"
