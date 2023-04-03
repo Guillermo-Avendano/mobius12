@@ -37,3 +37,30 @@ resource "helm_release" "kafka" {
    }
 
 }
+
+resource "helm_release" "elastic" {
+  name       = "elasticsearch"
+  chart      = "${path.module}/helm/shared-elastic"
+  namespace  = "shared"
+  create_namespace = true
+
+  set {
+    name  = "image"
+    value = "docker.elastic.co/elasticsearch/elasticsearch"
+  }
+
+  set {
+    name  = "imageTag"
+    value = "7.17.3"
+   }
+
+  set {
+    name  = "ingress.hosts[0].host"
+    value = "elastic.local.net"
+   }
+
+     values = [
+    "${file("${path.module}/helm/shared-elastic/values.yaml")}"
+  ]
+
+}
