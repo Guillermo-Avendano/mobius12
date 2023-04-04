@@ -91,3 +91,20 @@ resource "helm_release" "elastic" {
   ]
 
 }
+
+###### Mobius 12 PV
+resource "helm_release" "mobius-pvc" {
+  name       = "mobius-pvc"
+  chart      = "${path.module}/helm/mobius-pv"
+  namespace  = var.namespace
+  create_namespace = true
+
+  set {
+    name = "mobius.mobiusDiagnostics.persistentVolume.volumeName"
+    value = "pvc-mobius12-diagnostics"
+   }
+   set {
+    name = "mobius.mobiusDiagnostics.persistentVolume.claimName"
+    value = "pvc-mobius12-diagnostics"
+   }
+}

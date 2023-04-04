@@ -1,0 +1,13 @@
+#namespace is the place for the service to run
+namespace: mobius-sales
+
+mobius:
+  persistentVolume:
+    #volumeName used in this claim
+    volumeName: pvc-0ecadbcf-9080-4a91-8c3c-e4f2b1270baa
+
+  mobiusDiagnostics:
+    persistentVolume:
+      #volumeName used in this claim
+      volumeName: pvc-34ce6892-1fa6-4c35-a04b-855f433571f4
+ 
