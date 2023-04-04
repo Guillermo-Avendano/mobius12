@@ -1,65 +1,9 @@
-###### Mobius 12
-resource "kubernetes_persistent_volume" "mobius12-efs" {
-  metadata {
-    name = "pv-mobius12-efs"
-    namespace  = var.namespace
-  }
-  spec {
-    capacity = {
-      storage = "1Gi"
-    }
-    access_modes = ["ReadWriteMany"]
-  }
-}
-resource "kubernetes_persistent_volume_claim" "mobius12-efs" {
-  metadata {
-    name = "pvc-mobius12-efs"
-    namespace  = var.namespace
-  }
-  spec {
-    access_modes = ["ReadWriteMany"]
-    resources {
-      requests = {
-        storage = "1Gi"
-      }
-    }
-    volume_name = "${kubernetes_persistent_volume.mobius12-efs.metadata.0.name}"
-  }
-}
-
-resource "kubernetes_persistent_volume" "mobius12-diag" {
-  metadata {
-    name = "pv-mobius12-diagnostics"
-    namespace  = var.namespace
-  }
-  spec {
-    capacity = {
-      storage = "1Gi"
-    }
-    access_modes = ["ReadWriteMany"]
-  }
-}
-resource "kubernetes_persistent_volume_claim" "mobius12-diag" {
-  metadata {
-    name = "pvc-mobius12-diagnostics"
-    namespace  = var.namespace
-  }
-  spec {
-    access_modes = ["ReadWriteMany"]
-    resources {
-      requests = {
-        storage = "1Gi"
-      }
-    }
-    volume_name = "${kubernetes_persistent_volume.mobius12-diag.metadata.0.name}"
-  }
-}
-
+########## Mobius 12
 #-- define secret for postgres password
 resource "kubernetes_secret" "mobius12" {
   metadata {
     name = "mobius-server-secrets"
-    namespace  = var.namespace
+    namespace  = "mobius-tech"
   }
 
   data = {
@@ -77,7 +21,7 @@ resource "kubernetes_secret" "mobius12" {
 resource "helm_release" "mobius12" {
   name       = "mobius12"
   chart      = "${path.module}/helm/mobius-12.0.0"
-  namespace  = var.namespace
+  namespace  = "mobius-tech"
   create_namespace = true
 
   set {
