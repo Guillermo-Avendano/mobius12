@@ -1,27 +1,15 @@
-########## Mobius 12
 #-- define secret for postgres password
-resource "kubernetes_secret" "mobius12" {
-  metadata {
-    name = "mobius-server-secrets"
-    namespace  = "mobius-tech"
-  }
+resource "null_resource" "health_check" {
 
-  data = {
-    user = "${base64encode("mobiusserver12")}"
-    schema = "${base64encode("mobiusserver12")}"
-    password = "${base64encode("postgres")}"
-    endpoint = "${base64encode("postgres-postgresql.shared")}"
-    port = "${base64encode("5432")}"
-    topicUrl = "${base64encode("jdbc:postgresql://postgres-postgresql.shared:5432/eventanalytics")}"
-    topicUser = "${base64encode("eventanalytics")}"
-    topicPassword = "${base64encode("postgres")}"
+ provisioner "local-exec" {
+    
+    command = "/bin/bash healthcheck.sh"
   }
 }
-
 resource "helm_release" "mobius12" {
   name       = "mobius12"
   chart      = "${path.module}/helm/mobius-12.0.0"
-  namespace  = "mobius-tech"
+  namespace  = var.namespace
   create_namespace = true
 
   set {
@@ -69,11 +57,11 @@ resource "helm_release" "mobius12" {
 
    set {
     name = "mobius.mobiusDiagnostics.persistentVolume.volumeName"
-    value = "pv-mobius12-diagnostics"
+    value = "pv-mobius12-diagnose"
    }
    set {
     name = "mobius.mobiusDiagnostics.persistentVolume.claimName"
-    value = "pvc-mobius12-diagnostics"
+    value = "pvc-mobius12-diagnose"
    }
   set {
     name = "mobius.mobiusDiagnostics.persistentVolume.size"
