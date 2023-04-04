@@ -75,3 +75,26 @@ resource "kubernetes_persistent_volume_claim" "mobius12-diag" {
     volume_name = "${kubernetes_persistent_volume.mobius12-diag.metadata.0.name}"
   }
 }
+
+resource "kubernetes_secret" "mobius12" {
+  metadata {
+    name = "mobius-server-secrets"
+    namespace  = var.namespace
+    labels = {
+        app.kubernetes.io/name: mobius
+        helm.sh/chart: mobius
+        app.kubernetes.io/managed-by: Helm  
+    }
+  }
+
+  data = {
+    user = "${base64encode("mobiusserver12")}"
+    schema = "${base64encode("mobiusserver12")}"
+    password = "${base64encode("postgres")}"
+    endpoint = "${base64encode("postgres-postgresql.shared")}"
+    port = "${base64encode("5432")}"
+    topicUrl = "${base64encode("jdbc:postgresql://postgres-postgresql.shared:5432/eventanalytics")}"
+    topicUser = "${base64encode("eventanalytics")}"
+    topicPassword = "${base64encode("postgres")}"
+  }
+}

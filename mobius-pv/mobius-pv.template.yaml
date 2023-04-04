@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-mobius12-efs
+  namespace: <MOBIUS_NAMESPACE>
+spec:
+  volumeName: pv-mobius12-efs
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-mobius12-efs
+  namespace: <MOBIUS_NAMESPACE>
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+---  
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-mobius12-efs
+  namespace: <MOBIUS_NAMESPACE>
+spec:
+  volumeName: pv-mobius12-efs
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-mobius12-efs
+  namespace: <MOBIUS_NAMESPACE>
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+
