@@ -1,0 +1,25 @@
+resource "helm_release" "release1" {
+  name       = "my-release-1"
+  chart      = "my-chart-1"
+  namespace  = "my-namespace"
+}
+
+resource "null_resource" "wait_for_release1" {
+  depends_on = [helm_release.release1]
+  provisioner "local-exec" {
+    command = "echo Release 1 installed"
+  }
+}
+
+resource "helm_release" "release2" {
+  name       = "my-release-2"
+  chart      = "my-chart-2"
+  namespace  = "my-namespace"
+}
+
+resource "null_resource" "wait_for_release2" {
+  depends_on = [helm_release.release2, null_resource.wait_for_release1]
+  provisioner "local-exec" {
+    command = "echo Release 2 installed"
+  }
+}

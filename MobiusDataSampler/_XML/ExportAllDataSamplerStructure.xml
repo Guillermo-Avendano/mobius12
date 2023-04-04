@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<VDRNET_DB_MASS_UPDATE VDRNET_VERSION="12.0">
-	<POLICY					action="get"	outAction="add/modify"/>
-	<REPORT					action="get"	outAction="add/modify"/>
-	<TOPIC					action="get"	outAction="add/modify"/>
-	<TOPIC_GROUP			action="get"	outAction="add/modify"/>
-</VDRNET_DB_MASS_UPDATE>
