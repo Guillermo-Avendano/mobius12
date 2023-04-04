@@ -4,6 +4,7 @@
 resource "kubernetes_secret" "postgres" {
   metadata {
     name = "postgres-secrets"
+    namespace  = var.namespace_shared
   }
 
   data = {
@@ -90,21 +91,4 @@ resource "helm_release" "elastic" {
     "${file("${path.module}/helm/shared-elastic/values.yaml")}"
   ]
 
-}
-
-###### Mobius 12 PV
-resource "helm_release" "mobius-pvc" {
-  name       = "mobius-pvc"
-  chart      = "${path.module}/helm/mobius-pv"
-  namespace  = var.namespace
-  create_namespace = true
-
-  set {
-    name = "mobius.mobiusDiagnostics.persistentVolume.volumeName"
-    value = "pvc-mobius12-diagnostics"
-   }
-   set {
-    name = "mobius.mobiusDiagnostics.persistentVolume.claimName"
-    value = "pvc-mobius12-diagnostics"
-   }
 }

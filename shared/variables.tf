@@ -3,7 +3,7 @@ variable "kube_config" {
   default = "~/.kube/config"
 }
 
-variable "namespace" {
+variable "namespace_mobius" {
   type    = string
   default = "mobius-tech"
 }
