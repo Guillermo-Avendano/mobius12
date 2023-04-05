@@ -13,7 +13,7 @@ variable "mobius" {
   default = {
       RDSPROVIDER                = "POSTGRESQL"
       RDSENDPOINT                = "postgres-postgresql.shared"
-      RDSPORT                    = 5432
+      RDSPORT                    = "5432"
       RDSPROTO                   = "TCP"
       MOBIUSUSERNAME             = "mobiusserver12"
       MOBIUSSCHEMANAME           = "mobiusserver12"
@@ -27,7 +27,7 @@ variable "mobius" {
       MOBIUS_FTS_ENGINE_TYPE     = "elasticsearch"
       MOBIUS_FTS_SERVER_PROTOCOL = "HTTP"
       MOBIUS_FTS_HOST            = "elasticsearch-master.shared"
-      MOBIUS_FTS_PORT            = 9200
+      MOBIUS_FTS_PORT            = "9200"
       MOBIUS_FTS_INDEX_NAME      = "mobius12"
       MOBIUS_ADMIN_USER          = "admin"
       MOBIUS_ADMIN_GROUP         = "mobiusadmin"
@@ -39,7 +39,7 @@ variable "mobius-kube" {
   type = map(string)
   default = {
       image_repository                              = "registry.asg.com/mobius-server"
-      image_tag                                     = "12.0.0"
+      image_tag                                     = "12.1.0"
       storageClassName                              = "microk8s-hostpath"
       persistentVolume_volumeName                   = "pv-mobius12-efs"
       persistentVolume_claimName                    = "pvc-mobius12-efs"

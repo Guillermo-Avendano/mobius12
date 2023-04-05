@@ -1,20 +1,49 @@
-#-- define secret for postgres password
-resource "kubernetes_secret" "mobius12" {
-  metadata {
-    name      = "mobius-server-secrets"
-  }
 
-  data = {
-    user          = "${base64encode(var.mobius["MOBIUSUSERNAME"])}"
-    schema        = "${base64encode(var.mobius["MOBIUSSCHEMANAME"])}"
-    password      = "${base64encode(var.mobius["MOBIUSSCHEMAPASSWORD"])}"
-    endpoint      = "${base64encode(var.mobius["RDSENDPOINT"])}"
-    port          = "${base64encode(var.mobius["RDSPORT"])}"
-    topicUrl      = "${base64encode("jdbc:postgresql://${var.mobius["RDSENDPOINT"]}:${var.mobius["RDSPORT"]}/eventanalytics")}"
-    topicUser     = "${base64encode(var.mobius["TOPIC_EXPORT_USER"])}"
-    topicPassword = "${base64encode(var.mobius["TOPIC_EXPORT_PASSWORD"])}"
+resource "kubernetes_namespace" "mobius" {
+  metadata {
+    annotations = {
+      name = var.namespace
+    }
+
+    labels = {
+      mylabel = "mobius"
+    }
+
+    name = var.namespace
   }
 }
+
+resource "kubernetes_persistent_volume_claim" "mobius12-efs" {
+  metadata {
+    name       = var.mobius-kube["persistentVolume_claimName"]
+    namespace  = var.namespace
+  }
+  spec {
+    access_modes = ["ReadWriteMany"]
+    resources {
+      requests = {
+        storage = "1Gi"
+      }
+    }
+
+  }
+}
+resource "kubernetes_persistent_volume_claim" "mobius12-diag" {
+  metadata {
+    name = var.mobius-kube["mobiusDiagnostics_persistentVolume_claimName"]
+    namespace = var.namespace
+  }
+  spec {
+    access_modes = ["ReadWriteMany"]
+    resources {
+      requests = {
+        storage = "1Gi"
+      }
+    }
+
+  }
+}
+
 
 resource "helm_release" "mobius12" {
   name             = "mobius12"
