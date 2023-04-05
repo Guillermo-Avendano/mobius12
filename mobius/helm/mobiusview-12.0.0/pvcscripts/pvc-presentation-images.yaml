@@ -1,0 +1,26 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  {{- if .Values.master.presentations.persistentVolume.enabled }}
+  name: {{ .Values.master.presentations.persistentVolume.claimName }}
+  {{- else }}
+  name: mobiusview-pv-presentation-claim
+  {{- end }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ include "mobius.name" . }}
+    helm.sh/chart: {{ include "mobius.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  storageClassName: {{ .Values.storageClassName }}
+  accessModes:
+    - {{ .Values.master.presentations.persistentVolume.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.master.presentations.persistentVolume.size }}
+  {{- if .Values.master.presentations.persistentVolume.enabled }}
+  volumeName: {{ .Values.master.presentations.persistentVolume.volumeName }}
+  {{- else }}
+  volumeName: mobiusview-pv-presentation-storage
+  {{- end }}

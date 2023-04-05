@@ -1,0 +1,28 @@
+{{- if and (eq .Values.mobius.sap.enabled true) (eq  .Values.mobius.sap.persistentVolume.enabled true) }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  {{- if .Values.mobius.sap.persistentVolume.enabled }}
+  name: {{ .Values.mobius.sap.persistentVolume.claimName }}
+  {{- else }}
+  name: mobius-pv-sap-claim
+  {{- end }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ include "mobius.name" . }}
+    helm.sh/chart: {{ include "mobius.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  storageClassName: {{ .Values.storageClassName }}
+  accessModes:
+    - {{ .Values.mobius.sap.persistentVolume.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.mobius.sap.persistentVolume.size }}
+  {{- if .Values.mobius.sap.persistentVolume.enabled }}
+  volumeName: {{ .Values.mobius.sap.persistentVolume.volumeName }}
+  {{- else }}
+  volumeName: mobius-pv-sap-storage
+  {{- end }}
+{{- end }}
