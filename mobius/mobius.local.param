@@ -1,0 +1,21 @@
+MOBIUS_NAMESPACE| mobius-sales
+TOPIC_EXPORT_URL|"jdbc:postgresql://postgresdb:5432/eventanalytics"|topicUrl
+TOPIC_EXPORT_USER|"eventanalytics"|topicUser
+TOPIC_EXPORT_PASSWORD|"M0biu$2023"|topicPassword
+TOPIC_EXPORT_DRIVER|"org.postgresql.Driver"
+RDSPROVIDER|POSTGRESQL
+RDSENDPOINT|postgresdb|endpoint
+RDSPORT| 5432
+RDSPROTO| TCP
+MOBIUSUSERNAME| mobiusserver12 | user
+MOBIUSSCHEMANAME| mobiusserver12 | schema
+MOBIUSSCHEMAPASSWORD| M0biu$2023 | password
+DEFAULT_SSO_KEY| "ADASDFASDFXGGEG25585"
+ENABLEINDEX| "YES"
+MOBIUS_FTS_ENGINE_TYPE| "elasticsearch"
+MOBIUS_FTS_SERVER_PROTOCOL| "HTTP"
+MOBIUS_FTS_HOST| "shared-elastic"
+MOBIUS_FTS_PORT| "9200"
+MOBIUS_FTS_INDEX_NAME| "mobius12"
+MOBIUS_ADMIN_USER| "admin"
+MOBIUS_ADMIN_GROUP| "mobiusadmin"
