@@ -1,0 +1,108 @@
+Name:                   mobius12
+Namespace:              mobius-sales
+CreationTimestamp:      Wed, 05 Apr 2023 12:30:22 -0300
+Labels:                 app.kubernetes.io/instance=mobius12
+                        app.kubernetes.io/managed-by=Helm
+                        app.kubernetes.io/name=mobius
+                        helm.sh/chart=mobius-12.0.0
+Annotations:            deployment.kubernetes.io/revision: 1
+                        meta.helm.sh/release-name: mobius12
+                        meta.helm.sh/release-namespace: mobius-sales
+Selector:               app.kubernetes.io/instance=mobius12,app.kubernetes.io/name=mobius
+Replicas:               1 desired | 1 updated | 1 total | 0 available | 1 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app.kubernetes.io/instance=mobius12
+           app.kubernetes.io/name=mobius
+  Containers:
+   mobius:
+    Image:      registry.asg.com/mobius-server:12.0.0
+    Port:       8080/TCP
+    Host Port:  0/TCP
+    Environment:
+      TOPIC_EXPORT_URL:                                              <set to the key 'topicUrl' in secret 'mobius-server-secrets'>       Optional: false
+      TOPIC_EXPORT_USER:                                             <set to the key 'topicUser' in secret 'mobius-server-secrets'>      Optional: false
+      TOPIC_EXPORT_PASSWORD:                                         <set to the key 'topicPassword' in secret 'mobius-server-secrets'>  Optional: false
+      TOPIC_EXPORT_DRIVER:                                           org.postgresql.Driver
+      RDSPROVIDER:                                                   POSTGRESQL
+      RDSENDPOINT:                                                   <set to the key 'endpoint' in secret 'mobius-server-secrets'>  Optional: false
+      RDSPORT:                                                       <set to the key 'port' in secret 'mobius-server-secrets'>      Optional: false
+      MOBIUSUSERNAME:                                                <set to the key 'user' in secret 'mobius-server-secrets'>      Optional: false
+      MOBIUSSCHEMANAME:                                              <set to the key 'schema' in secret 'mobius-server-secrets'>    Optional: false
+      MOBIUSSCHEMAPASSWORD:                                          <set to the key 'password' in secret 'mobius-server-secrets'>  Optional: false
+      RDSPROTO:                                                      5432
+      RDSSID:                                                        ORCL
+      RDSSVC:                                                        ORA_NO_SSL
+      RDSINITORUPGRADEDB:                                            YES
+      FQDN:                                                          localhost
+      PRIVATE_FQDN:                                                  localhost
+      CONTAINERTYPE:                                                 LOCAL
+      CREATEDOCUMENTSERVER:                                          YES
+      DEFAULT_SSO_KEY:                                               ADASDFASDFXGGEG25585
+      ENABLEINDEX:                                                   YES
+      MOBIUS_FTS_ENGINE_TYPE:                                        elasticsearch
+      MOBIUS_FTS_SERVER_PROTOCOL:                                    HTTP
+      MOBIUS_FTS_HOST:                                               elasticsearch-master.shared
+      MOBIUS_USE_FTS_CLOUD:                                          NO
+      ZK_PORT:                                                       2181
+      MOBIUS_FTS_PORT:                                               9200
+      MOBIUS_FTS_INDEX_NAME:                                         mobius12
+      MOBIUS_ADMIN_GROUP:                                            mobiusadmin
+      MOBIUS_ADMIN_USER:                                             admin
+      CACHETYPE:                                                     NONE
+      VDRJAVA_LOG_LEVEL:                                             ERROR
+      OCR_LOG_LEVEL:                                                 ERROR
+      VDRNATIVE_LOG_LEVEL:                                           ERROR
+      MOBIUS_CLUSTERING_KUBERNETES_ENABLED:                          true
+      MOBIUS_CLUSTERING_KUBERNETES_SERVICENAME:                      mobius
+      MOBIUS_CLUSTERING_KUBERNETES_NAMESPACE:                        mobius-sales
+      MOBIUS_CLUSTERING_PORT:                                        5701
+      MOBIUS_EXTERNAL_SHARED_DIRECTORY:                              /nfs/mobius_cluster
+      CURR_POD_UID:                                                   (v1:metadata.uid)
+      SPRING_CLOUD_DISCOVERY_CLIENT_SIMPLE_INSTANCES_METRICS_0_URI:  http://localhost:9500
+      ASG_SECURITY_DEFAULT_TENANT:                                   _
+      ASG_METRICS_TRACKER_ENABLED:                                   false
+      ASG_METRICS_TRACKER_CACHETIME:                                 60000
+      ASG_METRICS_TRACKER_DATABASETIME:                              120000
+      ASG_METRICS_SCHEDULER_ENABLED:                                 false
+      ASG_METRICS_SCHEDULER_JOBTIME:                                 180000
+      ASG_METRICS_TYPE:                                              embedded
+      IS_SAAS:                                                       YES
+      SHAREDFILETEMPLATE:                                            /mnt/efs
+      MOBIUS_SOA_MEMORY_LIMIT:                                       2048
+      MOBIUS_FTS_MEMORY_LIMIT:                                       4096
+      MOBIUS_GETPAGES_MEMORY_LIMIT:                                  1024
+      MOBIUS_RMI_MEMORY_LIMIT:                                       1024
+      MOBIUS_ARCHIVE_BLOCKLIST:                                      mobius.reg;application.yaml;odbc.ini
+      TZ:                                                            
+    Mounts:
+      /ftsdata from mobius-pv-fts-storage (rw)
+      /mnt/efs from pv-mobius12-efs (rw)
+      /var/log/mobius from pv-mobius12-diagnose (rw)
+      /var/log/mobius_cluster from pv-mobius12-diagnose (rw,path="mobius_cluster")
+  Volumes:
+   pv-mobius12-efs:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  pvc-mobius12-efs
+    ReadOnly:   false
+   mobius-pv-fts-storage:
+    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)
+    Medium:     
+    SizeLimit:  <unset>
+   pv-mobius12-diagnose:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  pvc-mobius12-diagnose
+    ReadOnly:   false
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      False   MinimumReplicasUnavailable
+  Progressing    True    ReplicaSetUpdated
+OldReplicaSets:  <none>
+NewReplicaSet:   mobius12-76f9fb678 (1/1 replicas created)
+Events:
+  Type    Reason             Age    From                   Message
+  ----    ------             ----   ----                   -------
+  Normal  ScalingReplicaSet  3m35s  deployment-controller  Scaled up replica set mobius12-76f9fb678 to 1
