@@ -1,5 +1,0 @@
-*.zip
-*.tar
-*.tgz
-.terraform/
-*.bak

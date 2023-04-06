@@ -1,0 +1,105 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "shared-pgadmin4.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "shared-pgadmin4.name" . }}
+    helm.sh/chart: {{ include "shared-pgadmin4.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "shared-pgadmin4.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "shared-pgadmin4.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      imagePullSecrets:
+        {{- if .Values.image.pullSecret }}
+        - name: {{ .Values.image.pullSecret | quote }}
+        {{- end }}
+      volumes:
+        {{- if .Values.storage.enabled }}        
+        - name: {{ .Values.storage.volumeName }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.storage.claimName }}
+        {{- else }}
+        - name: pgadmin-pv-storage
+          emptyDir: {}
+        {{- end }}     
+        {{- if .Values.additionalVolumes -}}
+        {{- toYaml .Values.additionalVolumes | nindent 8 }}
+        {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+         {{- if .Values.livenessProbe.enabled }}
+          livenessProbe:
+              httpGet:
+                path: {{ .Values.livenessProbe.path }}
+                port: {{ .Values.service.containerPort }}
+                httpHeaders:
+                - name: {{ .Values.livenessProbe.header.name }}
+                  value: {{ .Values.livenessProbe.header.value }}
+              initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+              periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+              timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+          {{- end }}
+         {{- if .Values.readinessProbe.enabled }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.readinessProbe.path }}
+              port: {{ .Values.service.containerPort }}
+              httpHeaders:
+              - name: {{ .Values.readinessProbe.header.name }}
+                value: {{ .Values.readinessProbe.header.value }}
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+          {{- end }}
+          env:
+          - name: PGADMIN_DEFAULT_EMAIL
+            value: {{ .Values.user.mail }} 
+          - name: PGADMIN_DEFAULT_PASSWORD
+            value:  {{ .Values.user.password }} 
+          {{- if .Values.additionalEnv -}}
+          {{- toYaml .Values.additionalEnv | nindent 10 }}
+          {{- end }}
+          ports:
+            - name: {{ .Values.service.name }}
+              containerPort: {{ .Values.service.containerPort }}
+              protocol: {{ .Values.service.protocol }}
+          volumeMounts:
+          - mountPath: /var/lib/pgadmin
+            {{- if .Values.storage.enabled }}
+            name: {{ .Values.storage.volumeName }}
+            {{- else }}
+            name: pgadmin-pv-storage
+            {{- end }}  
+          {{- if .Values.additionalVolumeMounts -}}
+          {{- toYaml .Values.additionalVolumeMounts | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+        {{- if .Values.additionalContainers -}}
+        {{- toYaml .Values.additionalContainers | nindent 8 }}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    

@@ -1,0 +1,109 @@
+#Default values for mobiusview.
+#This is a YAML-formatted file.
+#Declare variables to be passed into your templates.
+
+#replicaCount is the number of replicas required for this service
+replicaCount: 1
+#namespace is the place for the service to run
+namespace: mobius-sales
+#storageClassName used in Kubernetes cluster
+storageClassName: efs-sc-dynamic
+
+image:
+  #repository is the docker registory to pull docker images
+  repository: 701922941937.dkr.ecr.us-east-1.amazonaws.com/mobius-sales
+  #tag is the docker image tag(it may be latest or 9.1)
+  tag: shared-pgadmin4
+  #pullPolicy is the policy to pull images
+  pullPolicy: IfNotPresent
+  #pullSecret is the authentication based image pull from registry
+  pullSecret: dockerlocal
+  
+livenessProbe:
+  #enabled is the flag to indicate whether liveness probe check is required or not
+  enabled: false
+  #path is the http path that will be used to perform the liveness check, the port defined as the containerPort will be
+  #used in the request.
+  path: "/mobius/actuator/health"
+  #header is the header to be passed along with the http request.
+  header:
+    name: "Accept"
+    value: "application/vnd.spring-boot.actuator.v3+json"
+  #initialDelaySeconds is the number of seconds delayed for liveness probes to get initiated
+  initialDelaySeconds: 200
+  #periodSeconds is the measure of frequency to perform the liveness probe
+  periodSeconds: 10
+  #timeoutSeconds is the number of seconds after which the liveness probe times out
+  timeoutSeconds: 30
+  #failureThreshold determines the number of times a failure must occur before it will restart the pod.
+  failureThreshold: 25
+
+readinessProbe:
+  #enabled is the flag to indicate whether readiness probe check is required or not
+  enabled: false
+  #path is the http path that will be used to perform the readiness check, the port defined as the containerPort will be
+  #used in the request.
+  path: "/mobius/actuator/health"
+  #header is the header to be passed along with the http request.
+  header:
+    name: "Accept"
+    value: "application/vnd.spring-boot.actuator.v3+json"
+  #initialDelaySeconds is the number of seconds delayed for readiness probes to get initiated
+  initialDelaySeconds: 200
+  #periodSeconds is the measure of frequency to perform the Readiness probe
+  periodSeconds: 10
+  #timeoutSeconds is the number of seconds after which the Readiness probe times out
+  timeoutSeconds: 30
+  #failureThreshold determines the number of times a failure must occur before it will stop trying
+  failureThreshold: 25
+  
+user:
+  mail: admin@admin.com
+  password: admin
+    
+storage:
+  #enabled is the flag to indicate whether persistence claim is required or not
+  enabled: false
+  #volumeName used in this claim
+  volumeName: pvc-5cff041a-8a63-4ff9-ad64-1db404b1adf5
+  #claimName used in this claim
+  claimName: pvc-mobiusview12-storage
+  #accessMode is the access specified to claim from persistence volume
+  accessMode: ReadWriteMany
+  #size is the storage claimed from persistence volume
+  size: 1Gi
+
+resources: {}
+nodeSelector: {}
+tolerations: {}
+affinity: {}
+
+additionalEnv: {}
+additionalVolumes: {}
+additionalVolumeMounts: {}
+additionalContainers: {}
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header X-Script-Name /pgadmin4;
+  hosts:
+    - host: a2534655bdfb1477dad77ef8098772c6-b4d79949f02533a9.elb.us-east-1.amazonaws.com
+      paths:
+        - path: /pgadmin4
+          pathType: ImplementationSpecific
+
+nameOverride: ""
+fullnameOverride: ""
+healthNameOverride: ""
+
+service:
+  type: NodePort
+  port: 9090
+  targetPort: 80
+  containerPort: 80
+  name: default
+  protocol: TCP
