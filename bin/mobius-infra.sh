@@ -33,6 +33,10 @@ else
         k3d cluster create $CLUSTER -p "8900:30080@agent:0" -p "8901:30081@agent:0" -p "8902:30082@agent:0" --agents 2 --k3s-arg "--disable=traefik@server:0"
         k3d kubeconfig get $CLUSTER > ~/.kube/config
 
+        # Install ingress
+        kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.3/deploy/static/provider/cloud/deploy.yaml
+
+
     elif [[ $option == "remove" ]]; then
       echo "Removing mobius cluster"
       k3d cluster delete $CLUSTER
