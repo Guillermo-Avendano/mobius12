@@ -30,7 +30,7 @@ else
         sudo apt update && sudo apt install terraform
 
         echo "Creating mobius cluster"
-        k3d cluster create $CLUSTER -p "8900:30080@agent:0" -p "8901:30081@agent:0" -p "8902:30082@agent:0" --agents 2 --k3s-arg "--disable=traefik@server:0"
+        k3d cluster create $CLUSTER -p "80:80@loadbalancer" -p "8900:30080@agent:0" -p "8901:30081@agent:0" -p "8902:30082@agent:0" --agents 2 --k3s-arg "--disable=traefik@server:0"
         k3d kubeconfig get $CLUSTER > ~/.kube/config
 
         # Install ingress
