@@ -1,3 +1,4 @@
+
 #!/bin/bash
 export CLUSTER="mobius"
 if [[ $# -eq 0 ]]; then
@@ -25,8 +26,9 @@ else
         sudo chmod +x /usr/local/bin/docker-compose
         
         # Install Terraform
-        wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-        echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+        sudo apt install -y gnupg software-properties-common curl
+        curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+        sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
         sudo apt update && sudo apt install terraform
 
         echo "Creating mobius cluster"
@@ -34,7 +36,8 @@ else
         k3d kubeconfig get $CLUSTER > ~/.kube/config
 
         # Install ingress
-        kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.3/deploy/static/provider/cloud/deploy.yaml
+        kubectl create namespace ingress-nginx
+        kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.3/deploy/static/provider/cloud/deploy.yaml -n ingress-nginx
 
 
     elif [[ $option == "remove" ]]; then

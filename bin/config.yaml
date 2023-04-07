@@ -1,0 +1,21 @@
+apiVersion: k3d.io/v1alpha2
+kind: Cluster
+metadata:
+  name: mycluster
+image:
+  # Define la imagen base a utilizar
+  image: rancher/k3s:v1.21.5-k3s1
+  # Configura el pull secret para acceder al repositorio privado
+  pullSecret: my-registry-secret
+# Define los nodos del cluster
+nodes:
+- role: server
+  extraMounts:
+  - hostPath: /etc/k3s/certs
+    containerPath: /etc/rancher/ssl
+  # Configura el acceso al repositorio privado
+  extraArgs:
+  - "--registry-name=example.com:5000"
+  - "--registry-pass=passw0rd"
+  - "--registry-user=user"
+
