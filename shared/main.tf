@@ -1,17 +1,4 @@
 ###### Postgres
-
-#-- define secret for postgres password
-resource "kubernetes_secret" "postgres" {
-  metadata {
-    name = "postgres-secrets"
-  }
-
-  data = {
-    postgres-password = "${base64encode("postgres")}"
-  }
-}
-
-#-- deploy helm for postgres
 resource "helm_release" "postgres" {
   name       = "postgres"
   chart      = "${path.module}/helm/shared-postgres"
@@ -22,12 +9,55 @@ resource "helm_release" "postgres" {
     name  = "global.postgresql.auth.postgresPassword"
     value = "postgres"
   }
+  /*
+  set {
+    name  = "global.postgresql.auth.existingSecret"
+    value = "postgres-secrets"
+  }
+  set {
+    name  = "global.postgresql.auth.secretKeys.adminPasswordKey"
+    value = "postgres-password"
+  }
+  */
 
   set {
     name  = "primary.initdb.scripts.create-databases\\.sql"
     value = "${file("mobius.sql")}"
    }
 } 
+
+#-- Secret for postgres password
+resource "kubernetes_secret" "postgres" {
+  metadata {
+    name = "postgres-secrets"
+  }
+
+  data = {
+    postgres-password = "${base64encode("postgres")}"
+  }
+}
+###### Kafka deloyment
+resource "helm_release" "pgadmin" {
+  name       = "pgadmin"
+  chart      = "${path.module}/helm/shared-pgadmin4"
+  namespace  = var.namespace_shared
+  create_namespace = true
+
+  set {
+    name  = "namespace"
+    value = var.namespace_shared
+  }
+  
+  set {
+    name  = "image.repository"
+    value = "dpage"
+  }
+  set {
+    name  = "image.tag"
+    value = "pgadmin4"
+   }
+
+}
 
 ###### Kafka deloyment
 resource "helm_release" "kafka" {
@@ -52,7 +82,7 @@ resource "helm_release" "kafka" {
    }
 
 }
-
+/*
 ###### Elasticsearch deloyment
 resource "helm_release" "elastic" {
   name       = "elasticsearch"
@@ -91,3 +121,4 @@ resource "helm_release" "elastic" {
   ]
 
 }
+*/
