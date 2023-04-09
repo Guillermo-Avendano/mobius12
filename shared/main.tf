@@ -1,30 +1,4 @@
 ###### Postgres
-resource "helm_release" "postgres" {
-  name       = "postgres"
-  chart      = "${path.module}/helm/shared-postgres"
-  namespace  = var.namespace_shared
-  create_namespace = true
-
-  set {
-    name  = "global.postgresql.auth.postgresPassword"
-    value = "postgres"
-  }
-  /*
-  set {
-    name  = "global.postgresql.auth.existingSecret"
-    value = "postgres-secrets"
-  }
-  set {
-    name  = "global.postgresql.auth.secretKeys.adminPasswordKey"
-    value = "postgres-password"
-  }
-  */
-
-  set {
-    name  = "primary.initdb.scripts.create-databases\\.sql"
-    value = "${file("mobius.sql")}"
-   }
-} 
 
 #-- Secret for postgres password
 resource "kubernetes_secret" "postgres" {
@@ -36,6 +10,33 @@ resource "kubernetes_secret" "postgres" {
     postgres-password = "${base64encode("postgres")}"
   }
 }
+
+resource "helm_release" "postgres" {
+  name       = "postgres"
+  chart      = "${path.module}/helm/shared-postgres"
+  namespace  = var.namespace_shared
+  create_namespace = true
+
+  set {
+    name  = "global.postgresql.auth.postgresPassword"
+    value = "postgres"
+  }
+  
+  set {
+    name  = "global.postgresql.auth.existingSecret"
+    value = "postgres-secrets"
+  }
+  set {
+    name  = "global.postgresql.auth.secretKeys.adminPasswordKey"
+    value = "postgres-password"
+  }
+  set {
+    name  = "primary.initdb.scripts.create-databases\\.sql"
+    value = "${file("mobius.sql")}"
+   }
+} 
+
+
 ###### Kafka deloyment
 resource "helm_release" "pgadmin" {
   name       = "pgadmin"
@@ -50,11 +51,11 @@ resource "helm_release" "pgadmin" {
   
   set {
     name  = "image.repository"
-    value = "dpage"
+    value = "dpage/pgadmin4"
   }
   set {
     name  = "image.tag"
-    value = "pgadmin4"
+    value = ""
    }
 
 }
