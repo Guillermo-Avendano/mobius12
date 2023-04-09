@@ -21,7 +21,7 @@ resource "helm_release" "postgres" {
     name  = "global.postgresql.auth.postgresPassword"
     value = "postgres"
   }
-  
+  /*
   set {
     name  = "global.postgresql.auth.existingSecret"
     value = "postgres-secrets"
@@ -30,6 +30,7 @@ resource "helm_release" "postgres" {
     name  = "global.postgresql.auth.secretKeys.adminPasswordKey"
     value = "postgres-password"
   }
+  */
   set {
     name  = "primary.initdb.scripts.create-databases\\.sql"
     value = "${file("mobius.sql")}"
@@ -55,7 +56,7 @@ resource "helm_release" "pgadmin" {
   }
   set {
     name  = "image.tag"
-    value = ""
+    value = "latest"
    }
 
 }
