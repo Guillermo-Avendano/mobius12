@@ -22,8 +22,6 @@ else
         # /mnt/nfs  *(rw,sync,no_subtree_check,no_root_squash)
         # sudo systemctl restart nfs-kernel-server
 
-
-
         # install k3d
         curl -s https://raw.githubusercontent.com/rancher/k3d/main/install.sh | TAG=v5.4.6 bash
 
