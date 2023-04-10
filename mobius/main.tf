@@ -47,11 +47,6 @@ resource "kubernetes_secret" "mobius12" {
   metadata {
     name = "mobius-server-secrets"
     namespace  = var.namespace
-    labels = {
-        app.kubernetes.io/name: mobius
-        helm.sh/chart: mobius
-        app.kubernetes.io/managed-by: Helm  
-    }
   }
 
   data = {

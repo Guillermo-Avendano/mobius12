@@ -39,6 +39,7 @@ else
         echo "Creating mobius cluster"
         k3d cluster create $CLUSTER -p "80:80@loadbalancer" -p "8900:30080@agent:0" -p "8901:30081@agent:0" -p "8902:30082@agent:0" --agents 2 --k3s-arg "--disable=traefik@server:0"
         k3d kubeconfig get $CLUSTER > ~/.kube/config
+        kubectl config use-context k3d-$CLUSTER
 
         # Install ingress
         kubectl create namespace ingress-nginx
@@ -51,11 +52,12 @@ else
     
     elif [[ $option == "on" ]]; then
       echo "Starting mobius cluster"
-      k3d cluster start $CLUSTER  
+      k3d cluster start $CLUSTER 
+      kubectl config use-context k3d-$CLUSTER
 
     elif [[ $option == "off" ]]; then
       echo "Stopping mobius cluster"
-      k3d cluster stop $CLUSTER  
+      k3d cluster stop $CLUSTER
 
     else
       echo "($option) is not valid. Valid options are: create or remove."
