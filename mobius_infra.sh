@@ -13,6 +13,17 @@ if [[ $# -eq 0 ]]; then
 else
   for option in "$@"; do
     if [[ $option == "install" ]]; then
+        # INstall NFS
+        # sudo apt-get update
+        # sudo apt-get install nfs-kernel-server
+        # sudo mkdir -p /mnt/nfs
+        # sudo chown nobody:nogroup /mnt/nfs
+        # sudo chmod 777 /mnt/nfs
+        # /mnt/nfs  *(rw,sync,no_subtree_check,no_root_squash)
+        # sudo systemctl restart nfs-kernel-server
+
+
+
         # install k3d
         curl -s https://raw.githubusercontent.com/rancher/k3d/main/install.sh | TAG=v5.4.6 bash
 
