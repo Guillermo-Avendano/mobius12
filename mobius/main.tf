@@ -13,9 +13,26 @@ resource "kubernetes_namespace" "mobius" {
   }
 }
 
+resource "kubernetes_persistent_volume" "mobius12-efs" {
+  metadata {
+    name = "pv-mobius12-efs"
+  }
+  spec {
+    access_modes = ["ReadWriteMany"]
+    capacity = {
+      storage = "1Gi"
+    }
+    persistent_volume_source {
+      host_path {
+        path = "/home/rocket/pv-mobius12-efs"
+      }
+    }
+  }
+}
+
 resource "kubernetes_persistent_volume_claim" "mobius12-efs" {
   metadata {
-    name       = var.mobius-kube["persistentVolume_claimName"]
+    name = "pvc-mobius12-efs"
     namespace  = var.namespace
   }
   spec {
@@ -25,13 +42,30 @@ resource "kubernetes_persistent_volume_claim" "mobius12-efs" {
         storage = "1Gi"
       }
     }
+    volume_name = "${kubernetes_persistent_volume.mobius12-efs.metadata.0.name}"
+  }
+}
 
+resource "kubernetes_persistent_volume" "mobius12-diag" {
+  metadata {
+    name = "pv-mobius12-diagnostics"
+  }
+  spec {
+    access_modes = ["ReadWriteMany"]
+    capacity = {
+      storage = "1Gi"
+    }
+    persistent_volume_source {
+      host_path {
+        path = "/home/rocket/pv-mobius12-diag"
+      }
+    }
   }
 }
 resource "kubernetes_persistent_volume_claim" "mobius12-diag" {
   metadata {
-    name = var.mobius-kube["mobiusDiagnostics_persistentVolume_claimName"]
-    namespace = var.namespace
+    name = "pvc-mobius12-diagnose"
+    namespace  = var.namespace
   }
   spec {
     access_modes = ["ReadWriteMany"]
@@ -40,15 +74,16 @@ resource "kubernetes_persistent_volume_claim" "mobius12-diag" {
         storage = "1Gi"
       }
     }
-
+    volume_name = "${kubernetes_persistent_volume.mobius12-diag.metadata.0.name}"
   }
 }
+
+
 resource "kubernetes_secret" "mobius12" {
   metadata {
     name = "mobius-server-secrets"
     namespace  = var.namespace
   }
-
   data = {
     user = var.mobius["MOBIUSUSERNAME"]
     schema = var.mobius["MOBIUSSCHEMANAME"]
@@ -136,3 +171,4 @@ resource "helm_release" "mobius12" {
     value = var.namespace
   }
 }
+
