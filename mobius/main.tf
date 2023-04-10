@@ -43,7 +43,28 @@ resource "kubernetes_persistent_volume_claim" "mobius12-diag" {
 
   }
 }
+resource "kubernetes_secret" "mobius12" {
+  metadata {
+    name = "mobius-server-secrets"
+    namespace  = var.namespace
+    labels = {
+        app.kubernetes.io/name: mobius
+        helm.sh/chart: mobius
+        app.kubernetes.io/managed-by: Helm  
+    }
+  }
 
+  data = {
+    user = var.mobius["MOBIUSUSERNAME"]
+    schema = var.mobius["MOBIUSSCHEMANAME"]
+    password = var.mobius["MOBIUSSCHEMAPASSWORD"]
+    endpoint = var.mobius["RDSENDPOINT"]
+    port = var.mobius["RDSPORT"]
+    topicUrl = "jdbc:postgresql://${var.mobius["RDSENDPOINT"]}:${var.mobius["RDSPORT"]}/eventanalytics"
+    topicUser = var.mobius["TOPIC_EXPORT_USER"]
+    topicPassword = var.mobius["TOPIC_EXPORT_PASSWORD"]
+  }
+}
 
 resource "helm_release" "mobius12" {
   name             = "mobius12"

@@ -1,13 +1,27 @@
 ###### Postgres
+resource "kubernetes_namespace" "shared" {
+  metadata {
+    annotations = {
+      name = var.namespace_shared
+    }
+
+    labels = {
+      mylabel = "shared"
+    }
+
+    name = var.namespace_shared
+  }
+}
 
 #-- Secret for postgres password
 resource "kubernetes_secret" "postgres" {
   metadata {
     name = "postgres-secrets"
+    namespace  = var.namespace_shared
   }
 
   data = {
-    postgres-password = "${base64encode("postgres")}"
+    postgres-password = "postgres"
   }
 }
 
@@ -16,12 +30,7 @@ resource "helm_release" "postgres" {
   chart      = "${path.module}/helm/shared-postgres"
   namespace  = var.namespace_shared
   create_namespace = true
-
-  set {
-    name  = "global.postgresql.auth.postgresPassword"
-    value = "postgres"
-  }
-  /*
+  
   set {
     name  = "global.postgresql.auth.existingSecret"
     value = "postgres-secrets"
@@ -30,7 +39,7 @@ resource "helm_release" "postgres" {
     name  = "global.postgresql.auth.secretKeys.adminPasswordKey"
     value = "postgres-password"
   }
-  */
+  
   set {
     name  = "primary.initdb.scripts.create-databases\\.sql"
     value = "${file("mobius.sql")}"
