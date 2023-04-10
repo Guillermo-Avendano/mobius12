@@ -107,7 +107,7 @@ master:
       #accessMode is the access specified to claim from persistence volume
       accessMode: ReadWriteMany
       #size is the storage claimed from persistence volume
-      size: 10Gi
+      size: 1Gi
 
     #In auto scaling environment then the lifetime of the containers depends on the
     #system load, if the system load is more then new containers will be created and if the load is reduced the
