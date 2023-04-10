@@ -15,7 +15,7 @@ resource "kubernetes_namespace" "mobius" {
 
 resource "kubernetes_persistent_volume_claim" "mobius12-efs" {
   metadata {
-    name = "pvc-mobius12-efs"
+    name = var.mobius-kube["persistentVolume_claimName"]
     namespace  = var.namespace
   }
   spec {
@@ -30,7 +30,7 @@ resource "kubernetes_persistent_volume_claim" "mobius12-efs" {
 
 resource "kubernetes_persistent_volume_claim" "mobius12-diag" {
   metadata {
-    name = "pvc-mobius12-diagnose"
+    name = var.mobius-kube["mobiusDiagnostics_persistentVolume_claimName"]
     namespace  = var.namespace
   }
   spec {
@@ -134,5 +134,141 @@ resource "helm_release" "mobius12" {
     name  = "mobius.clustering.kubernetes.namespace"
     value = var.namespace
   }
+}
+
+###### Mobius View
+resource "kubernetes_secret" "mobiusview-server-secrets" {
+  metadata {
+    name = var.mobiusview-kube["datasource_databaseConnectivitySecretName"]
+    namespace  = var.namespace
+  }
+  data = {
+    url      = var.mobiusview["SPRING_DATASOURCE_URL"]
+    username = var.mobiusview["SPRING_DATASOURCE_USERNAME"]
+    password = var.mobiusview["SPRING_DATASOURCE_PASSWORD"]
+  }
+}
+
+resource "kubernetes_secret" "mobiusview_license" {
+  metadata {
+    name = "mobius-license"
+    namespace  = var.namespace
+  }
+  data = {
+    license = var.mobiusview["MOBIUS_LICENSE"]
+  }
+}
+
+resource "kubernetes_persistent_volume_claim" "mobiusview12-storage" {
+  metadata {
+    name = var.mobiusview-kube["master_persistence_claimName"]
+    namespace  = var.namespace
+  }
+  spec {
+    access_modes = ["ReadWriteOnce"]
+    resources {
+      requests = {
+        storage = "1Gi"
+      }
+    }
+  }
+}
+resource "kubernetes_persistent_volume_claim" "mobiusview12-diag" {
+  metadata {
+    name = var.mobiusview-kube["master_mobiusViewDiagnostics_persistentVolume_claimName"]
+    namespace  = var.namespace
+  }
+  spec {
+    access_modes = ["ReadWriteOnce"]
+    resources {
+      requests = {
+        storage = "1Gi"
+      }
+    }
+  }
+}
+resource "kubernetes_persistent_volume_claim" "mobiusview12-pres" {
+  metadata {
+    name = var.mobiusview-kube["master_presentations_persistentVolume_claimName"]
+    namespace  = var.namespace
+  }
+  spec {
+    access_modes = ["ReadWriteOnce"]
+    resources {
+      requests = {
+        storage = "1Gi"
+      }
+    }
+  }
+}
+resource "helm_release" "mobiusview12" {
+  name             = "mobiusview12"
+  chart            = "${path.module}/helm/mobiusview-12.0.0"
+  namespace        = var.namespace
+  create_namespace = true
+
+  set {
+    name  = "image.repository"
+    value = var.mobiusview-kube["image_repository"]
+  }
+  set {
+    name  = "image.tag"
+    value = var.mobiusview-kube["image_tag"]
+  }
+  #---------------
+  set {
+    name  = "master.persistence.claimName"
+    value = var.mobiusview-kube["master_persistence_claimName"]
+  }
+  set {
+    name  = "master.persistence.accessMode"
+    value = var.mobiusview-kube["master_persistence_accessMode"]
+  }
+  set {
+    name  = "master.persistence.size"
+    value = var.mobiusview-kube["master_persistence_size"]
+  }
+  #---------------
+  set {
+    name  = "master.mobiusViewDiagnostics.persistentVolume.claimName"
+    value = var.mobiusview-kube["master_mobiusViewDiagnostics_persistentVolume_claimName"]
+  }
+  set {
+    name  = "master.mobiusViewDiagnostics.persistentVolume.accessMode"
+    value = var.mobiusview-kube["master_mobiusViewDiagnostics_persistentVolume_accessMode"]
+  }
+  set {
+    name  = "master.mobiusViewDiagnostics.persistentVolume.size"
+    value = var.mobiusview-kube["master_mobiusViewDiagnostics_persistentVolume_size"]
+  }
+  #---------------
+  set {
+    name  = "master.presentations.persistentVolume.claimName"
+    value = var.mobiusview-kube["master_presentations_persistentVolume_claimName"]
+  }
+  set {
+    name  = "master.presentations.persistentVolume.accessMode"
+    value = var.mobiusview-kube["master_presentations_persistentVolume_accessMode"]
+  }
+  set {
+    name  = "master.presentations.persistentVolume.size"
+    value = var.mobiusview-kube["master_presentations_persistentVolume_size"]
+  }
+  #---------------
+  set {
+    name  = "initRepository.host"
+    value = var.mobiusview["MOBIUS_HOST"]
+  }
+
+  set {
+    name  = "initRepository.port"
+    value = var.mobiusview["MOBIUS_PORT"]
+  }
+
+  set {
+    name  = "ingress.hosts[0].host"
+    value = "mobius12.local.net"
+  }
+
 }
 
