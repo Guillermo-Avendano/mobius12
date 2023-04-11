@@ -2,6 +2,8 @@
 #!/bin/bash
 export CLUSTER="mobius"
 
+export $(grep -v '^#' .env | xargs)
+
 if [[ $# -eq 0 ]]; then
   echo "Parameters:"
   echo "==========="

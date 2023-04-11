@@ -1,7 +1,0 @@
-# local-path-storage-class.yaml
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: local-path
-provisioner: rancher.io/local-path
-volumeBindingMode: WaitForFirstConsumer
