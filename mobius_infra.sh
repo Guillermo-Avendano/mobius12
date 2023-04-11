@@ -57,12 +57,15 @@ else
         sudo apt update && sudo apt install terraform
 
     elif [[ $option == "create" ]]; then
-        echo "Creating mobius cluster"        
+        echo "Creating mobius cluster"
 
-        k3d cluster create $KUBE_CLUSTER_NAME -p "80:80@loadbalancer" -p "8900:30080@agent:0" -p "8901:30081@agent:0" -p "8902:30082@agent:0" --agents 2 --registry-use $MOBIUS_LOCALREGISTRY_NAME --k3s-arg "--disable=traefik@server:0"
+        k3d cluster create $KUBE_CLUSTER_NAME -p "80:80@loadbalancer" -p "8900:30080@agent:0" -p "8901:30081@agent:0" -p "8902:30082@agent:0" --agents 2 --k3s-arg "--disable=traefik@server:0"
         
         k3d kubeconfig get $KUBE_CLUSTER_NAME > ~/.kube/config
         kubectl config use-context k3d-$KUBE_CLUSTER_NAME
+
+        info_message "Creating registry $MOBIUS_LOCALREGISTRY_NAME:$MOBIUS_LOCALREGISTRY_PORT"
+        k3d registry create $MOBIUS_LOCALREGISTRY_NAME --port 0.0.0.0:${MOBIUS_LOCALREGISTRY_PORT}
         
         # Getting Images
         push_images_to_local_registry;
@@ -75,7 +78,7 @@ else
     elif [[ $option == "remove" ]]; then
       echo "Removing mobius cluster"
       k3d cluster delete $KUBE_CLUSTER_NAME
-      kubectl config use-context k3d-default
+      k3d registry delete k3d-$MOBIUS_LOCALREGISTRY_NAME
 
     elif [[ $option == "on" ]]; then
       echo "Starting mobius cluster"

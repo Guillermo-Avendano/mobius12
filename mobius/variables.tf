@@ -36,9 +36,7 @@ variable "mobius" {
 
 variable "mobius-kube" {
   type = object({
-      image_repository                              = "registry.asg.com/mobius-server"
-      image_tag                                     = "12.1.0"
-      storageClassName                              = "microk8s-hostpath"
+      storageClassName                              = "local"
       persistentVolume_volumeName                   = "pv-mobius12-efs"
       persistentVolume_claimName                    = "pvc-mobius12-efs"
       persistentVolume_size                         = "1Gi"
@@ -64,9 +62,6 @@ variable "mobiusview" {
 
 variable "mobiusview-kube" {
   type = object({
-      image_repository                                         = "registry.asg.com/mobius-view"
-      image_tag                                                = "12.1.0"
-
       master_persistence_claimName                             = "pvc-mobiusview12-storage"
       master_persistence_accessMode                            = "ReadWriteOnce"
       master_persistence_size                                  = "1Gi"

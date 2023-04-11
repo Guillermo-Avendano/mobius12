@@ -1,4 +1,13 @@
 
+locals {
+  properties_file = file("${path.module}/../.env")
+  properties_list = split("\n", local.properties_file)
+  env_map = { for prop in local.properties_list : split("=", prop)[0] => split("=", prop)[1] }
+  mobius_server_version = local.env_map["MOBIUS_SERVER_VERSION"]
+  mobius_view_version = local.env_map["MOBIUS_VIEW_VERSION"]
+  eventanalytics_version = local.env_map["EVENTANALYTICS_VERSION"]
+  my_registry = "${local.env_map["MOBIUS_LOCALREGISTRY_HOST"]}:${local.env_map["MOBIUS_LOCALREGISTRY_PORT"]}"
+}
 resource "kubernetes_namespace" "mobius" {
   metadata {
     annotations = {
@@ -68,12 +77,12 @@ resource "helm_release" "mobius12" {
 
   set {
     name  = "image.repository"
-    value = var.mobius-kube.image_repository
+    value = "${local.my_registry}/mobius-server"
   }
 
   set {
     name  = "image.tag"
-    value = var.mobius-kube.image_tag
+    value = "${local.mobius_server_version}"
   }
 
   set {
@@ -209,11 +218,12 @@ resource "helm_release" "mobiusview12" {
 
   set {
     name  = "image.repository"
-    value = var.mobiusview-kube.image_repository
+    value = "${local.my_registry}/mobius-view"
   }
+
   set {
     name  = "image.tag"
-    value = var.mobiusview-kube.image_tag
+    value = "${local.mobius_view_version}"
   }
   #---------------
   set {
