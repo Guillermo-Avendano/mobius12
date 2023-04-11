@@ -1,16 +1,12 @@
 #!/bin/bash
 
-xargsflag="-d"
-if [ $(uname -s) == "Darwin" ]; then
- xargsflag="-I"
-fi
-export $(cat .env | egrep -v "(^#.*|^$)" | xargs)
 kube_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 [ -d "$kube_dir" ] || {
     echo "FATAL: no current dir (maybe running in zsh?)"
     exit 1
 }
 
+source "$kube_dir/common/env.sh"
 source "$kube_dir/common/common.sh"
 source "$kube_dir/common/local_registry.sh"
 
@@ -57,16 +53,17 @@ else
         sudo apt update && sudo apt install terraform
 
     elif [[ $option == "create" ]]; then
+    
+        info_message "Creating registry $MOBIUS_LOCALREGISTRY_NAME:$MOBIUS_LOCALREGISTRY_PORT"
+        k3d registry create $MOBIUS_LOCALREGISTRY_NAME --port 0.0.0.0:${MOBIUS_LOCALREGISTRY_PORT}
+ 
         echo "Creating mobius cluster"
 
-        k3d cluster create $KUBE_CLUSTER_NAME -p "80:80@loadbalancer" -p "8900:30080@agent:0" -p "8901:30081@agent:0" -p "8902:30082@agent:0" --agents 2 --k3s-arg "--disable=traefik@server:0"
+        k3d cluster create $KUBE_CLUSTER_NAME -p "80:80@loadbalancer" -p "8900:30080@agent:0" -p "8901:30081@agent:0" -p "8902:30082@agent:0" --agents 2 --k3s-arg "--disable=traefik@server:0" --registry-use $MOBIUS_LOCALREGISTRY_NAME:$MOBIUS_LOCALREGISTRY_PORT
         
         k3d kubeconfig get $KUBE_CLUSTER_NAME > ~/.kube/config
         kubectl config use-context k3d-$KUBE_CLUSTER_NAME
-
-        info_message "Creating registry $MOBIUS_LOCALREGISTRY_NAME:$MOBIUS_LOCALREGISTRY_PORT"
-        k3d registry create $MOBIUS_LOCALREGISTRY_NAME --port 0.0.0.0:${MOBIUS_LOCALREGISTRY_PORT}
-        
+       
         # Getting Images
         push_images_to_local_registry;
 
@@ -78,7 +75,7 @@ else
     elif [[ $option == "remove" ]]; then
       echo "Removing mobius cluster"
       k3d cluster delete $KUBE_CLUSTER_NAME
-      k3d registry delete k3d-$MOBIUS_LOCALREGISTRY_NAME
+      k3d registry delete $MOBIUS_LOCALREGISTRY_NAME
 
     elif [[ $option == "on" ]]; then
       echo "Starting mobius cluster"

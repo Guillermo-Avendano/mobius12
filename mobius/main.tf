@@ -4,11 +4,6 @@ locals {
   eventanalytics_version = var.mobius-kube["EVENTANALYTICS_VERSION"]
   my_registry = "${var.mobius-kube["MOBIUS_LOCALREGISTRY_HOST"]}:${var.mobius-kube["MOBIUS_LOCALREGISTRY_PORT"]}"
 }
-
-locals {
-  properties_list = ["prop1=value1", "prop2=value2", "prop3=value3"]
-  env_map = { for prop in local.properties_list : split("=", prop)[0] => split("=", prop)[1] }
-}
 resource "kubernetes_namespace" "mobius" {
   metadata {
     annotations = {
@@ -36,6 +31,7 @@ resource "kubernetes_persistent_volume_claim" "mobius12-efs" {
       }
     }
   }
+  depends_on = [kubernetes_namespace.mobius]
 }
 
 resource "kubernetes_persistent_volume_claim" "mobius12-diag" {
@@ -51,6 +47,7 @@ resource "kubernetes_persistent_volume_claim" "mobius12-diag" {
       }
     }
   }
+  depends_on = [kubernetes_namespace.mobius]
 }
 
 resource "kubernetes_secret" "mobius12" {
@@ -144,6 +141,7 @@ resource "helm_release" "mobius12" {
     name  = "mobius.clustering.kubernetes.namespace"
     value = var.namespace
   }
+  depends_on = [kubernetes_secret.mobius12]
 }
 
 ###### Mobius View
@@ -280,5 +278,5 @@ resource "helm_release" "mobiusview12" {
     name  = "ingress.hosts[0].host"
     value = "mobius12.local.net"
   }
-
+  depends_on = [kubernetes_secret.mobiusview-server-secrets,kubernetes_secret.mobiusview_license]
 }

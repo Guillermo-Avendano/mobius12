@@ -96,7 +96,7 @@ resource "helm_release" "kafka" {
    }
 
 }
-/*
+
 ###### Elasticsearch deloyment
 resource "helm_release" "elastic" {
   name       = "elasticsearch"
@@ -135,4 +135,4 @@ resource "helm_release" "elastic" {
   ]
 
 }
-*/
+
