@@ -9,8 +9,7 @@ variable "namespace" {
 }
 
 variable "mobius" {
-  type = map(string)
-  default = {
+  type = object({
       RDSPROVIDER                = "POSTGRESQL"
       RDSENDPOINT                = "postgres-postgresql.shared"
       RDSPORT                    = "5432"
@@ -31,13 +30,12 @@ variable "mobius" {
       MOBIUS_FTS_INDEX_NAME      = "mobius12"
       MOBIUS_ADMIN_USER          = "admin"
       MOBIUS_ADMIN_GROUP         = "mobiusadmin"
-    }
-
+    })
+    sensitive = true
 }
 
 variable "mobius-kube" {
-  type = map(string)
-  default = {
+  type = object({
       image_repository                              = "registry.asg.com/mobius-server"
       image_tag                                     = "12.1.0"
       storageClassName                              = "microk8s-hostpath"
@@ -47,13 +45,12 @@ variable "mobius-kube" {
       mobiusDiagnostics_persistentVolume_volumeName = "pv-mobius12-diagnose"
       mobiusDiagnostics_persistentVolume_claimName  = "pvc-mobius12-diagnose"
       mobiusDiagnostics_persistentVolume_size       = "1Gi"
-    }
-
+    })
+    sensitive = true
 }
 
 variable "mobiusview" {
-  type = map(string)
-  default = {
+  type = object({
       MOBIUS_LICENSE             = "01MOBIUS52464A464C4BC95859518381908FAEA4434F46515E53539681955B454D6240534556564351471D454D12405303565672514759454D1640530556560B51470E454D6040537C56560D514715454D1040536556560351470A454D0540531356560951472A454D2A40531556561D5642BB544F4A095454A4A7A744454B0C4A4FB2A2A0365456594348D9B486"
       SPRING_DATASOURCE_URL      = "jdbc:postgresql://postgres-postgresql.shared:5432/mobiusview12"
       SPRING_DATASOURCE_USERNAME = "mobiusview12"
@@ -61,12 +58,12 @@ variable "mobiusview" {
       # mobius service
       MOBIUS_HOST                = "mobius12"
       MOBIUS_PORT                = "8080"
-    }
+    })
+    sensitive = true
 }
 
 variable "mobiusview-kube" {
-  type = map(string)
-  default = {
+  type = object({
       image_repository                                         = "registry.asg.com/mobius-view"
       image_tag                                                = "12.1.0"
 
@@ -87,5 +84,6 @@ variable "mobiusview-kube" {
       datasource_databaseUsernameSecretValue                   = "username"
       datasource_databasePasswordSecretValue                   = "password"
 
-    }
+    })
+    sensitive = true
 }

@@ -23,6 +23,7 @@ resource "kubernetes_secret" "postgres" {
   data = {
     postgres-password = "postgres"
   }
+  depends_on = [kubernetes_namespace.shared]
 }
 
 resource "helm_release" "postgres" {
@@ -44,6 +45,8 @@ resource "helm_release" "postgres" {
     name  = "primary.initdb.scripts.create-databases\\.sql"
     value = "${file("mobius.sql")}"
    }
+
+   depends_on = [kubernetes_secret.postgres]
 } 
 
 
