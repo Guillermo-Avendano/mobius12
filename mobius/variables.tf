@@ -47,6 +47,11 @@ variable "mobius-kube" {
       mobiusDiagnostics_persistentVolume_volumeName = "pv-mobius12-diagnose"
       mobiusDiagnostics_persistentVolume_claimName  = "pvc-mobius12-diagnose"
       mobiusDiagnostics_persistentVolume_size       = "1Gi"
+      MOBIUS_LOCALREGISTRY_HOST                     = "localhost"
+      MOBIUS_LOCALREGISTRY_PORT                     = "5000"
+      EVENTANALYTICS_VERSION                        = "1.3.8"
+      MOBIUS_SERVER_VERSION                         = "12.1.0004"
+      MOBIUS_VIEW_VERSION                           = "12.1.1"
     }
 
 }

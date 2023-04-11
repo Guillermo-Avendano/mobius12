@@ -1,11 +1,13 @@
 locals {
-  properties_file = file("${path.module}/../.env")
-  properties_list = split("\n", local.properties_file)
+  mobius_server_version = var.mobius-kube["MOBIUS_SERVER_VERSION"]
+  mobius_view_version = var.mobius-kube["MOBIUS_VIEW_VERSION"]
+  eventanalytics_version = var.mobius-kube["EVENTANALYTICS_VERSION"]
+  my_registry = "${var.mobius-kube["MOBIUS_LOCALREGISTRY_HOST"]}:${var.mobius-kube["MOBIUS_LOCALREGISTRY_PORT"]}"
+}
+
+locals {
+  properties_list = ["prop1=value1", "prop2=value2", "prop3=value3"]
   env_map = { for prop in local.properties_list : split("=", prop)[0] => split("=", prop)[1] }
-  mobius_server_version = local.env_map["MOBIUS_SERVER_VERSION"]
-  mobius_view_version = local.env_map["MOBIUS_VIEW_VERSION"]
-  eventanalytics_version = local.env_map["EVENTANALYTICS_VERSION"]
-  my_registry = "${local.env_map["MOBIUS_LOCALREGISTRY_HOST"]}:${local.env_map["MOBIUS_LOCALREGISTRY_PORT"]}"
 }
 resource "kubernetes_namespace" "mobius" {
   metadata {
