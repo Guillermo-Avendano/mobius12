@@ -42,6 +42,8 @@ push_images(){
     images["mobius-view"]=${MOBIUS_VIEW_VERSION}
     images["eventanalytics"]=${EVENTANALYTICS_VERSION}
     
+    docker login $registry_target
+
     for key in ${!images[@]}; do
         docker push ${registry_target}/${key}:${images[${key}]}
     done
