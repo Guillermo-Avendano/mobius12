@@ -56,6 +56,16 @@ variable "mobius-kube" {
 
 }
 
+variable "MOBIUS_VIEW_URL" {
+  type    = string
+  default = "mobius12.local.net"
+}
+
+variable "MOBIUS_VIEW_TLS_SECRET" {
+  type    = string
+  default = "mobius-tls-secret"
+}
+
 variable "mobiusview" {
   type = map(string)
   default = {

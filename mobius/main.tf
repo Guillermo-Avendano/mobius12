@@ -1,4 +1,6 @@
 locals {
+  mobius_tls_key = "${path.module}/../cert/${var.MOBIUS_VIEW_URL}.key"
+  mobius_tls_crt = "${path.module}/../cert/${var.MOBIUS_VIEW_URL}.crt"
   mobius_server_version = var.mobius-kube["MOBIUS_SERVER_VERSION"]
   mobius_view_version = var.mobius-kube["MOBIUS_VIEW_VERSION"]
   eventanalytics_version = var.mobius-kube["EVENTANALYTICS_VERSION"]
@@ -171,6 +173,19 @@ resource "kubernetes_secret" "mobiusview_license" {
   }
   
 }
+resource "kubernetes_secret" "mobius-tls-secret" {
+  metadata {
+    name = var.MOBIUS_VIEW_TLS_SECRET
+  }
+
+  data = {
+    "tls.crt" = filebase64(local.mobius_tls_crt)
+    "tls.key" = filebase64(local.mobius_tls_key)
+  }
+
+  type = "kubernetes.io/tls"
+}
+
 /*
 resource "kubernetes_persistent_volume_claim" "mobiusview12-storage" {
   metadata {
@@ -301,7 +316,7 @@ resource "helm_release" "mobiusview12" {
         }
         hosts = [
           {
-            host  = "mobius12.local.net" # new host
+            host  = var.MOBIUS_VIEW_URL # new host
             paths = [
               {
                 path     = "/mobius(.*)$"
@@ -310,6 +325,12 @@ resource "helm_release" "mobiusview12" {
             ]
           }
         ]
+        tls = [
+        {
+          secretName = var.MOBIUS_VIEW_TLS_SECRET
+          hosts = [ var.MOBIUS_VIEW_URL ]
+        }
+      ]
       }
     })
   ]

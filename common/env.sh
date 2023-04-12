@@ -5,7 +5,6 @@ export KUBECONFIG=~/.kube/config
 # curl -X GET -u gavendano@rs.com:#### https://registry.rocketsoftware.com/v2/_catalog
 # curl -X GET -u gavendano@rs.com:#### https://registry.rocketsoftware.com/v2/mobius-view/tags/list 
 
-
 DOCKER_USER="<user>@rs.com"                           # $HOME.profile
 DOCKER_PASS="<pass>"                                  # $HOME/.profile
 
@@ -27,3 +26,5 @@ export TF_VAR_NAMESPACE_SHARED="shared"               # shared/variables.tf
                                                       # shared/main.tf
                                                       # shared/install.sh
                                                       # shared/remove.sh 
+
+export TF_VAR_MOBIUS_VIEW_URL="mobius12.local.net"    # mobius/main.tf used in ingress                                                     
