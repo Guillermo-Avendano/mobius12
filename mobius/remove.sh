@@ -2,5 +2,6 @@
 
 terraform destroy
 
-kubectl delete namespace $TF_VAR_NAMESPACE_SHARED
-
+if kubectl get namespace $TF_VAR_NAMESPACE >/dev/null 2>&1; then
+  kubectl delete namespace $TF_VAR_NAMESPACE
+fi

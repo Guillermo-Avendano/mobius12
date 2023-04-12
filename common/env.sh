@@ -16,8 +16,12 @@ MOBIUS_LOCALREGISTRY_NAME="registry.localhost"        # common/local_registry.sh
 MOBIUS_LOCALREGISTRY_HOST="localhost"                 # common/local_registry.sh mobius/main.tf
 MOBIUS_LOCALREGISTRY_PORT="5000"                      # common/local_registry.sh mobius/main.tf
 
-TF_VAR_NAMESPACE="mobius-prod"                        # shared/variables.tf 
+export TF_VAR_NAMESPACE="mobius-prod"                 # shared/variables.tf 
                                                       # mobius/variables.tf 
                                                       # mobius/install.sh
-                                                      # remove.sh 
-TF_VAR_NAMESPACE_SHARED="shared"                      # shared/variables.tf mobius/variables.tf
+                                                      # mobius/main.tf 
+                                                      # mobius/remove.sh 
+export TF_VAR_NAMESPACE_SHARED="shared"               # shared/variables.tf 
+                                                      # shared/main.tf
+                                                      # shared/install.sh
+                                                      # shared/remove.sh 

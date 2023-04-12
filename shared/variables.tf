@@ -4,12 +4,12 @@ variable "kube_config" {
   default = "~/.kube/config"
 }
 
-variable "namespace_mobius" {
+variable "NAMESPACE_MOBIUS" {
   type    = string
-  default = var.namespace_mobius_from_env
+  default = "mobius"
 }
 
-variable "namespace_shared" {
+variable "NAMESPACE_SHARED" {
   type    = string
-  default = var.namespace_shared_from_env
+  default = "shared"  
 }

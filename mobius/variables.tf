@@ -1,11 +1,11 @@
+# The content is replaced by the env variable TF_VAR_NAMESPACE in ./common/env.sh if exists
+variable "NAMESPACE" {
+  type    = string
+  default = "mobius"
+}
 variable "kube_config" {
   type    = string
   default = "~/.kube/config"
-}
-
-variable "namespace" {
-  type    = string
-  default = var.namespace_from_env
 }
 
 variable "mobius" {
