@@ -65,6 +65,7 @@ resource "kubernetes_secret" "mobius12" {
     topicUser = var.mobius["TOPIC_EXPORT_USER"]
     topicPassword = var.mobius["TOPIC_EXPORT_PASSWORD"]
   }
+  depends_on = [kubernetes_namespace.mobius]
 }
 
 resource "helm_release" "mobius12" {
@@ -155,6 +156,7 @@ resource "kubernetes_secret" "mobiusview-server-secrets" {
     username = var.mobiusview["SPRING_DATASOURCE_USERNAME"]
     password = var.mobiusview["SPRING_DATASOURCE_PASSWORD"]
   }
+  depends_on = [kubernetes_namespace.mobius]
 }
 
 resource "kubernetes_secret" "mobiusview_license" {
@@ -165,8 +167,9 @@ resource "kubernetes_secret" "mobiusview_license" {
   data = {
     license = var.mobiusview["MOBIUS_LICENSE"]
   }
+  depends_on = [kubernetes_namespace.mobius]
 }
-
+/*
 resource "kubernetes_persistent_volume_claim" "mobiusview12-storage" {
   metadata {
     name = var.mobiusview-kube["master_persistence_claimName"]
@@ -209,6 +212,7 @@ resource "kubernetes_persistent_volume_claim" "mobiusview12-pres" {
     }
   }
 }
+*/
 resource "helm_release" "mobiusview12" {
   name             = "mobiusview12"
   chart            = "${path.module}/helm/mobiusview-12.0.0"
@@ -278,5 +282,7 @@ resource "helm_release" "mobiusview12" {
     name  = "ingress.hosts[0].host"
     value = "mobius12.local.net"
   }
-  depends_on = [kubernetes_secret.mobiusview-server-secrets,kubernetes_secret.mobiusview_license]
+
+  depends_on = [kubernetes_secret.mobiusview-server-secrets,
+                kubernetes_secret.mobiusview_license]
 }

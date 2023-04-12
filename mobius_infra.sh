@@ -47,11 +47,12 @@ else
         # Install Terraform
         # common/kubernetes.sh
         install_terraform;
+        #wait_cluster;
 
     elif [[ $option == "create" ]]; then
          # common/cluster.sh
          create_cluster;
-         wait_cluster;
+         #wait_cluster;
 
     elif [[ $option == "remove" ]]; then
          # common/cluster.sh
@@ -60,7 +61,7 @@ else
     elif [[ $option == "on" ]]; then
          # common/cluster.sh
          start_cluster;
-         wait_cluster;
+         #wait_cluster;
 
     elif [[ $option == "off" ]]; then
          # common/cluster.sh

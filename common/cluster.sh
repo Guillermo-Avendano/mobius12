@@ -47,14 +47,26 @@ wait_cluster() {
 
     while true
     do
-        if kubectl get pod | grep -E '^[^ ]+[ ]+[^ ]+[ ]+7/7[ ]+Running[ ]+' > /dev/null
+        if kubectl get pod -kube-system | grep -E '^[^ ]+[ ]+[^ ]+[ ]+5/5[ ]+Running[ ]+' > /dev/null
+        then
+            break
+        else
+            kubectl get pod -kube-system
+            info_message "k3d is starting, kube-system pods starting, please wait..."
+            sleep 5
+        fi
+    done    
+
+    while true
+    do
+        if kubectl get pod -n ingress-nginx | grep -E '^[^ ]+[ ]+[^ ]+[ ]+2/2[ ]+Completed[ ]+' > /dev/null
         then
             info_message "All the k3d pods are Running"
             break
         else
-            kubectl get pod 
-            info_message "k3d is starting, please wait..."
+            kubectl get pod -n ingress-nginx
+            info_message "k3d is starting, nginx pods starting, please wait..."
             sleep 5
         fi
-    done    
+    done 
 }
