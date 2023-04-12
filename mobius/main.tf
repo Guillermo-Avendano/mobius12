@@ -4,6 +4,7 @@ locals {
   eventanalytics_version = var.mobius-kube["EVENTANALYTICS_VERSION"]
   my_registry = "${var.mobius-kube["MOBIUS_LOCALREGISTRY_HOST"]}:${var.mobius-kube["MOBIUS_LOCALREGISTRY_PORT"]}"
 }
+/*
 resource "kubernetes_namespace" "mobius" {
   metadata {
     annotations = {
@@ -17,6 +18,7 @@ resource "kubernetes_namespace" "mobius" {
     name = var.NAMESPACE
   }
 }
+*/
 
 resource "kubernetes_persistent_volume_claim" "mobius12-efs" {
   metadata {
@@ -31,7 +33,7 @@ resource "kubernetes_persistent_volume_claim" "mobius12-efs" {
       }
     }
   }
-  depends_on = [kubernetes_namespace.mobius]
+  # 
 }
 
 resource "kubernetes_persistent_volume_claim" "mobius12-diag" {
@@ -47,7 +49,7 @@ resource "kubernetes_persistent_volume_claim" "mobius12-diag" {
       }
     }
   }
-  depends_on = [kubernetes_namespace.mobius]
+  # 
 }
 
 resource "kubernetes_secret" "mobius12" {
@@ -65,7 +67,7 @@ resource "kubernetes_secret" "mobius12" {
     topicUser = var.mobius["TOPIC_EXPORT_USER"]
     topicPassword = var.mobius["TOPIC_EXPORT_PASSWORD"]
   }
-  depends_on = [kubernetes_namespace.mobius]
+  # 
 }
 
 resource "helm_release" "mobius12" {
@@ -156,7 +158,7 @@ resource "kubernetes_secret" "mobiusview-server-secrets" {
     username = var.mobiusview["SPRING_DATASOURCE_USERNAME"]
     password = var.mobiusview["SPRING_DATASOURCE_PASSWORD"]
   }
-  depends_on = [kubernetes_namespace.mobius]
+  
 }
 
 resource "kubernetes_secret" "mobiusview_license" {
@@ -167,7 +169,7 @@ resource "kubernetes_secret" "mobiusview_license" {
   data = {
     license = var.mobiusview["MOBIUS_LICENSE"]
   }
-  depends_on = [kubernetes_namespace.mobius]
+  
 }
 /*
 resource "kubernetes_persistent_volume_claim" "mobiusview12-storage" {
@@ -278,10 +280,39 @@ resource "helm_release" "mobiusview12" {
     value = var.mobiusview["MOBIUS_PORT"]
   }
 
-  set {
-    name  = "ingress.hosts[0].host"
-    value = "mobius12.local.net"
-  }
+ values = [
+    jsonencode({
+      ingress = {
+        enabled = true
+        className = "nginx"
+        annotations = {
+          "nginx.ingress.kubernetes.io/rewrite-target"             = "/mobius$1"
+          "nginx.ingress.kubernetes.io/proxy-body-size"            = "32m"
+          "nginx.ingress.kubernetes.io/affinity"                   = "cookie"
+          "nginx.ingress.kubernetes.io/session-cookie-name"        = "session-cookie"
+          "nginx.ingress.kubernetes.io/session-cookie-expires"     = "172800"
+          "nginx.ingress.kubernetes.io/session-cookie-max-age"     = "172800"
+          "nginx.ingress.kubernetes.io/ssl-redirect"               = "false"
+          "nginx.ingress.kubernetes.io/affinity-mode"              = "persistent"
+          "nginx.ingress.kubernetes.io/session-cookie-change-on-failure" = "false"
+          "nginx.ingress.kubernetes.io/session-cookie-hash"        = "sha1"
+          "nginx.ingress.kubernetes.io/session-cookie-path"        = "/mobius"
+          "nginx.ingress.kubernetes.io/proxy-buffer-size"          = "8k"
+        }
+        hosts = [
+          {
+            host  = "mobius12.local.net" # new host
+            paths = [
+              {
+                path     = "/mobius(.*)$"
+                pathType = "ImplementationSpecific"
+              }
+            ]
+          }
+        ]
+      }
+    })
+  ]
 
   depends_on = [kubernetes_secret.mobiusview-server-secrets,
                 kubernetes_secret.mobiusview_license]
