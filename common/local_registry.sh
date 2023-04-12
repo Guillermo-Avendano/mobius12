@@ -22,7 +22,7 @@ pull_images(){
 
 tag_images(){
     local registry_src=${MOBIUS_SOURCE_REGISTRY}
-    local registry_target=${MOBIUS_LOCALREGISTRY_NAME}:${MOBIUS_LOCALREGISTRY_PORT}
+    local registry_target=${MOBIUS_LOCALREGISTRY_HOST}:${MOBIUS_LOCALREGISTRY_PORT}
 
     declare -A images
     images["mobius-server"]=${MOBIUS_SERVER_VERSION}
@@ -35,7 +35,7 @@ tag_images(){
 }
 
 push_images(){
-    local registry_target=${MOBIUS_LOCALREGISTRY_NAME}:${MOBIUS_LOCALREGISTRY_PORT}
+    local registry_target=${MOBIUS_LOCALREGISTRY_HOST}:${MOBIUS_LOCALREGISTRY_PORT}
 
     declare -A images
     images["mobius-server"]=${MOBIUS_SERVER_VERSION}
