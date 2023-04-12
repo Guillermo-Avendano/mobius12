@@ -173,6 +173,8 @@ resource "kubernetes_secret" "mobiusview_license" {
   }
   
 }
+
+/*
 resource "kubernetes_secret" "mobius-tls-secret" {
   metadata {
     name = var.MOBIUS_VIEW_TLS_SECRET
@@ -187,7 +189,7 @@ resource "kubernetes_secret" "mobius-tls-secret" {
   type = "kubernetes.io/tls"
 }
 
-/*
+
 resource "kubernetes_persistent_volume_claim" "mobiusview12-storage" {
   metadata {
     name = var.mobiusview-kube["master_persistence_claimName"]
