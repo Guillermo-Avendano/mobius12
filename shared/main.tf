@@ -1,15 +1,21 @@
+locals {
+  namespace_mobius_from_env = try(var.namespace_mobius_from_env != null ? var.namespace_mobius_from_env : lookup(env, "TF_VAR_NAMESPACE"), "Error: TF_VAR_NAMESPACE environment variable not set.")
+  namespace_shared_from_env = try(var.namespace_shared_from_env != null ? var.namespace_shared_from_env : lookup(env, "TF_VAR_NAMESPACE_SHARED"), "Error: TF_VAR_NAMESPACE_SHARED environment variable not set.")
+}
+
+
 ###### Postgres
 resource "kubernetes_namespace" "shared" {
   metadata {
     annotations = {
-      name = var.namespace_shared
+      name = local.namespace_shared_from_env
     }
 
     labels = {
       mylabel = "shared"
     }
 
-    name = var.namespace_shared
+    name = local.namespace_shared_from_env
   }
 }
 
@@ -17,7 +23,7 @@ resource "kubernetes_namespace" "shared" {
 resource "kubernetes_secret" "postgres" {
   metadata {
     name = "postgres-secrets"
-    namespace  = var.namespace_shared
+    namespace  = local.namespace_shared_from_env
   }
 
   data = {
@@ -29,7 +35,7 @@ resource "kubernetes_secret" "postgres" {
 resource "helm_release" "postgres" {
   name       = "postgres"
   chart      = "${path.module}/helm/shared-postgres"
-  namespace  = var.namespace_shared
+  namespace  = local.namespace_shared_from_env
   create_namespace = true
   
   set {
@@ -54,12 +60,12 @@ resource "helm_release" "postgres" {
 resource "helm_release" "pgadmin" {
   name       = "pgadmin"
   chart      = "${path.module}/helm/shared-pgadmin4"
-  namespace  = var.namespace_shared
+  namespace  = local.namespace_shared_from_env
   create_namespace = true
 
   set {
     name  = "namespace"
-    value = var.namespace_shared
+    value = local.namespace_shared_from_env
   }
   
   set {
@@ -77,7 +83,7 @@ resource "helm_release" "pgadmin" {
 resource "helm_release" "kafka" {
   name       = "kafka"
   chart      = "${path.module}/helm/shared-kafka"
-  namespace  = var.namespace_shared
+  namespace  = local.namespace_shared_from_env
   create_namespace = true
 
   set {
@@ -101,7 +107,7 @@ resource "helm_release" "kafka" {
 resource "helm_release" "elastic" {
   name       = "elasticsearch"
   chart      = "${path.module}/helm/shared-elastic"
-  namespace  = var.namespace_shared
+  namespace  = local.namespace_shared_from_env
   create_namespace = true
 
   set {

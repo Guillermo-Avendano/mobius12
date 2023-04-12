@@ -1,4 +1,5 @@
 locals {
+  namespace_from_env = try(local.namespace_from_env_from_env != null ? local.namespace_from_env_from_env : lookup(env, "TF_VAR_NAMESPACE"), "Error: TF_VAR_NAMESPACE environment variable not set.")
   mobius_server_version = var.mobius-kube["MOBIUS_SERVER_VERSION"]
   mobius_view_version = var.mobius-kube["MOBIUS_VIEW_VERSION"]
   eventanalytics_version = var.mobius-kube["EVENTANALYTICS_VERSION"]
@@ -7,21 +8,21 @@ locals {
 resource "kubernetes_namespace" "mobius" {
   metadata {
     annotations = {
-      name = var.namespace
+      name = local.namespace_from_env
     }
 
     labels = {
       mylabel = "mobius"
     }
 
-    name = var.namespace
+    name = local.namespace_from_env
   }
 }
 
 resource "kubernetes_persistent_volume_claim" "mobius12-efs" {
   metadata {
     name = var.mobius-kube["persistentVolume_claimName"]
-    namespace  = var.namespace
+    namespace  = local.namespace_from_env
   }
   spec {
     access_modes = ["ReadWriteOnce"]
@@ -37,7 +38,7 @@ resource "kubernetes_persistent_volume_claim" "mobius12-efs" {
 resource "kubernetes_persistent_volume_claim" "mobius12-diag" {
   metadata {
     name = var.mobius-kube["mobiusDiagnostics_persistentVolume_claimName"]
-    namespace  = var.namespace
+    namespace  = local.namespace_from_env
   }
   spec {
     access_modes = ["ReadWriteOnce"]
@@ -53,7 +54,7 @@ resource "kubernetes_persistent_volume_claim" "mobius12-diag" {
 resource "kubernetes_secret" "mobius12" {
   metadata {
     name = "mobius-server-secrets"
-    namespace  = var.namespace
+    namespace  = local.namespace_from_env
   }
   data = {
     user = var.mobius["MOBIUSUSERNAME"]
@@ -71,7 +72,7 @@ resource "kubernetes_secret" "mobius12" {
 resource "helm_release" "mobius12" {
   name             = "mobius12"
   chart            = "${path.module}/helm/mobius-12.0.0"
-  namespace        = var.namespace
+  namespace        = local.namespace_from_env
   create_namespace = true
 
   set {
@@ -140,7 +141,7 @@ resource "helm_release" "mobius12" {
   }
   set {
     name  = "mobius.clustering.kubernetes.namespace"
-    value = var.namespace
+    value = local.namespace_from_env
   }
   depends_on = [kubernetes_secret.mobius12]
 }
@@ -149,7 +150,7 @@ resource "helm_release" "mobius12" {
 resource "kubernetes_secret" "mobiusview-server-secrets" {
   metadata {
     name = var.mobiusview-kube["datasource_databaseConnectivitySecretName"]
-    namespace  = var.namespace
+    namespace  = local.namespace_from_env
   }
   data = {
     url      = var.mobiusview["SPRING_DATASOURCE_URL"]
@@ -162,7 +163,7 @@ resource "kubernetes_secret" "mobiusview-server-secrets" {
 resource "kubernetes_secret" "mobiusview_license" {
   metadata {
     name = "mobius-license"
-    namespace  = var.namespace
+    namespace  = local.namespace_from_env
   }
   data = {
     license = var.mobiusview["MOBIUS_LICENSE"]
@@ -173,7 +174,7 @@ resource "kubernetes_secret" "mobiusview_license" {
 resource "kubernetes_persistent_volume_claim" "mobiusview12-storage" {
   metadata {
     name = var.mobiusview-kube["master_persistence_claimName"]
-    namespace  = var.namespace
+    namespace  = local.namespace_from_env
   }
   spec {
     access_modes = ["ReadWriteOnce"]
@@ -187,7 +188,7 @@ resource "kubernetes_persistent_volume_claim" "mobiusview12-storage" {
 resource "kubernetes_persistent_volume_claim" "mobiusview12-diag" {
   metadata {
     name = var.mobiusview-kube["master_mobiusViewDiagnostics_persistentVolume_claimName"]
-    namespace  = var.namespace
+    namespace  = local.namespace_from_env
   }
   spec {
     access_modes = ["ReadWriteOnce"]
@@ -201,7 +202,7 @@ resource "kubernetes_persistent_volume_claim" "mobiusview12-diag" {
 resource "kubernetes_persistent_volume_claim" "mobiusview12-pres" {
   metadata {
     name = var.mobiusview-kube["master_presentations_persistentVolume_claimName"]
-    namespace  = var.namespace
+    namespace  = local.namespace_from_env
   }
   spec {
     access_modes = ["ReadWriteOnce"]
@@ -216,7 +217,7 @@ resource "kubernetes_persistent_volume_claim" "mobiusview12-pres" {
 resource "helm_release" "mobiusview12" {
   name             = "mobiusview12"
   chart            = "${path.module}/helm/mobiusview-12.0.0"
-  namespace        = var.namespace
+  namespace        = local.namespace_from_env
   create_namespace = true
 
   set {

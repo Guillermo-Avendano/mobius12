@@ -1,7 +1,3 @@
-locals {
-  namespace_from_env = try(var.namespace_from_env != null ? var.namespace_from_env : lookup(env, "TF_VAR_NAMESPACE"), "Error: TF_VAR_NAMESPACE environment variable not set.")
-}
-
 variable "kube_config" {
   type    = string
   default = "~/.kube/config"
