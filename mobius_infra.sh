@@ -17,7 +17,7 @@ if [[ $# -eq 0 ]]; then
   echo "==========="
   echo " - on      : starts mobius cluster"
   echo " - off     : stops mobius cluster"
-  echo " - install : k3d, terraform"
+  echo " - install : k3d, kubectl, helm, and terraform"
   echo " - create  : create mobius cluster"
   echo " - remove  : remove mobius cluster"
 else
