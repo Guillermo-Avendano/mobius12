@@ -71,6 +71,40 @@ resource "helm_release" "pgadmin" {
     value = "latest"
    }
 
+  values = [
+    jsonencode({
+      ingress = {
+        enabled = true
+        className = "nginx"
+        annotations = {
+          "nginx.ingress.kubernetes.io/proxy-body-size"            = "32m"
+          "nginx.ingress.kubernetes.io/affinity"                   = "cookie"
+          "nginx.ingress.kubernetes.io/session-cookie-name"        = "session-cookie"
+          "nginx.ingress.kubernetes.io/session-cookie-expires"     = "172800"
+          "nginx.ingress.kubernetes.io/session-cookie-max-age"     = "172800"
+          "nginx.ingress.kubernetes.io/ssl-redirect"               = "false"
+          "nginx.ingress.kubernetes.io/affinity-mode"              = "persistent"
+          "nginx.ingress.kubernetes.io/session-cookie-change-on-failure" = "false"
+          "nginx.ingress.kubernetes.io/session-cookie-hash"        = "sha1"
+          "nginx.ingress.kubernetes.io/session-cookie-path"        = "/pgadmin4"
+          "nginx.ingress.kubernetes.io/proxy-buffer-size"          = "8k"
+          "nginx.ingress.kubernetes.io/configuration-snippet"      = "proxy_set_header X-Script-Name /pgadmin4;"
+        }
+        hosts = [
+          {
+            host  = "pgadmin.local.net" # new host
+            paths = [
+              {
+                path     = "/pgadmin4"
+                pathType = "ImplementationSpecific"
+              }
+            ]
+          }
+        ]
+      }
+    })
+  ]
+
 }
 
 ###### Kafka deloyment
@@ -124,14 +158,28 @@ resource "helm_release" "elastic" {
  #   value = "true"
  #  }
 
- 
-  set {
-    name  = "ingress.hosts[0].host"
-    value = "elastic.local.net"
-   }
-
-     values = [
-    "${file("${path.module}/helm/shared-elastic/values.yaml")}"
+  values = [
+    jsonencode({
+      ingress = {
+        enabled = true
+        className = "nginx"
+        annotations = {
+          "nginx.ingress.kubernetes.io/use-regex"            = "true"
+          "nginx.ingress.kubernetes.io/rewrite-target"       = "/$2"
+        }
+        hosts = [
+          {
+            host  = "elastic.local.net" # new host
+            paths = [
+              {
+                path     = "/elastic(/|$)(.*)"
+                pathType = "ImplementationSpecific"
+              }
+            ]
+          }
+        ]
+      }
+    })
   ]
 
 }
