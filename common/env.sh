@@ -14,5 +14,5 @@ MOBIUS_VIEW_VERSION="12.1.1"                          # common/local_registry.sh
 EVENTANALYTICS_VERSION="1.3.8"                        # common/local_registry.sh mobius/main.tf
 
 MOBIUS_LOCALREGISTRY_NAME="registry.localhost"        # common/local_registry.sh
-MOBIUS_LOCALREGISTRY_HOST="localhost"                 # mobius/main.tf
-MOBIUS_LOCALREGISTRY_PORT="5000"                      # mobius/main.tf
+MOBIUS_LOCALREGISTRY_HOST="localhost"                 # common/local_registry.sh mobius/main.tf
+MOBIUS_LOCALREGISTRY_PORT="5000"                      # common/local_registry.sh mobius/main.tf
