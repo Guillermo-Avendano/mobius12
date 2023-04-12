@@ -1,6 +1,6 @@
 locals {
-  mobius_tls_key = "${path.module}/../cert/${var.MOBIUS_VIEW_URL}.key"
-  mobius_tls_crt = "${path.module}/../cert/${var.MOBIUS_VIEW_URL}.crt"
+  mobius_tls_key = "${var.MOBIUS_VIEW_URL}.key"
+  mobius_tls_crt = "${var.MOBIUS_VIEW_URL}.crt"
   mobius_server_version = var.mobius-kube["MOBIUS_SERVER_VERSION"]
   mobius_view_version = var.mobius-kube["MOBIUS_VIEW_VERSION"]
   eventanalytics_version = var.mobius-kube["EVENTANALYTICS_VERSION"]
