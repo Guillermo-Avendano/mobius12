@@ -176,6 +176,7 @@ resource "kubernetes_secret" "mobiusview_license" {
 resource "kubernetes_secret" "mobius-tls-secret" {
   metadata {
     name = var.MOBIUS_VIEW_TLS_SECRET
+    namespace  = var.NAMESPACE
   }
 
   data = {
