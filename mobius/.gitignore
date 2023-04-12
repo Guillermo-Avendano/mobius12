@@ -3,6 +3,8 @@
 *.tgz
 .terraform/
 *.bak
+*.key
+*.crt
 terraform.tfstate
 terraform.tfstate.backup
 .terraform.lock.hcl
