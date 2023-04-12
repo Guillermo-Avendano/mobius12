@@ -1,5 +1,7 @@
 KUBE_CLUSTER_NAME="mobius"                            # mobius_infra.sh
 
+export KUBECONFIG=~/.kube/config
+
 # curl -X GET -u gavendano@rs.com:#### https://registry.rocketsoftware.com/v2/_catalog
 # curl -X GET -u gavendano@rs.com:#### https://registry.rocketsoftware.com/v2/mobius-view/tags/list 
 
