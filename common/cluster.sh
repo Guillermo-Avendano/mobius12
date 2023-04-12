@@ -40,3 +40,21 @@ stop_cluster() {
     info_message "Stopping $KUBE_CLUSTER_NAME cluster"
     k3d cluster stop $KUBE_CLUSTER_NAME
 }
+
+wait_cluster() {
+
+    info_message "Waiting till all the k3d pods are Running..."
+
+    while true
+    do
+        if kubectl get pod | grep -E '^[^ ]+[ ]+[^ ]+[ ]+7/7[ ]+Running[ ]+' > /dev/null
+        then
+            info_message "All the k3d pods are Running"
+            break
+        else
+            kubectl get pod 
+            info_message "k3d is starting, please wait..."
+            sleep 5
+        fi
+    done    
+}
