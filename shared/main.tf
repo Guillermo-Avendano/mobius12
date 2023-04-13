@@ -71,6 +71,15 @@ resource "helm_release" "pgadmin" {
     value = "latest"
    }
 
+  set {
+    name  = "user.mail"
+    value = "admin@admin.com"
+  }
+  set {
+    name  = "user.password"
+    value = "admin"
+   }
+
   values = [
     jsonencode({
       ingress = {
@@ -78,7 +87,7 @@ resource "helm_release" "pgadmin" {
         className = "nginx"
         annotations = {
           "nginx.ingress.kubernetes.io/ssl-redirect"          = "false"
-          "nginx.ingress.kubernetes.io/configuration-snippet" = "proxy_set_header X-Script-Name /pgadmin4;"
+          "nginx.ingress.kubernetes.io/configuration-snippet" = "proxy_set_header X-Script-Name /pgadmin4;proxy_set_header X-Scheme $scheme;proxy_set_header Host $host;"
         }
         hosts = [
           {
