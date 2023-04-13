@@ -5,8 +5,8 @@ export KUBECONFIG=~/.kube/config
 # curl -X GET -u gavendano@rs.com:#### https://registry.rocketsoftware.com/v2/_catalog
 # curl -X GET -u gavendano@rs.com:#### https://registry.rocketsoftware.com/v2/mobius-view/tags/list 
 
-DOCKER_USER="<user>@rs.com"                           # $HOME.profile
-DOCKER_PASS="<pass>"                                  # $HOME/.profile
+DOCKER_USER="gavendano@rs.com"                        
+DOCKER_PASS=`echo $DOCKER_PASSWORD | base64 -d`       # $HOME/.profile
 
 MOBIUS_SOURCE_REGISTRY="registry.rocketsoftware.com"  # common/local_registry.sh 
 MOBIUS_SERVER_VERSION="12.1.0004"                     # common/local_registry.sh mobius/main.tf

@@ -17,16 +17,13 @@ if [[ $# -eq 0 ]]; then
   echo "==========="
   echo " - on      : starts mobius cluster"
   echo " - off     : stops mobius cluster"
-  echo " - install : k3d, kubectl, helm, and terraform"
   echo " - create  : create mobius cluster"
   echo " - remove  : remove mobius cluster"
+  echo " - install : k3d, kubectl, helm, and terraform"
+  echo " - docker  : install docker (testing)"
 else
   for option in "$@"; do
     if [[ $option == "install" ]]; then
-
-        # install docker
-        # common/kubernetes.sh
-        # install_docker;
 
         # install k3d 
         # common/kubernetes.sh
@@ -48,6 +45,11 @@ else
         # common/kubernetes.sh
         install_terraform;
         #wait_cluster;
+
+    elif [[ $option == "docker" ]]; then
+        # install docker
+        # common/kubernetes.sh
+        install_docker;
 
     elif [[ $option == "create" ]]; then
          # common/cluster.sh

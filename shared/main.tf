@@ -28,7 +28,7 @@ resource "kubernetes_secret" "postgres" {
 
 resource "helm_release" "postgres" {
   name       = "postgres"
-  chart      = "${path.module}/helm/shared-postgres"
+  chart      = "${path.module}/helm/postgres"
   namespace  = var.NAMESPACE_SHARED
   create_namespace = true
   
@@ -53,7 +53,7 @@ resource "helm_release" "postgres" {
 ###### Kafka deloyment
 resource "helm_release" "pgadmin" {
   name       = "pgadmin"
-  chart      = "${path.module}/helm/shared-pgadmin4"
+  chart      = "${path.module}/helm/pgadmin4"
   namespace  = var.NAMESPACE_SHARED
   create_namespace = true
 
@@ -77,18 +77,8 @@ resource "helm_release" "pgadmin" {
         enabled = true
         className = "nginx"
         annotations = {
-          "nginx.ingress.kubernetes.io/proxy-body-size"            = "32m"
-          "nginx.ingress.kubernetes.io/affinity"                   = "cookie"
-          "nginx.ingress.kubernetes.io/session-cookie-name"        = "session-cookie"
-          "nginx.ingress.kubernetes.io/session-cookie-expires"     = "172800"
-          "nginx.ingress.kubernetes.io/session-cookie-max-age"     = "172800"
-          "nginx.ingress.kubernetes.io/ssl-redirect"               = "false"
-          "nginx.ingress.kubernetes.io/affinity-mode"              = "persistent"
-          "nginx.ingress.kubernetes.io/session-cookie-change-on-failure" = "false"
-          "nginx.ingress.kubernetes.io/session-cookie-hash"        = "sha1"
-          "nginx.ingress.kubernetes.io/session-cookie-path"        = "/pgadmin4"
-          "nginx.ingress.kubernetes.io/proxy-buffer-size"          = "8k"
-          "nginx.ingress.kubernetes.io/configuration-snippet"      = "proxy_set_header X-Script-Name /pgadmin4;"
+          "nginx.ingress.kubernetes.io/ssl-redirect"          = "false"
+          "nginx.ingress.kubernetes.io/configuration-snippet" = " |\n proxy_set_header X-Script-Name /pgadmin4;"
         }
         hosts = [
           {
@@ -110,7 +100,7 @@ resource "helm_release" "pgadmin" {
 ###### Kafka deloyment
 resource "helm_release" "kafka" {
   name       = "kafka"
-  chart      = "${path.module}/helm/shared-kafka"
+  chart      = "${path.module}/helm/kafka"
   namespace  = var.NAMESPACE_SHARED
   create_namespace = true
 
@@ -134,7 +124,7 @@ resource "helm_release" "kafka" {
 ###### Elasticsearch deloyment
 resource "helm_release" "elastic" {
   name       = "elasticsearch"
-  chart      = "${path.module}/helm/shared-elastic"
+  chart      = "${path.module}/helm/elastic"
   namespace  = var.NAMESPACE_SHARED
   create_namespace = true
 
