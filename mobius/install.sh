@@ -10,6 +10,21 @@ fi
 
 kubectl create namespace $TF_VAR_NAMESPACE
 
-kubectl apply -f pvc-mobiusview.yaml -n $TF_VAR_NAMESPACE
+kubectl apply -f pvc/pvc-mobiusview.yaml -n $TF_VAR_NAMESPACE
 
 terraform apply
+
+set pod_name=view
+
+for /f "delims=" %%i in ('kubectl -n $TF_VAR_NAMESPACE get pods --output=name ^| findstr /C:"%pod_name%"') do (
+    echo Pod encontrado: %%i
+    kubectl -n $TF_VAR_NAMESPACE delete "%%i"
+)
+
+highlight_message "kubectl -n $TF_VAR_NAMESPACE get pods";
+kubectl -n $TF_VAR_NAMESPACE get pods
+
+highlight_message "kubectl -n $TF_VAR_NAMESPACE get pods";
+kubectl -n $TF_VAR_NAMESPACE get ingress
+
+
