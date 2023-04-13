@@ -78,7 +78,7 @@ resource "helm_release" "pgadmin" {
         className = "nginx"
         annotations = {
           "nginx.ingress.kubernetes.io/ssl-redirect"          = "false"
-          "nginx.ingress.kubernetes.io/configuration-snippet" = " |\n proxy_set_header X-Script-Name /pgadmin4;"
+          "nginx.ingress.kubernetes.io/configuration-snippet" = "proxy_set_header X-Script-Name /pgadmin4;"
         }
         hosts = [
           {
