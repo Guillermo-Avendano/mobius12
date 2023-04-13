@@ -1,12 +1,9 @@
-KUBE_CLUSTER_NAME="mobius"                            # mobius_infra.sh
+KUBE_CLUSTER_NAME="mobius"                            # mobius_infra.sh common/cluster.sh
 
 export KUBECONFIG=~/.kube/config
 
-# curl -X GET -u gavendano@rs.com:#### https://registry.rocketsoftware.com/v2/_catalog
-# curl -X GET -u gavendano@rs.com:#### https://registry.rocketsoftware.com/v2/mobius-view/tags/list 
-
 DOCKER_USER="gavendano@rs.com"                        
-DOCKER_PASS=`echo $DOCKER_PASSWORD | base64 -d`       # $HOME/.profile
+DOCKER_PASS=`echo $DOCKER_PASSWORD | base64 -d`       # $HOME/.profile -> DOCKER_PASSWORD encoded base64
 
 MOBIUS_SOURCE_REGISTRY="registry.rocketsoftware.com"  # common/local_registry.sh 
 MOBIUS_SERVER_VERSION="12.1.0004"                     # common/local_registry.sh mobius/main.tf
