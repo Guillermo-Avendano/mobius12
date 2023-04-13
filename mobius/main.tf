@@ -297,6 +297,10 @@ resource "helm_release" "mobiusview12" {
     name  = "initRepository.port"
     value = var.mobiusview["MOBIUS_PORT"]
   }
+  set {
+    name  = "service.port"
+    value = var.mobiusview-kube["service_port"]
+  }
 
  values = [
     jsonencode({

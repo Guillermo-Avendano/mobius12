@@ -102,5 +102,6 @@ variable "mobiusview-kube" {
       datasource_databaseUsernameSecretValue                   = "username"
       datasource_databasePasswordSecretValue                   = "password"
 
+      service_port                                             = "8080"
     }
 }

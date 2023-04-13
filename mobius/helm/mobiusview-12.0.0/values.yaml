@@ -33,7 +33,7 @@ service:
   #name is the name of the port
   type: ClusterIP
   #name is the name of the port
-  port: 80
+  port: 8080
 
 ports:
   #name is the name of the port
