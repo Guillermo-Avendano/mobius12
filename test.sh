@@ -6,15 +6,12 @@ kube_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
     exit 1
 }
 
-source "$kube_dir/common/env.sh"
+source "./env.sh"
 source "$kube_dir/common/common.sh"
-source "$kube_dir/common/cluster.sh"
-source "$kube_dir/common/kubernetes.sh"
-source "$kube_dir/common/local_registry.sh"
+source "$kube_dir/cluster/cluster.sh"
 
-# Getting Images
-# "$kube_dir/common/local_registry.sh"
-push_images_to_local_registry;
+
+wait_cluster;
 
 
 

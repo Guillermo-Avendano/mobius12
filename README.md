@@ -23,12 +23,13 @@
 •	curl -X GET -u <username RCC>:<password RCC> https://registry.rocketsoftware.com/v2/mobius-view/tags/list
 •	curl -X GET -u <username RCC>:<password RCC> https://registry.rocketsoftware.com/v2/eventanalytics/tags/list
 
-- Adapt the following variables in "common/env.sh" with the rigth values for the versions:
+- Adapt the following variables in "./env.sh" with the rigth values for the versions:
+    export KUBE_IMAGES=("mobius-server:12.1.0004" "mobius-view:12.1.1" "eventanalytics:1.3.8") 
     MOBIUS_SERVER_VERSION="12.1.0004"   
     MOBIUS_VIEW_VERSION="12.1.1"                           
     EVENTANALYTICS_VERSION="1.3.8"                        
 
-- Adapt the variable TF_VAR_MOBIUS_VIEW_URL in "common/env.sh" with hostname for accesing to mobius view:
+- Adapt the variable TF_VAR_MOBIUS_VIEW_URL in "./env.sh" with hostname for accesing to mobius view:
     export TF_VAR_MOBIUS_VIEW_URL="mobius12.local.net"  
 
 - Add the value of TF_VAR_MOBIUS_VIEW_URL to /etc/hosts c:/windows/system32/drivers/etc/hosts 
@@ -38,11 +39,12 @@
 
 ## Installation sequence
 
-It installs k3d, helm, kubectl and terraform
-- ./mobius_infra.sh install
+Install k3d, helm, kubectl and terraform
+- cd kube
+  install.sh
 
-It creates the cluster for mobius, download the images from registry.rocketsoftware.com
-- ./mobius_infra.sh create
+Create the cluster for mobius, download the images from registry.rocketsoftware.com
+- ./mobius_cluster.sh create
 
 - cd shared
 - ./install.sh
@@ -51,20 +53,12 @@ It creates the cluster for mobius, download the images from registry.rocketsoftw
 - ./install.sh
 
 
-## Other options
+## Summary of commands
 ### Removes the cluster
-- ./mobius_infra.sh remove
+- ./mobius_cluster.sh remove
 
 ### Create the cluster
-- ./mobius_infra.sh create
-
-### Remove shared componnets with the namespece associated. The cluster and images are maintained
-- cd shared
-- ./remove.sh
-
-### Remove mobius componnets with the namespece associated. The cluster and images are maintained
-- cd mobius
-- ./remove.sh
+- ./mobius_create.sh create
 
 ###  Install of shared componnets
 - cd shared
@@ -74,3 +68,10 @@ It creates the cluster for mobius, download the images from registry.rocketsoftw
 - cd mobius
 - ./install.sh
 
+### Remove shared componnets with the namespece associated. The cluster and images are maintained
+- cd shared
+- ./remove.sh
+
+### Remove mobius componnets with the namespece associated. The cluster and images are maintained
+- cd mobius
+- ./remove.sh
