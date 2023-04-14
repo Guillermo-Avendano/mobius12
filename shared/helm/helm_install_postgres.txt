@@ -1,2 +1,0 @@
-export KUBECONFIG=~/.kube/config
-helm install postgresdb postgres/ --namespace=test --create-namespace -f postgres/postgres-values-1-0.yaml --wait
