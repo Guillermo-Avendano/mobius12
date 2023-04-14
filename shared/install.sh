@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../common/env.sh
+source ../env.sh
 source ../common/common.sh
 
 terraform apply

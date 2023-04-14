@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../common/env.sh
+source ../env.sh
 
 terraform destroy
 

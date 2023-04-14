@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../common/env.sh
+source ../env.sh
 source ../common/common.sh
 
 if ! [ -e "cert/$TF_VAR_MOBIUS_VIEW_URL.key" ] && ! [ -e "cert/$TF_VAR_MOBIUS_VIEW_URL.crt" ]; then
