@@ -43,29 +43,3 @@ stop_cluster() {
     info_message "Stopping $KUBE_CLUSTER_NAME cluster"
     k3d cluster stop $KUBE_CLUSTER_NAME
 }
-
-wait_cluster() {
-
-    info_message "Waiting till all the k3d pods are Running..."
-
-    pods=('local-path-provisioner' 'coredns' 'metrics-server' 'ingress-nginx-controller')
-
-    for pod in "${pods[@]}"; do
-        for /f "tokens=1" %%p in ('kubectl get pods --no-headers -o custom-columns=":metadata.name" ^| findstr /c:"$pod"') do (
-        :loop
-        for /f "tokens=3" %%s in ('kubectl get pods -o wide --no-headers ^| findstr /c:%%p') do (
-            if "%%s"=="Running" (
-                echo Pod %%p is running.
-                goto :next
-            )
-        )
-        echo Waiting for pod %%p to be running.
-        timeout /t 5 >nul
-        goto :loop
-        :next
-         )
-    done
-
-    highlight_message "$KUBE_CLUSTER_NAME is running"
-    
-}
