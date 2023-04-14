@@ -10,10 +10,6 @@ if ! [ -e "cert/$TF_VAR_MOBIUS_VIEW_URL.key" ] && ! [ -e "cert/$TF_VAR_MOBIUS_VI
   base64 -w0 "cert/${TF_VAR_MOBIUS_VIEW_URL}.crt" > "cert/base64_${TF_VAR_MOBIUS_VIEW_URL}.crt"
 fi
 
-#kubectl create namespace $TF_VAR_NAMESPACE
-
-#kubectl apply -f pvc/pvc-mobiusview.yaml -n $TF_VAR_NAMESPACE
-
 terraform apply
 
 pod_name="view"

@@ -1,9 +1,7 @@
 #!/bin/bash
 
 source "./env.sh"
-
 source "$kube_dir/cluster/cluster.sh"
-
 
 if [[ $# -eq 0 ]]; then
   echo "Parameters:"

@@ -489,7 +489,7 @@ ingress:
       paths:
         - path: /mobius(.*)$
           pathType: ImplementationSpecific
-  tls:
-    - hosts:
-      - a2534655bdfb1477dad77ef8098772c6-b4d79949f02533a9.elb.us-east-1.amazonaws.com
-      secretName: "tls-mobiusview"        
+  #tls:
+  #  - hosts:
+  #    - a2534655bdfb1477dad77ef8098772c6-b4d79949f02533a9.elb.us-east-1.amazonaws.com
+  #    secretName: "tls-mobiusview"        

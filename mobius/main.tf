@@ -333,12 +333,14 @@ resource "helm_release" "mobiusview12" {
             ]
           }
         ]
+        /*
         tls = [
         {
           secretName = var.MOBIUS_VIEW_TLS_SECRET
           hosts = [ var.MOBIUS_VIEW_URL ]
         }
       ]
+      */
       }
     })
   ]
