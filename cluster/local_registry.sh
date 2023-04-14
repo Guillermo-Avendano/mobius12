@@ -34,7 +34,7 @@ tag_images(){
 push_images(){
     local registry_target=${KUBE_LOCALREGISTRY_HOST}:${KUBE_LOCALREGISTRY_PORT}
 
-    docker login $registry_target
+    docker login  --username ${DOCKER_USER} --password ${DOCKER_PASS} $registry_target
 
     for image in "${KUBE_IMAGES[@]}" 
         do
