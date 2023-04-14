@@ -32,7 +32,7 @@ if
 
 if ! [[ terraform -version ]]; then
    # Install Terraform
-   # common/kubernetes.sh
+   # kubernetes.sh
    install_terraform;
 if
 

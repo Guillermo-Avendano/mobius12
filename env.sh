@@ -34,4 +34,4 @@ export TF_VAR_NAMESPACE_SHARED="shared"             # shared/variables.tf
                                                     # shared/install.sh
                                                     # shared/remove.sh 
 
-export TF_VAR_MOBIUS_VIEW_URL="mobius12.local.net"    # mobius/main.tf used in ingress                                                     
+export TF_VAR_MOBIUS_VIEW_URL="mobius12.local.net"  # mobius/main.tf used in ingress                                                     

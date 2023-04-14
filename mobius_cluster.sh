@@ -13,21 +13,19 @@ if [[ $# -eq 0 ]]; then
 else
   for option in "$@"; do
     if [[ $option == "create" ]]; then
-         # common/cluster.sh
+         # cluster/cluster.sh
          create_cluster;
-         #wait_cluster;
 
     elif [[ $option == "remove" ]]; then
-         # common/cluster.sh
+         # cluster/cluster.sh
          remove_cluster;
 
     elif [[ $option == "on" ]]; then
-         # common/cluster.sh
+         # cluster/cluster.sh
          start_cluster;
-         #wait_cluster;
 
     elif [[ $option == "off" ]]; then
-         # common/cluster.sh
+         # cluster/cluster.sh
          stop_cluster;
     else
       echo "($option) is not valid. Valid options are: create or remove."
