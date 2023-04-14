@@ -6,7 +6,8 @@ locals {
   eventanalytics_version = var.mobius-kube["EVENTANALYTICS_VERSION"]
   my_registry = "${var.mobius-kube["MOBIUS_LOCALREGISTRY_HOST"]}:${var.mobius-kube["MOBIUS_LOCALREGISTRY_PORT"]}"
 }
-/*
+
+############### KUUBERNETES NAMESPACE #############
 resource "kubernetes_namespace" "mobius" {
   metadata {
     annotations = {
@@ -20,8 +21,8 @@ resource "kubernetes_namespace" "mobius" {
     name = var.NAMESPACE
   }
 }
-*/
 
+############### PVC FOR MOBIUS AND MOBIUS-VIEW #############
 resource "kubernetes_persistent_volume_claim" "mobius12-efs" {
   metadata {
     name = var.mobius-kube["persistentVolume_claimName"]
@@ -51,8 +52,51 @@ resource "kubernetes_persistent_volume_claim" "mobius12-diag" {
       }
     }
   }
-  # 
 }
+resource "kubernetes_persistent_volume_claim" "mobiusview12-storage" {
+  metadata {
+    name = var.mobiusview-kube["master_persistence_claimName"]
+    namespace  = var.NAMESPACE
+  }
+  spec {
+    access_modes = ["ReadWriteOnce"]
+    resources {
+      requests = {
+        storage = "1Gi"
+      }
+    }
+  }
+}
+resource "kubernetes_persistent_volume_claim" "mobiusview12-diag" {
+  metadata {
+    name = var.mobiusview-kube["master_mobiusViewDiagnostics_persistentVolume_claimName"]
+    namespace  = var.NAMESPACE
+  }
+  spec {
+    access_modes = ["ReadWriteOnce"]
+    resources {
+      requests = {
+        storage = "1Gi"
+      }
+    }
+  }
+}
+resource "kubernetes_persistent_volume_claim" "mobiusview12-pres" {
+  metadata {
+    name = var.mobiusview-kube["master_presentations_persistentVolume_claimName"]
+    namespace  = var.NAMESPACE
+  }
+  spec {
+    access_modes = ["ReadWriteOnce"]
+    resources {
+      requests = {
+        storage = "1Gi"
+      }
+    }
+  }
+}
+
+############### SECRETS FOR MOBIUS AND MOBIUS-VIEW #############
 
 resource "kubernetes_secret" "mobius12" {
   metadata {
@@ -72,6 +116,47 @@ resource "kubernetes_secret" "mobius12" {
   # 
 }
 
+
+resource "kubernetes_secret" "mobiusview-server-secrets" {
+  metadata {
+    name = var.mobiusview-kube["datasource_databaseConnectivitySecretName"]
+    namespace  = var.NAMESPACE
+  }
+  data = {
+    url      = var.mobiusview["SPRING_DATASOURCE_URL"]
+    username = var.mobiusview["SPRING_DATASOURCE_USERNAME"]
+    password = var.mobiusview["SPRING_DATASOURCE_PASSWORD"]
+  }
+  
+}
+
+resource "kubernetes_secret" "mobiusview_license" {
+  metadata {
+    name = "mobius-license"
+    namespace  = var.NAMESPACE
+  }
+  data = {
+    license = var.mobiusview["MOBIUS_LICENSE"]
+  }
+  
+}
+
+
+resource "kubernetes_secret" "mobius-tls-secret" {
+  metadata {
+    name = var.MOBIUS_VIEW_TLS_SECRET
+    namespace  = var.NAMESPACE
+  }
+
+  data = {
+    "tls.crt" = file(local.mobius_tls_crt)
+    "tls.key" = file(local.mobius_tls_key)
+  }
+
+  type = "kubernetes.io/tls"
+}
+
+############### HELM FOR MOBIUS AND MOBIUS-VIEW #############
 resource "helm_release" "mobius12" {
   name             = "mobius12"
   chart            = "${path.module}/helm/mobius-12.0.0"
@@ -149,90 +234,6 @@ resource "helm_release" "mobius12" {
   depends_on = [kubernetes_secret.mobius12]
 }
 
-###### Mobius View
-resource "kubernetes_secret" "mobiusview-server-secrets" {
-  metadata {
-    name = var.mobiusview-kube["datasource_databaseConnectivitySecretName"]
-    namespace  = var.NAMESPACE
-  }
-  data = {
-    url      = var.mobiusview["SPRING_DATASOURCE_URL"]
-    username = var.mobiusview["SPRING_DATASOURCE_USERNAME"]
-    password = var.mobiusview["SPRING_DATASOURCE_PASSWORD"]
-  }
-  
-}
-
-resource "kubernetes_secret" "mobiusview_license" {
-  metadata {
-    name = "mobius-license"
-    namespace  = var.NAMESPACE
-  }
-  data = {
-    license = var.mobiusview["MOBIUS_LICENSE"]
-  }
-  
-}
-
-
-resource "kubernetes_secret" "mobius-tls-secret" {
-  metadata {
-    name = var.MOBIUS_VIEW_TLS_SECRET
-    namespace  = var.NAMESPACE
-  }
-
-  data = {
-    "tls.crt" = file(local.mobius_tls_crt)
-    "tls.key" = file(local.mobius_tls_key)
-  }
-
-  type = "kubernetes.io/tls"
-}
-
-/*
-resource "kubernetes_persistent_volume_claim" "mobiusview12-storage" {
-  metadata {
-    name = var.mobiusview-kube["master_persistence_claimName"]
-    namespace  = var.NAMESPACE
-  }
-  spec {
-    access_modes = ["ReadWriteOnce"]
-    resources {
-      requests = {
-        storage = "1Gi"
-      }
-    }
-  }
-}
-resource "kubernetes_persistent_volume_claim" "mobiusview12-diag" {
-  metadata {
-    name = var.mobiusview-kube["master_mobiusViewDiagnostics_persistentVolume_claimName"]
-    namespace  = var.NAMESPACE
-  }
-  spec {
-    access_modes = ["ReadWriteOnce"]
-    resources {
-      requests = {
-        storage = "1Gi"
-      }
-    }
-  }
-}
-resource "kubernetes_persistent_volume_claim" "mobiusview12-pres" {
-  metadata {
-    name = var.mobiusview-kube["master_presentations_persistentVolume_claimName"]
-    namespace  = var.NAMESPACE
-  }
-  spec {
-    access_modes = ["ReadWriteOnce"]
-    resources {
-      requests = {
-        storage = "1Gi"
-      }
-    }
-  }
-}
-*/
 resource "helm_release" "mobiusview12" {
   name             = "mobiusview12"
   chart            = "${path.module}/helm/mobiusview-12.0.0"
