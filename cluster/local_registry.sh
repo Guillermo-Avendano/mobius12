@@ -9,38 +9,40 @@ login_docker(){
 pull_images(){
     local registry_src=${KUBE_SOURCE_REGISTRY}
 
-    for image in "${KUBE_IMAGES[@]}" do
-        IFS=':' read -ra kv <<< "$image"
-        image_name="${kv[0]}"
-        image_tag="${kv[1]}"
-        docker pull ${registry_src}/${image_name}:${image_tag} 
-    done
+    for image in "${KUBE_IMAGES[@]}" 
+        do
+            IFS=':' read -ra kv <<< "$image"
+            image_name="${kv[0]}"
+            image_tag="${kv[1]}"
+            docker pull ${registry_src}/${image_name}:${image_tag} 
+        done
 }
 
 tag_images(){
     local registry_src=${KUBE_SOURCE_REGISTRY}
     local registry_target=${KUBE_LOCALREGISTRY_HOST}:${KUBE_LOCALREGISTRY_PORT}
 
-    for image in "${KUBE_IMAGES[@]}" do
-        IFS=':' read -ra kv <<< "$image"
-        image_name="${kv[0]}"
-        image_tag="${kv[1]}"
-        docker tag ${registry_src}/${image_name}:${image_tag} ${registry_target}/${image_name}:${image_tag}
-    done
+    for image in "${KUBE_IMAGES[@]}" 
+        do
+            IFS=':' read -ra kv <<< "$image"
+            image_name="${kv[0]}"
+            image_tag="${kv[1]}"
+            docker tag ${registry_src}/${image_name}:${image_tag} ${registry_target}/${image_name}:${image_tag}
+        done
 }
 
 push_images(){
-    local registry_target=${MOBIUS_LOCALREGISTRY_HOST}:${MOBIUS_LOCALREGISTRY_PORT}
-   
+    local registry_target=${KUBE_LOCALREGISTRY_HOST}:${KUBE_LOCALREGISTRY_PORT}
+
     docker login $registry_target
 
-    for image in "${KUBE_IMAGES[@]}" do
-        IFS=':' read -ra kv <<< "$image"
-        image_name="${kv[0]}"
-        image_tag="${kv[1]}"
-        docker push ${registry_target}/${image_name}:${image_tag}
-    done
-
+    for image in "${KUBE_IMAGES[@]}" 
+        do
+            IFS=':' read -ra kv <<< "$image"
+            image_name="${kv[0]}"
+            image_tag="${kv[1]}"
+            docker push ${registry_target}/${image_name}:${image_tag}
+        done
 }
 
 push_images_to_local_registry(){
