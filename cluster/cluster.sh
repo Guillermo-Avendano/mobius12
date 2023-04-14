@@ -31,6 +31,7 @@ remove_cluster() {
     info_message "Removing $KUBE_CLUSTER_NAME cluster..."
     k3d cluster delete $KUBE_CLUSTER_NAME
     k3d registry delete $KUBE_LOCALREGISTRY_NAME    
+    docker network rm k3d-$KUBE_CLUSTER_NAME
 }
 
 start_cluster() {
