@@ -5,7 +5,7 @@ variable "NAMESPACE" {
 }
 variable "kube_config" {
   type    = string
-  default = "~/.kube/config"
+  default = "${path.module}/../cluster/cluster-config.yaml"
 }
 
 variable "mobius" {

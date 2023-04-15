@@ -6,9 +6,8 @@ kube_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
     exit 1
 }
 
-KUBE_CLUSTER_NAME="mobius"                         # cluster/cluster.sh
-
-export KUBECONFIG=$kube_dir/kube/config            # cluster/cluster.sh
+KUBE_CLUSTER_NAME="mobius"                                 # cluster/cluster.sh
+export KUBECONFIG=$kube_dir/cluster/cluster-config.yaml    # cluster/cluster.sh
 
 DOCKER_USER="gavendano@rs.com"                     # cluster/local_registry.sh  
 DOCKER_PASS=`echo $DOCKER_PASSWORD | base64 -d`    # $HOME/.profile -> DOCKER_PASSWORD encoded base64

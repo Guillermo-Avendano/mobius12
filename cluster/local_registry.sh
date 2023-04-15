@@ -31,6 +31,16 @@ tag_images(){
         done
 }
 
+list_images(){
+    for image in "${KUBE_IMAGES[@]}" 
+        do
+            IFS=':' read -ra kv <<< "$image"
+            image_name="${kv[0]}"
+            image_tag="${kv[1]}"
+            curl -X GET -u $DOCKER_USER:$DOCKER_PASS https://registry.rocketsoftware.com/v2/$image_name/tags/list
+        done
+}
+
 push_images(){
     local registry_target=${KUBE_LOCALREGISTRY_HOST}:${KUBE_LOCALREGISTRY_PORT}
 
