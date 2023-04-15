@@ -48,3 +48,19 @@ list_cluster() {
     info_message "Cluster's list"
     k3d cluster list
 }
+
+isactive_cluster() {
+
+    local cluster_status=$(k3d cluster list | grep "$KUBE_CLUSTER_NAME" | awk '{print $2}')
+    
+    if [[ "$cluster_status" == "1/1" ]]; then
+        # Active
+        return 0
+    elif [[ -n "$cluster_status" ]]; then
+        # Not active
+        return 1
+    else
+        # Not exists
+        return 1
+    fi
+}
