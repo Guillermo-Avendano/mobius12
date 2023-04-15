@@ -1,7 +1,6 @@
 #!/bin/bash
 
 source "$kube_dir/common/common.sh"
-source "$kube_dir/cluster/cluster.sh"
 
 login_docker(){
     docker login --username ${DOCKER_USER} --password ${DOCKER_PASS} ${KUBE_SOURCE_REGISTRY}
@@ -61,21 +60,18 @@ push_images(){
 
 push_images_to_local_registry(){
 
-    if isactive_cluster; then
-        info_message "Login remote registry"
-        login_docker;
+    info_message "Login remote registry"
+    login_docker;
 
-        info_message "Pull images"
-        pull_images;
+    info_message "Pull images"
+    pull_images;
 
-        info_message "Tag images"
-        tag_images;
+    info_message "Tag images"
+    tag_images;
 
-        info_message "Push images"
-        push_images;
-    else
-        info_message "$KUBE_CLUSTER_NAME cluster not active"    
-    fi
+    info_message "Push images"
+    push_images;
+
 }
 
 

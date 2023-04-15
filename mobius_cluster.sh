@@ -29,7 +29,11 @@ else
 
     elif [[ $option == "imgpull" ]]; then
          # cluster/local_registry.sh
-         push_images_to_local_registry; 
+         if isactive_cluster; then
+            push_images_to_local_registry; 
+         else
+            echo "$KUBE_CLUSTER_NAME cluster is not active"
+         fi   
 
     elif [[ $option == "list" ]]; then
          # cluster/cluster.sh
