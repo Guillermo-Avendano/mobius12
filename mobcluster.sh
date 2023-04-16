@@ -13,7 +13,7 @@ if [[ $# -eq 0 ]]; then
   echo " - list    : list clusters"
   echo " - create  : create mobius cluster"  
   echo " - remove  : remove mobius cluster"
-  echo " - debug   : generate outputs for get/describe of each kubernetes resource in logs directory"
+  echo " - debug   : generate outputs for get/describe of each kubernetes resources"
 else
   for option in "$@"; do
     if [[ $option == "on" ]]; then
