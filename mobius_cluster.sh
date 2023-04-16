@@ -13,6 +13,7 @@ if [[ $# -eq 0 ]]; then
   echo " - list    : list clusters"
   echo " - create  : create mobius cluster"  
   echo " - remove  : remove mobius cluster"
+  echo " - debug   : generate outputs for get/describe of each kubernetes resource in logs directory"
 else
   for option in "$@"; do
     if [[ $option == "on" ]]; then
@@ -66,7 +67,17 @@ else
             remove_cluster;
          else
             echo "$KUBE_CLUSTER_NAME cluster doesn't exist"            
-         fi   
+         fi
+
+    elif [[ $option == "debug" ]]; then
+         
+         if isactive_cluster; then
+            # cluster/cluster.sh
+            debug_cluster;
+         else
+            echo "$KUBE_CLUSTER_NAME cluster is not active"            
+         fi  
+
     else    
       echo "($option) is not valid. Valid options are: create or remove."
     fi

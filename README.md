@@ -43,13 +43,18 @@ Install k3d, helm, kubectl and terraform
 - cd kube
   install.sh
 
+sete environment
+- source env.sh
+
 Create the cluster for mobius, download the images from registry.rocketsoftware.com
 - ./mobius_cluster.sh create
 
 - cd shared
+- terraform init
 - ./install.sh
 
 - cd mobius
+- terraform init
 - ./install.sh
 
 
