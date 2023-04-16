@@ -33,4 +33,6 @@ export TF_VAR_NAMESPACE_SHARED="shared"             # shared/variables.tf
                                                     # shared/install.sh
                                                     # shared/remove.sh 
 
-export TF_VAR_MOBIUS_VIEW_URL="mobius12.local.net"  # mobius/main.tf used in ingress                                                     
+export TF_VAR_MOBIUS_VIEW_URL="mobius12.local.net"  # mobius/main.tf used in ingress
+
+export TF_VAR_MOBIUS_LICENSE="01MOBIUS52464A464C4BC95859518381908FAEA4434F46515E53539681955B454D6240534556564351471D454D12405303565672514759454D1640530556560B51470E454D6040537C56560D514715454D1040536556560351470A454D0540531356560951472A454D2A40531556561D5642BB544F4A095454A4A7A744454B0C4A4FB2A2A0365456594348D9B486"

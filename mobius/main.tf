@@ -136,7 +136,7 @@ resource "kubernetes_secret" "mobiusview_license" {
     namespace  = var.NAMESPACE
   }
   data = {
-    license = var.mobiusview["MOBIUS_LICENSE"]
+    license = var.MOBIUS_LICENSE
   }
   
 }
