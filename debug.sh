@@ -1,0 +1,61 @@
+#!/bin/bash
+
+source ../env.sh
+
+log_dir="logs"
+
+if [ ! -d "$log_dir" ]; then
+  mkdir -p "$log_dir"
+fi
+
+namespace_list=(${TF_VAR_NAMESPACE} ${TF_VAR_NAMESPACE_SHARED})
+
+for namespace in "${namespace_list[@]}"
+    do
+        echo "Namespace: $namespace"
+
+        pods=$(kubectl -n $namespace get pods --output=name)
+
+        for pod in $pods
+            do
+            pod_name=$(echo $pod | cut -d/ -f2) 
+            kubectl -n $namespace get pod/$pod_name -o yaml > $log_dir/${namespace}_${pod_name}_GET_POD.yaml 
+            kubectl -n $namespace describe pod/$pod_name    > $log_dir/${namespace}_${pod_name}_DESCRIBE_POD.txt
+
+            done
+
+        services=$(kubectl -n $namespace get services --output=name)
+
+        for srv in $services
+            do
+            srv_name=$(echo $srv | cut -d/ -f2) 
+
+            kubectl -n $namespace get service/$srv_name -o yaml > $log_dir/${namespace}_${srv_name}_GET_SERVICE.yaml 
+            kubectl -n $namespace describe service/$srv_name    > $log_dir/${namespace}_${srv_name}_DESCRIBE_SERVICE.txt
+
+            done
+
+        ingresses=$(kubectl -n $namespace get ingress --output=name)
+
+        for ingress in $ingresses
+            do
+            ingress_name=$(echo $ingress | cut -d/ -f2) 
+
+            kubectl -n $namespace get ingress/$ingress_name -o yaml > $log_dir/${namespace}_${ingress_name}_GET_INGRESS.yaml 
+            kubectl -n $namespace describe ingress/$ingress_name    > $log_dir/${namespace}_${ingress_name}_DESCRIBE_INGRESS.txt
+
+            done
+
+        secrets=$(kubectl -n $namespace get secret --output=name)
+
+        for secret in $secrets
+            do
+            secret_name=$(echo $secret | cut -d/ -f2) 
+
+            kubectl -n $namespace get secret/$secret_name -o yaml > $log_dir/${namespace}_${secret_name}_GET_SECRET.yaml 
+            kubectl -n $namespace describe secret/$secret_name    > $log_dir/${namespace}_${secret_name}_DESCRIBE_SECRET.txt
+
+            done
+
+        echo "Debug files in ./$log_dir"
+    done
