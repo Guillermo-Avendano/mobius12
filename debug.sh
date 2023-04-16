@@ -1,14 +1,17 @@
 #!/bin/bash
 
-source ../env.sh
+source ./env.sh
 
 log_dir="logs"
 
 if [ ! -d "$log_dir" ]; then
   mkdir -p "$log_dir"
+else
+  rm $log_dir/*.*
 fi
 
 namespace_list=(${TF_VAR_NAMESPACE} ${TF_VAR_NAMESPACE_SHARED})
+# namespace_list=( ${TF_VAR_NAMESPACE} )
 
 for namespace in "${namespace_list[@]}"
     do
@@ -52,9 +55,10 @@ for namespace in "${namespace_list[@]}"
             do
             secret_name=$(echo $secret | cut -d/ -f2) 
 
-            kubectl -n $namespace get secret/$secret_name -o yaml > $log_dir/${namespace}_${secret_name}_GET_SECRET.yaml 
-            kubectl -n $namespace describe secret/$secret_name    > $log_dir/${namespace}_${secret_name}_DESCRIBE_SECRET.txt
-
+            if [[ ! "$secret_name" == *".helm."* ]]; then
+                kubectl -n $namespace get secret/$secret_name -o yaml > $log_dir/${namespace}_${secret_name}_GET_SECRET.yaml 
+                #kubectl -n $namespace describe secret/$secret_name    > $log_dir/${namespace}_${secret_name}_DESCRIBE_SECRET.txt
+            fi
             done
 
         echo "Debug files in ./$log_dir"
