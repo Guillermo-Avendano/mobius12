@@ -8,8 +8,8 @@ if [[ $# -eq 0 ]]; then
   echo "==========="
   echo " - on      : start mobius cluster"
   echo " - off     : stop mobius cluster"
-  echo " - imgls   : list images from $KUBE_SOURCE_REGISTRY"
-  echo " - imgpull : pull images from $KUBE_SOURCE_REGISTRY"
+  echo " - imgls   : list images from $KUBE_SOURCE_REGISTRY (var KUBE_IMAGES in env.sh)"
+  echo " - imgpull : pull images from $KUBE_SOURCE_REGISTRY (var KUBE_IMAGES in env.sh)"
   echo " - list    : list clusters"
   echo " - create  : create mobius cluster"  
   echo " - remove  : remove mobius cluster"
@@ -45,7 +45,11 @@ else
 
     elif [[ $option == "remove" ]]; then
          # cluster/cluster.sh
-         remove_cluster;
+         if exist_cluster; then
+            remove_cluster;
+         else
+            echo "$KUBE_CLUSTER_NAME cluster doesn't exist"            
+         fi   
     else    
       echo "($option) is not valid. Valid options are: create or remove."
     fi
