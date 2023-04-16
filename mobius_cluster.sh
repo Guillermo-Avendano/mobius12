@@ -28,8 +28,9 @@ else
          list_images;
 
     elif [[ $option == "imgpull" ]]; then
-         # cluster/local_registry.sh
+         
          if isactive_cluster; then
+            # cluster/local_registry.sh
             push_images_to_local_registry; 
          else
             echo "$KUBE_CLUSTER_NAME cluster is not active"
@@ -40,12 +41,18 @@ else
          list_cluster;
 
     elif [[ $option == "create" ]]; then
-         # cluster/cluster.sh
-         create_cluster;
+         
+         if isactive_cluster; then
+            echo "$KUBE_CLUSTER_NAME cluster is active"
+         else    
+            # cluster/cluster.sh
+            create_cluster;
+         fi
 
     elif [[ $option == "remove" ]]; then
-         # cluster/cluster.sh
+         
          if exist_cluster; then
+            # cluster/cluster.sh
             remove_cluster;
          else
             echo "$KUBE_CLUSTER_NAME cluster doesn't exist"            
