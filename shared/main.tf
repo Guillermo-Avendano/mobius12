@@ -91,7 +91,7 @@ resource "helm_release" "pgadmin" {
         }
         hosts = [
           {
-            host  = "pgadmin.local.net" # new host
+            host  = var.PGADMIN_URL 
             paths = [
               {
                 path     = "/pgadmin4"
@@ -163,12 +163,12 @@ resource "helm_release" "elastic" {
         enabled = true
         className = "nginx"
         annotations = {
-          "nginx.ingress.kubernetes.io/use-regex"            = "true"
-          "nginx.ingress.kubernetes.io/rewrite-target"       = "/$2"
+          "nginx.ingress.kubernetes.io/use-regex"      = "true"
+          "nginx.ingress.kubernetes.io/rewrite-target" = "/$2"
         }
         hosts = [
           {
-            host  = "elastic.local.net" # new host
+            host  = var.ELASTIC_URL
             paths = [
               {
                 path     = "/elastic(/|$)(.*)"

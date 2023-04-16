@@ -13,3 +13,13 @@ variable "NAMESPACE_SHARED" {
   type    = string
   default = "shared"  
 }
+
+variable "PGADMIN_URL" {
+  type    = string
+  default = "pgadmin.local.net"  
+}
+
+variable "ELASTIC_URL" {
+  type    = string
+  default = "elastic.local.net"  
+}
