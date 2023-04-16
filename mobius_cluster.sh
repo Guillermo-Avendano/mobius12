@@ -16,12 +16,22 @@ if [[ $# -eq 0 ]]; then
 else
   for option in "$@"; do
     if [[ $option == "on" ]]; then
-         # cluster/cluster.sh
-         start_cluster;
+
+         if isactive_cluster; then
+            echo "$KUBE_CLUSTER_NAME cluster is active"
+         else 
+            # cluster/cluster.sh
+            start_cluster;
+         fi
 
     elif [[ $option == "off" ]]; then
-         # cluster/cluster.sh
-         stop_cluster;
+
+         if isactive_cluster; then
+            # cluster/cluster.sh
+            stop_cluster;
+         else
+            echo "$KUBE_CLUSTER_NAME cluster is not active"
+         fi
 
     elif [[ $option == "imgls" ]]; then
          # cluster/local_registry.sh
