@@ -79,7 +79,7 @@ else
          fi  
 
     else    
-      echo "($option) is not valid. Valid options are: create or remove."
+      echo "($option) is not valid."
     fi
   done
 fi
