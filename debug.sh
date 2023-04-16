@@ -22,8 +22,8 @@ for namespace in "${namespace_list[@]}"
         for pod in $pods
             do
             pod_name=$(echo $pod | cut -d/ -f2) 
-            kubectl -n $namespace get pod/$pod_name -o yaml > $log_dir/${namespace}_${pod_name}_GET_POD.yaml 
-            kubectl -n $namespace describe pod/$pod_name    > $log_dir/${namespace}_${pod_name}_DESCRIBE_POD.txt
+            kubectl -n $namespace get pod/$pod_name -o yaml > $log_dir/${namespace}_${pod_name}_POD_GET.yaml 
+            kubectl -n $namespace describe pod/$pod_name    > $log_dir/${namespace}_${pod_name}_POD_DESCRIBE.txt
 
             done
 
@@ -33,8 +33,8 @@ for namespace in "${namespace_list[@]}"
             do
             srv_name=$(echo $srv | cut -d/ -f2) 
 
-            kubectl -n $namespace get service/$srv_name -o yaml > $log_dir/${namespace}_${srv_name}_GET_SERVICE.yaml 
-            kubectl -n $namespace describe service/$srv_name    > $log_dir/${namespace}_${srv_name}_DESCRIBE_SERVICE.txt
+            kubectl -n $namespace get service/$srv_name -o yaml > $log_dir/${namespace}_${srv_name}_SERVICE_GET.yaml 
+            kubectl -n $namespace describe service/$srv_name    > $log_dir/${namespace}_${srv_name}_SERVICE_DESCRIBE.txt
 
             done
 
@@ -44,8 +44,8 @@ for namespace in "${namespace_list[@]}"
             do
             ingress_name=$(echo $ingress | cut -d/ -f2) 
 
-            kubectl -n $namespace get ingress/$ingress_name -o yaml > $log_dir/${namespace}_${ingress_name}_GET_INGRESS.yaml 
-            kubectl -n $namespace describe ingress/$ingress_name    > $log_dir/${namespace}_${ingress_name}_DESCRIBE_INGRESS.txt
+            kubectl -n $namespace get ingress/$ingress_name -o yaml > $log_dir/${namespace}_${ingress_name}_INGRESS_GET.yaml 
+            kubectl -n $namespace describe ingress/$ingress_name    > $log_dir/${namespace}_${ingress_name}_INGRESS_DESCRIBE.txt
 
             done
 
@@ -56,7 +56,7 @@ for namespace in "${namespace_list[@]}"
             secret_name=$(echo $secret | cut -d/ -f2) 
 
             if [[ ! "$secret_name" == *".helm."* ]]; then
-                kubectl -n $namespace get secret/$secret_name -o yaml > $log_dir/${namespace}_${secret_name}_GET_SECRET.yaml 
+                kubectl -n $namespace get secret/$secret_name -o yaml > $log_dir/${namespace}_${secret_name}_SECRET_GET.yaml 
                 #kubectl -n $namespace describe secret/$secret_name    > $log_dir/${namespace}_${secret_name}_DESCRIBE_SECRET.txt
             fi
             done
