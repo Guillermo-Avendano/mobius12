@@ -21,7 +21,7 @@
         export DOCKER_PASSWORD=[RCC password encripted base64]
 
 - Check versions for mobius-server. mobius-view, and eventanalytics
-  ./mobcluster.sh imgls
+  ./mvcluster.sh imgls
 
 - Adapt the following variables in "./env.sh" with the rigth values for the versions:
     export KUBE_IMAGES=("mobius-server:12.1.0004" "mobius-view:12.1.1" "eventanalytics:1.3.8")
@@ -49,17 +49,24 @@
 
 - source env.sh
 
-3; Create the cluster for mobius, download the images from registry.rocketsoftware.com
+3; Create the cluster for mobius, and pull images from registry.rocketsoftware.com
 
-- ./mobcluster.sh create
+- ./mvcluster.sh create
 
-4; Install shared namespace with: postgres, pgadmin, kafka, elasticsearch
+4; Initilize Terraform providers
+
+- cd shared
+- terraform init
+- cd ../mobius
+- terraform init
+
+5; Install shared namespace with: postgres, pgadmin, kafka, elasticsearch
 
 - cd shared
 - terraform init
 - ./install.sh
 
-5; Install mobius-server and mobius-view
+6; Install mobius-server and mobius-view
 
 - cd mobius
 - terraform init
@@ -67,15 +74,15 @@
 
 ## Summary of commands
 
-|--------------------------|-----------------------------------------------------------------|
-| mobcluster.sh on         | start mobius cluster
-| mobcluster.sh off        | stop mobius cluster
-| mobcluster.sh imgls      | list images from registry.rocketsoftware.com
-| mobcluster.sh imgpull    | pull images from registry.rocketsoftware.com
-| mobcluster.sh list       | list clusters
-| mobcluster.sh create     | create mobius cluster
-| mobcluster.sh remove     | remove mobius cluster
-| mobcluster.sh debug      | generate outputs for get/describe of each kubernetes resources
+|-------------------------|-----------------------------------------------------------------|
+| mvcluster.sh on         | start mobius cluster
+| mvcluster.sh off        | stop mobius cluster
+| mvcluster.sh imgls      | list images from registry.rocketsoftware.com
+| mvcluster.sh imgpull    | pull images from registry.rocketsoftware.com
+| mvcluster.sh list       | list clusters
+| mvcluster.sh create     | create mobius cluster
+| mvcluster.sh remove     | remove mobius cluster
+| mvcluster.sh debug      | generate outputs for get/describe of each kubernetes resources
 
 ### Install of shared componnets
 
