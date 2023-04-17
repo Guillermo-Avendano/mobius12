@@ -18,9 +18,11 @@ else
   for option in "$@"; do
     if [[ $option == "on" ]]; then
 
-         if isactive_cluster; then
+         if ! exist_cluster; then
+            echo "$KUBE_CLUSTER_NAME cluster doesn't exist"
+         elif isactive_cluster; then
             echo "$KUBE_CLUSTER_NAME cluster is active"
-         else 
+         else
             # cluster/cluster.sh
             start_cluster;
          fi

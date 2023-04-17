@@ -8,10 +8,11 @@ if [ ! -d "cert" ]; then
 fi
 
 if ! [ -e "cert/$TF_VAR_MOBIUS_VIEW_URL.key" ] && ! [ -e "cert/$TF_VAR_MOBIUS_VIEW_URL.crt" ]; then
-  info_message "Generating certificates: cert/$TF_VAR_MOBIUS_VIEW_URL.key and cert/$TF_VAR_MOBIUS_VIEW_URL.crt"
-  openssl req -x509 -newkey rsa:2048 -sha256 -days 3650 -nodes -keyout "cert/${TF_VAR_MOBIUS_VIEW_URL}.key" -out "cert/${TF_VAR_MOBIUS_VIEW_URL}.crt" -subj "/CN=${TF_VAR_MOBIUS_VIEW_URL}" -addext "subjectAltName=DNS:${TF_VAR_MOBIUS_VIEW_URL}" -addext 'extendedKeyUsage=serverAuth,clientAuth'
-  base64 -w0 "cert/${TF_VAR_MOBIUS_VIEW_URL}.key" > "cert/base64_${TF_VAR_MOBIUS_VIEW_URL}.key"
-  base64 -w0 "cert/${TF_VAR_MOBIUS_VIEW_URL}.crt" > "cert/base64_${TF_VAR_MOBIUS_VIEW_URL}.crt"
+
+  highlight_message "Generating certificates: cert/$TF_VAR_MOBIUS_VIEW_URL.key and cert/$TF_VAR_MOBIUS_VIEW_URL.crt"
+
+  openssl req -x509 -newkey rsa:2048 -sha256 -days 3650 -nodes -keyout "cert/$TF_VAR_MOBIUS_VIEW_URL.key" -out "cert/$TF_VAR_MOBIUS_VIEW_URL.crt" -subj "/CN=$TF_VAR_MOBIUS_VIEW_URL/O=$TF_VAR_MOBIUS_VIEW_URL" -addext "subjectAltName=DNS:$TF_VAR_MOBIUS_VIEW_URL" -addext 'extendedKeyUsage=serverAuth,clientAuth'
+
 fi
 
 terraform apply
