@@ -13,6 +13,7 @@ install_elasticsearch() {
     
     cp $kube_dir/elasticsearch/templates/$ELASTICSEARCH_CONF_FILE $kube_dir/elasticsearch/$ELASTICSEARCH_CONF_FILE;
     replace_tag_in_file $kube_dir/elasticsearch/$ELASTICSEARCH_CONF_FILE "<ELASTICSEARCH_VERSION>" $ELASTICSEARCH_VERSION; 
+    replace_tag_in_file $kube_dir/elasticsearch/$ELASTICSEARCH_CONF_FILE "<ELASTICSEARCH_HOST>" $ELASTICSEARCH_HOST; 
 
     info_message "Updating local Helm repository";
 
