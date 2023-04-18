@@ -1,0 +1,17 @@
+{{- if .Values.pgadmin.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: pgadmin 
+  name: pgadmin
+  namespace: {{ .Values.namespace }} 
+spec:
+  type: NodePort
+  ports:
+  - name: "9090"
+    port: 9090
+    targetPort: 80
+  selector:
+    app: pgadmin
+{{- end }}
