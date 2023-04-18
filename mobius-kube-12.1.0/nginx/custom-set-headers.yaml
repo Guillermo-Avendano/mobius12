@@ -1,0 +1,8 @@
+apiVersion: v1
+data:
+  X-Real-IP: $remote_addr
+  X-Forwarded-For:  $remote_addr 
+kind: ConfigMap
+metadata:
+  name: custom-set-headers
+  namespace: ingress-nginx
