@@ -12,8 +12,8 @@ install_pgadmin() {
 	PGADMIN_VALUES_FILE=pgadmin-values.yaml;
     cp $kube_dir/pgadmin/templates/$PGADMIN_VALUES_FILE $kube_dir/pgadmin/$PGADMIN_VALUES_FILE;
 
-	replace_tag_in_file $kube_dir/pgadmin/$PGADMIN_VALUES_FILE "<NAMESPACE>" $NAME_LOCALREGISTRY;
-	replace_tag_in_file $kube_dir/pgadmin/$PGADMIN_VALUES_FILE "<PGADMIN_HOST>" $PGADMIN_PASS;
+	replace_tag_in_file $kube_dir/pgadmin/$PGADMIN_VALUES_FILE "<NAMESPACE>" $NAMESPACE;
+	replace_tag_in_file $kube_dir/pgadmin/$PGADMIN_VALUES_FILE "<PGADMIN_HOST>" $PGADMIN_HOST;
 	replace_tag_in_file $kube_dir/pgadmin/$PGADMIN_VALUES_FILE "<PGADMIN_MAIL>" $PGADMIN_MAIL;
 	replace_tag_in_file $kube_dir/pgadmin/$PGADMIN_VALUES_FILE "<PGADMIN_PASS>" $PGADMIN_PASS;
 	  
