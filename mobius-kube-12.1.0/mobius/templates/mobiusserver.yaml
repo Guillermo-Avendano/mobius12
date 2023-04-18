@@ -53,6 +53,7 @@ mobius:
       serverProtocol: "HTTP"
       host: "elasticsearch-master"
       port: 9200
+      indexName: "mobius12"
 
             
   #Uncomment to enable topic export to eventanalytics
