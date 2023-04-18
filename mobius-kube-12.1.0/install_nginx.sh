@@ -30,8 +30,8 @@ install_nginx() {
 	
 	
 	CERT_NAME=nginx-cert
-    CERT_FILE=$kube_dir/nginx/nginx.cert
-    KEY_FILE=$kube_dir/nginx/nginx.key
+    CERT_FILE=$kube_dir/nginx/$HOSTNAME.crt
+    KEY_FILE=$kube_dir/nginx/$HOSTNAME.key
     
 	
 		

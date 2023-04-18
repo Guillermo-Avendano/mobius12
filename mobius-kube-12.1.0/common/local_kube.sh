@@ -80,8 +80,8 @@ create_cluster() {
 
   if [ "$REGISTRY_TYPE" == "local" ]; then
     if [ "$KUBERNETES_TYPE" == "k3d" ]; then
-      echo $KUBE_EXE cluster create ${KUBE_CLUSTER_NAME} --agents $KUBE_NUM_AGENTS -p $NGINX_EXTERNAL_TLS_PORT:443@loadbalancer $KUBE_ARGS $KUBE_REGISTRY --k3s-arg "--disable=traefik@server:0"
-      $KUBE_EXE cluster create ${KUBE_CLUSTER_NAME} --agents $KUBE_NUM_AGENTS -p $NGINX_EXTERNAL_TLS_PORT:443@loadbalancer  $KUBE_ARGS $KUBE_REGISTRY --k3s-arg "--disable=traefik@server:0"
+      echo $KUBE_EXE cluster create ${KUBE_CLUSTER_NAME} --agents $KUBE_NUM_AGENTS -p 80:80@loadbalancer -p $NGINX_EXTERNAL_TLS_PORT:443@loadbalancer $KUBE_ARGS $KUBE_REGISTRY --k3s-arg "--disable=traefik@server:0"
+      $KUBE_EXE cluster create ${KUBE_CLUSTER_NAME} --agents $KUBE_NUM_AGENTS -p 80:80@loadbalancer -p $NGINX_EXTERNAL_TLS_PORT:443@loadbalancer  $KUBE_ARGS $KUBE_REGISTRY --k3s-arg "--disable=traefik@server:0"
     elif [ "$KUBERNETES_TYPE" == "minikube" ]; then
       echo $KUBE_EXE start -p ${KUBE_CLUSTER_NAME} $KUBE_NUM_AGENTS $KUBE_ARGS $KUBE_REGISTRY --k3s-arg "--disable=traefik@server:0"
       #TODO: Needed to add full minikube settings (ports...)
@@ -89,8 +89,8 @@ create_cluster() {
     fi
   else
     if [ "$KUBERNETES_TYPE" == "k3d" ]; then
-      echo $KUBE_EXE cluster create ${KUBE_CLUSTER_NAME} --agents $KUBE_NUM_AGENTS -p $NGINX_EXTERNAL_TLS_PORT:443@loadbalancer $KUBE_ARGS --k3s-arg "--disable=traefik@server:0"
-      $KUBE_EXE cluster create ${KUBE_CLUSTER_NAME} --agents $KUBE_NUM_AGENTS -p $NGINX_EXTERNAL_TLS_PORT:443@loadbalancer  $KUBE_ARGS --k3s-arg "--disable=traefik@server:0"
+      echo $KUBE_EXE cluster create ${KUBE_CLUSTER_NAME} --agents $KUBE_NUM_AGENTS -p 80:80@loadbalancer -p $NGINX_EXTERNAL_TLS_PORT:443@loadbalancer $KUBE_ARGS --k3s-arg "--disable=traefik@server:0"
+      $KUBE_EXE cluster create ${KUBE_CLUSTER_NAME} --agents $KUBE_NUM_AGENTS -p 80:80@loadbalancer -p $NGINX_EXTERNAL_TLS_PORT:443@loadbalancer  $KUBE_ARGS --k3s-arg "--disable=traefik@server:0"
     elif [ "$KUBERNETES_TYPE" == "minikube" ]; then
       echo $KUBE_EXE start -p ${KUBE_CLUSTER_NAME} $KUBE_NUM_AGENTS $KUBE_ARGS --k3s-arg "--disable=traefik@server:0"
       #TODO: Needed to add full minikube settings (ports...)
