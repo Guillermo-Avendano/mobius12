@@ -9,7 +9,7 @@ install_pgadmin() {
 	
 	replace_tag_in_file $kube_dir/pgadmin/storage/local/$PGADMIN_STORAGE_FILE "<PGADMIN_PV_VOLUME>" $PGADMIN_PV_VOLUME;
 	
-	PGADMIN_VALUES_FILE=pgadmin4-values.yaml;
+	PGADMIN_VALUES_FILE=pgadmin-values.yaml;
     cp $kube_dir/pgadmin/templates/$PGADMIN_VALUES_FILE $kube_dir/pgadmin/$PGADMIN_VALUES_FILE;
 
 	replace_tag_in_file $kube_dir/pgadmin/$PGADMIN_VALUES_FILE "<NAMESPACE>" $NAME_LOCALREGISTRY;
@@ -21,11 +21,7 @@ install_pgadmin() {
     $KUBE_CLI_EXE apply -f $kube_dir/pgadmin/storage/local/pgadmin_storage.yaml --namespace $NAMESPACE;
 	
 	info_message "Deploy pgadmin"; 
-	if [ -z $IMAGE_EXTRA_ARGS_PGADMIN]; then
-	  helm upgrade pgadmin -n $NAMESPACE $kube_dir/helm_charts/pgadmin4.tgz -f $kube_dir/pgadmin/pgadmin4-values.yaml --install
-  else
-    helm upgrade pgadmin -n $NAMESPACE $kube_dir/helm_charts/pgadmin4.tgz -f $kube_dir/pgadmin/pgadmin4-values.yaml $IMAGE_EXTRA_ARGS_PGADMIN --install
-  fi
+    helm upgrade pgadmin -n $NAMESPACE $kube_dir/helm_charts/pgadmin.tgz -f $kube_dir/pgadmin/pgadmin-values.yaml --install
 
 	info_message "Clean up resources";
     rm -f $kube_dir/pgadmin/storage/local/$PGADMIN_STORAGE_FILE
