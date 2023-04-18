@@ -5,3 +5,4 @@ pgadmin:
   user:
     mail: admin@admin.com
     password: admin
+  pvc: pgadmin-pvc  

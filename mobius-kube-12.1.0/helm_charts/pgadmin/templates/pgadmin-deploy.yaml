@@ -27,9 +27,9 @@ spec:
         - containerPort: 80
         volumeMounts:
           - mountPath: /var/lib/pgadmin
-            name: pvc-pgadmin            
+            name: {{ .Values.pgadmin.pvc}}            
       volumes:
-        - name: pvc-pgadmin
+        - name: {{ .Values.pgadmin.pvc}}
           persistentVolumeClaim:
-            claimName: pvc-pgadmin
+            claimName: {{ .Values.pgadmin.pvc}}
 {{- end }}            

@@ -8,7 +8,7 @@ install_pgadmin() {
     cp $kube_dir/pgadmin/storage/local/templates/$PGADMIN_STORAGE_FILE $kube_dir/pgadmin/storage/local/$PGADMIN_STORAGE_FILE;
 	
 	replace_tag_in_file $kube_dir/pgadmin/storage/local/$PGADMIN_STORAGE_FILE "<PGADMIN_PV_VOLUME>" $PGADMIN_PV_VOLUME;
-    replace_tag_in_file $kube_dir/pgadmin/storage/local/$PGADMIN_STORAGE_FILE "<PGADMIN_PVC>"       $PGADMIN_PV_VOLUME;
+    replace_tag_in_file $kube_dir/pgadmin/storage/local/$PGADMIN_STORAGE_FILE "<PGADMIN_PVC>"       $PGADMIN_PVC;
 	
 	PGADMIN_VALUES_FILE=pgadmin-values.yaml;
     cp $kube_dir/pgadmin/templates/$PGADMIN_VALUES_FILE $kube_dir/pgadmin/$PGADMIN_VALUES_FILE;
@@ -17,6 +17,7 @@ install_pgadmin() {
 	replace_tag_in_file $kube_dir/pgadmin/$PGADMIN_VALUES_FILE "<PGADMIN_HOST>" $PGADMIN_HOST;
 	replace_tag_in_file $kube_dir/pgadmin/$PGADMIN_VALUES_FILE "<PGADMIN_MAIL>" $PGADMIN_MAIL;
 	replace_tag_in_file $kube_dir/pgadmin/$PGADMIN_VALUES_FILE "<PGADMIN_PASS>" $PGADMIN_PASS;
+    replace_tag_in_file $kube_dir/pgadmin/$PGADMIN_VALUES_FILE "<PGADMIN_PVC>" $PGADMIN_PVC;
 	  
     info_message "Creating pgadmin storage";    
     $KUBE_CLI_EXE apply -f $kube_dir/pgadmin/storage/local/pgadmin_storage.yaml --namespace $NAMESPACE;
