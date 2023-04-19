@@ -1,7 +1,24 @@
 #!/bin/bash
+#abort in case of cmd failure
+set -Eeuo pipefail
 
-source "./env.sh"
+xargsflag="-d"
+export $(grep -v '^#' .env | xargs $xargsflag '\n')
+kube_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+[ -d "$kube_dir" ] || {
+    echo "FATAL: no current dir (maybe running in zsh?)"
+    exit 1
+}
+
+
+
+# cluster/local_registry.sh
+export KUBE_IMAGES=("mobius-server:$MOBIUS_SERVER_VERSION" "mobius-view:$MOBIUS_VIEW_VERSION" "eventanalytics:$EVENTANALYTICS_VERSION") 
+# $HOME/.profile -> DOCKER_PASSWORD encoded base64
+export DOCKER_PASS=`echo $DOCKER_PASSWORD | base64 -d` 
+
 source "$kube_dir/cluster/cluster.sh"
+export KUBECONFIG=$kube_dir/cluster/cluster-config.yaml
 
 if [[ $# -eq 0 ]]; then
   echo "Parameters:"
@@ -85,8 +102,3 @@ else
     fi
   done
 fi
-
-
-
-
-
