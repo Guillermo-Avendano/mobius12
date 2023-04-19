@@ -43,5 +43,35 @@ export TF_VAR_PGADMIN_URL="pgadmin.local.net"       # shared/variables.tf
 # http://elastic.local.net
 export TF_VAR_ELASTIC_URL="elastic.local.net"       # shared/variables.tf
                                                     # shared/main.tf
-                                                                                                        
-                                                    
+
+
+########################################################################
+# In processing
+NAMESPACE=test
+declare -A pv
+pv['MOBIUS_PV_VOLUME']=~/${NAMESPACE}_data/mobius/pv
+pv['MOBIUS_FTS_VOLUME']=~/${NAMESPACE}_data/mobius/fts
+pv['MOBIUS_DIAGNOSTIC_VOLUME']=~/${NAMESPACE}_data/mobius/log
+
+pv['MOBIUSVIEW_PV_VOLUME']=~/${NAMESPACE}_data/mobiusview/pv
+pv['MOBIUSVIEW_DIAGNOSTIC_VOLUME']=~/${NAMESPACE}_data/mobiusview/log
+
+pv['COMMON_VOLUME']=~/${NAMESPACE}_data/common
+pv['POSTGRES_VOLUME']=~/${NAMESPACE}_data/postgres
+pv['KAFKA_VOLUME']=~/${NAMESPACE}_data/kafka
+pv['ELASTICSEARCH_VOLUME']=~/${NAMESPACE}_data/elasticsearch
+pv['PGADMIN_VOLUME']=~/${NAMESPACE}_data/pgadmin
+
+VOLUME_MAPPING=""
+for local_pv in ${!pv[@]}; do
+    if [ ! -d ${pv[${local_pv}]} ]; then
+
+        #mkdir -p ${pv[${local_pv}]};
+        #chmod -R 777 ${pv[${local_pv}]};
+    fi 
+    VOL_MAP=`eval echo ${pv[${local_pv}]}`
+    VOLUME_MAPPING+="--volume $VOL_MAP:$VOL_MAP "
+    #echo Creating: $local_pv ${pv[${local_pv}]}
+done
+
+KUBE_CLUSTER_EXTRA_ARGS="$VOLUME_MAPPING --wait";

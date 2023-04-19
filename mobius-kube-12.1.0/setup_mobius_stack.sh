@@ -48,6 +48,3 @@ $kube_dir/deploy_mobiusview.sh
 
 #deploy nginx
 $kube_dir/install_nginx.sh
-
-#deploy pgadmin
-$kube_dir/deploy_pgadmin.sh

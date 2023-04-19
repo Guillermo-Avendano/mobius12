@@ -5,6 +5,12 @@ source "$kube_dir/common/common.sh"
 
 create_cluster(){
     info_message "Creating registry $KUBE_LOCALREGISTRY_NAME"
+
+    registry_name=k3d-$KUBE_LOCALREGISTRY_NAME
+    if k3d registry list | grep $registry_name >/dev/null; then
+        echo "Deleting existing registry $registry_name"
+        k3d registry delete $registry_name
+    fi   
     k3d registry create $KUBE_LOCALREGISTRY_NAME --port 0.0.0.0:${KUBE_LOCALREGISTRY_PORT}
 
     info_message "Creating $KUBE_CLUSTER_NAME cluster..."
@@ -13,7 +19,7 @@ create_cluster(){
 
     k3d cluster create $KUBE_CLUSTER_NAME -p "80:80@loadbalancer" -p "443:443@loadbalancer" --agents 2 --k3s-arg "--disable=traefik@server:0" $KUBE_CLUSTER_REGISTRY
     
-    k3d kubeconfig get $KUBE_CLUSTER_NAME > $kube_dir/cluster/cluster-config.yaml
+    #k3d kubeconfig get $KUBE_CLUSTER_NAME > $kube_dir/cluster/cluster-config.yaml
 
     kubectl config use-context k3d-$KUBE_CLUSTER_NAME
     

@@ -1,8 +1,0 @@
-namespace: <NAMESPACE>
-pgadmin:
-  enabled: true
-  hostname: <PGADMIN_HOST>
-  user:
-    mail: <PGADMIN_MAIL>
-    password: <PGADMIN_PASS> 
-  pvc: <PGADMIN_PVC>  

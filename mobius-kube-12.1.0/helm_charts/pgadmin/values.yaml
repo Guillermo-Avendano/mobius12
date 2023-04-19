@@ -1,8 +1,0 @@
-namespace: mobius
-pgadmin:
-  enabled: true
-  hostname: pgadmin.rocket-sandbox.net
-  user:
-    mail: admin@admin.com
-    password: admin
-  pvc: pgadmin-pvc  
