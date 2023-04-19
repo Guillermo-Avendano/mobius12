@@ -1,9 +1,0 @@
-apiVersion: v2
-appVersion: "6.21"
-description: pgAdmin HelmChart
-keywords:
-  - pgAdmin
-  - database
-  - management
-name: pgadmin4
-version: 1.0.0

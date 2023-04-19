@@ -84,3 +84,9 @@ ask_binary_question() {
     fi
     echo "$answer"
 }
+
+kube_init(){
+    KUBE_EXE="k3d"
+    KUBE_CLI_EXE="kubectl"
+    CONTAINER_EXE="docker"    
+}

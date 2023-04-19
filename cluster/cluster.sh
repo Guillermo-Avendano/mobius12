@@ -17,7 +17,7 @@ create_cluster(){
 
     KUBE_CLUSTER_REGISTRY="--registry-use k3d-$KUBE_LOCALREGISTRY_NAME:5000 --registry-config $kube_dir/cluster/registries.yaml"
 
-    k3d cluster create $KUBE_CLUSTER_NAME -p "80:80@loadbalancer" -p "443:443@loadbalancer" --agents 2 --k3s-arg "--disable=traefik@server:0" $KUBE_CLUSTER_REGISTRY
+    k3d cluster create $KUBE_CLUSTER_NAME -p "80:80@loadbalancer" -p "$NGINX_EXTERNAL_TLS_PORT:443@loadbalancer" --agents 2 --k3s-arg "--disable=traefik@server:0" $KUBE_CLUSTER_REGISTRY
     
     #k3d kubeconfig get $KUBE_CLUSTER_NAME > $kube_dir/cluster/cluster-config.yaml
 
@@ -35,6 +35,12 @@ create_cluster(){
 remove_cluster() {
     info_message "Removing $KUBE_CLUSTER_NAME cluster..."
     k3d cluster delete $KUBE_CLUSTER_NAME
+
+    registry_name=k3d-$KUBE_LOCALREGISTRY_NAME
+    if k3d registry list | grep $registry_name >/dev/null; then
+        echo "Deleting existing registry $registry_name"
+        k3d registry delete $registry_name
+    fi  
     k3d registry delete $KUBE_LOCALREGISTRY_NAME    
     docker network rm k3d-$KUBE_CLUSTER_NAME
 }

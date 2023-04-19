@@ -1,10 +1,7 @@
 locals {
   mobius_tls_key = "${path.module}/cert/${var.MOBIUS_VIEW_URL}.key"
   mobius_tls_crt = "${path.module}/cert/${var.MOBIUS_VIEW_URL}.crt"
-  mobius_server_version = var.mobius-kube["MOBIUS_SERVER_VERSION"]
-  mobius_view_version = var.mobius-kube["MOBIUS_VIEW_VERSION"]
-  eventanalytics_version = var.mobius-kube["EVENTANALYTICS_VERSION"]
-  my_registry = "${var.mobius-kube["MOBIUS_LOCALREGISTRY_HOST"]}:${var.mobius-kube["MOBIUS_LOCALREGISTRY_PORT"]}"
+  my_registry = "${var.KUBE_LOCALREGISTRY_HOST}:${KUBE_LOCALREGISTRY_PORT}"
 }
 
 ############### KUUBERNETES NAMESPACE #############
@@ -15,7 +12,7 @@ resource "kubernetes_namespace" "mobius" {
     }
 
     labels = {
-      mylabel = "mobius"
+      mylabel = var.NAMESPACE
     }
 
     name = var.NAMESPACE
@@ -104,14 +101,14 @@ resource "kubernetes_secret" "mobius12" {
     namespace  = var.NAMESPACE
   }
   data = {
-    user = var.mobius["MOBIUSUSERNAME"]
-    schema = var.mobius["MOBIUSSCHEMANAME"]
-    password = var.mobius["MOBIUSSCHEMAPASSWORD"]
-    endpoint = var.mobius["RDSENDPOINT"]
-    port = var.mobius["RDSPORT"]
-    topicUrl = "jdbc:postgresql://${var.mobius["RDSENDPOINT"]}:${var.mobius["RDSPORT"]}/eventanalytics"
-    topicUser = var.mobius["TOPIC_EXPORT_USER"]
-    topicPassword = var.mobius["TOPIC_EXPORT_PASSWORD"]
+    user = var.POSTGRESQL_USERNAME
+    schema = var.POSTGRESQL_USERNAME
+    password = var.POSTGRESQL_PASSWORD
+    endpoint = var.RDSENDPOINT
+    port = var.RDSPORT
+    topicUrl = "jdbc:postgresql://${var.RDSENDPOINT}:${var.RDSPORT}/${POSTGRESQL_DBNAME_EVENTANALYTICS}"
+    topicUser = var.POSTGRESQL_USERNAME
+    topicPassword = var.POSTGRESQL_PASSWORD
   }
   # 
 }
@@ -123,9 +120,9 @@ resource "kubernetes_secret" "mobiusview-server-secrets" {
     namespace  = var.NAMESPACE
   }
   data = {
-    url      = var.mobiusview["SPRING_DATASOURCE_URL"]
-    username = var.mobiusview["SPRING_DATASOURCE_USERNAME"]
-    password = var.mobiusview["SPRING_DATASOURCE_PASSWORD"]
+    url      = "jdbc:postgresql://${var.RDSENDPOINT}:${var.RDSPORT}/${POSTGRESQL_DBNAME_MOBIUSVIEW}"
+    username = var.POSTGRESQL_USERNAME
+    password = var.POSTGRESQL_PASSWORD
   }
   
 }
@@ -170,7 +167,7 @@ resource "helm_release" "mobius12" {
 
   set {
     name  = "image.tag"
-    value = "${local.mobius_server_version}"
+    value = var.IMAGE_VERSION_MOBIUS
   }
 
   set {
@@ -190,11 +187,11 @@ resource "helm_release" "mobius12" {
 
   set {
     name  = "mobius.rds.provider"
-    value = var.mobius["RDSPROVIDER"]
+    value = var.RDSPROVIDER
   }
   set {
     name  = "mobius.rds.protocol"
-    value = var.mobius["RDSPORT"]
+    value = var.RDSPORT
   }
 
   set {
@@ -203,29 +200,12 @@ resource "helm_release" "mobius12" {
   }
 
   set {
-    name  = "mobius.persistentVolume.volumeName"
-    value = var.mobius-kube["persistentVolume_volumeName"]
-  }
-  set {
     name  = "mobius.persistentVolume.claimName"
     value = var.mobius-kube["persistentVolume_claimName"]
   }
   set {
-    name  = "mobius.persistentVolume.size"
-    value = var.mobius-kube["persistentVolume_size"]
-  }
-
-  set {
-    name  = "mobius.mobiusDiagnostics.persistentVolume.volumeName"
-    value = var.mobius-kube["mobiusDiagnostics_persistentVolume_volumeName"]
-  }
-  set {
     name  = "mobius.mobiusDiagnostics.persistentVolume.claimName"
     value = var.mobius-kube["mobiusDiagnostics_persistentVolume_claimName"]
-  }
-  set {
-    name  = "mobius.mobiusDiagnostics.persistentVolume.size"
-    value = var.mobius-kube["mobiusDiagnostics_persistentVolume_size"]
   }
   set {
     name  = "mobius.clustering.kubernetes.namespace"
@@ -247,7 +227,7 @@ resource "helm_release" "mobiusview12" {
 
   set {
     name  = "image.tag"
-    value = "${local.mobius_view_version}"
+    value = var.IMAGE_VERSION_MOBIUSVIEW
   }
   #---------------
   set {
@@ -255,40 +235,15 @@ resource "helm_release" "mobiusview12" {
     value = var.mobiusview-kube["master_persistence_claimName"]
   }
   set {
-    name  = "master.persistence.accessMode"
-    value = var.mobiusview-kube["master_persistence_accessMode"]
-  }
-  set {
-    name  = "master.persistence.size"
-    value = var.mobiusview-kube["master_persistence_size"]
-  }
-  #---------------
-  set {
     name  = "master.mobiusViewDiagnostics.persistentVolume.claimName"
     value = var.mobiusview-kube["master_mobiusViewDiagnostics_persistentVolume_claimName"]
   }
   set {
-    name  = "master.mobiusViewDiagnostics.persistentVolume.accessMode"
-    value = var.mobiusview-kube["master_mobiusViewDiagnostics_persistentVolume_accessMode"]
-  }
-  set {
-    name  = "master.mobiusViewDiagnostics.persistentVolume.size"
-    value = var.mobiusview-kube["master_mobiusViewDiagnostics_persistentVolume_size"]
-  }
-  #---------------
-  set {
     name  = "master.presentations.persistentVolume.claimName"
     value = var.mobiusview-kube["master_presentations_persistentVolume_claimName"]
   }
-  set {
-    name  = "master.presentations.persistentVolume.accessMode"
-    value = var.mobiusview-kube["master_presentations_persistentVolume_accessMode"]
-  }
-  set {
-    name  = "master.presentations.persistentVolume.size"
-    value = var.mobiusview-kube["master_presentations_persistentVolume_size"]
-  }
-  #---------------
+ 
+
   set {
     name  = "initRepository.host"
     value = var.mobiusview["MOBIUS_HOST"]

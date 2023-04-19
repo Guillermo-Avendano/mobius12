@@ -1,12 +1,21 @@
 #!/bin/bash
+#abort in case of cmd failure
+set -Eeuo pipefail
 
 source ../env.sh
-source ../common/common.sh
 
-terraform apply
+export DATABASE_NAMESPACE=$TF_VAR_NAMESPACE_SHARED;
+export external_database=$EXTERNAL_DATABASE;
 
-highlight_message "kubectl -n $TF_VAR_NAMESPACE_SHARED get pods"
-kubectl -n $TF_VAR_NAMESPACE_SHARED get pods
+#install db
+./install_database.sh
 
-highlight_message "kubectl -n $TF_VAR_NAMESPACE_SHARED get ingress"
-kubectl -n $TF_VAR_NAMESPACE_SHARED get ingress
+#install elasticsearch
+if [ "$ELASTICSEARCH_ENABLED" == "true" ]; then
+   ./install_elasticsearch.sh
+fi
+
+#install kafka
+if [ "$KAFKA_ENABLED" == "true" ]; then
+   ./install_kafka.sh
+fi
