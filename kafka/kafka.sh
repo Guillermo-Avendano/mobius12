@@ -3,6 +3,9 @@ set -Eeuo pipefail
 
 install_kafka() {
     
+    if ! kubectl get namespace "$NAMESPACE" >/dev/null 2>&1; then
+        kubectl create namespace "$NAMESPACE";
+    fi 
       
     info_message "Configuring kafka $KAFKA_VERSION resources";
 				
@@ -46,12 +49,13 @@ wait_for_kafka_ready() {
 		fi
         sleep 3;
     done
+    info_message "Kafka started successfully";
 }
 
 source "../env.sh"
 source "../common/common.sh"
-source "../database/database.sh"
 
+NAMESPACE=$TF_VAR_NAMESPACE_SHARED
 KAFKA_VOLUME=`eval echo ~/${NAMESPACE}_data/kafka`
 KAFKA_CONF_FILE=kafka-statefulset.yaml;
 KAFKA_VERSION="${KAFKA_VERSION:-3.3.1-debian-11-r3}";

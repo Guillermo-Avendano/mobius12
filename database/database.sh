@@ -1,86 +1,89 @@
 #!/bin/bash
 
 source "$kube_dir/common/common.sh"
-source "$kube_dir/database/postgres.sh"
 
 
 install_database() {
+    
     info_message "Installing $DATABASE_PROVIDER database ..."
 
     if [ "$DATABASE_PROVIDER" == "postgresql" ]; then
-        install_postgresql;
+        info_message "Creating database namespace and storage";
+            
+        if ! kubectl get namespace "$NAMESPACE" >/dev/null 2>&1; then
+            kubectl create namespace "$NAMESPACE";
+        fi 
+        
+        #POSTGRES_VOLUME=`eval echo ~/${NAMESPACE}_data/postgres`
+        POSTGRES_STORAGE_FILE=postgres-storage.yaml
+
+        cp $kube_dir/database/storage/local/templates/$POSTGRES_STORAGE_FILE $kube_dir/database/storage/local/$POSTGRES_STORAGE_FILE;
+
+        POSTGRES_CONF_FILE=$kube_dir/database/$POSTGRES_VALUES_TEMPLATE;
+        cp $kube_dir/database/templates/$POSTGRES_VALUES_TEMPLATE $POSTGRES_CONF_FILE;
+
+        POSTGRESQL_VERSION="${POSTGRESQL_VERSION:-14.5.0}";
+
+        info_message "Configuring Postgresql $POSTGRESQL_VERSION resources";
+
+        replace_tag_in_file $POSTGRES_CONF_FILE "<image_tag>" $POSTGRESQL_VERSION;
+        replace_tag_in_file $POSTGRES_CONF_FILE "<database_user>" $POSTGRESQL_USERNAME;
+        replace_tag_in_file $POSTGRES_CONF_FILE "<database_password>" $POSTGRESQL_PASSWORD;
+        replace_tag_in_file $POSTGRES_CONF_FILE "<database_name_mobiusview>" $POSTGRESQL_DBNAME_MOBIUSVIEW;
+        replace_tag_in_file $POSTGRES_CONF_FILE "<database_name_mobius>" $POSTGRESQL_DBNAME_MOBIUS;    
+        replace_tag_in_file $POSTGRES_CONF_FILE "<database_name_eventanalytics>" $POSTGRESQL_DBNAME_EVENTANALYTICS;
+        replace_tag_in_file $POSTGRES_CONF_FILE "<postgres_port>" $POSTGRESQL_PORT;
+
+        kubectl apply -f $kube_dir/database/storage/local/$POSTGRES_STORAGE_FILE --namespace $NAMESPACE;
+        
+        info_message "Updating local Helm repository";
+
+        helm repo add bitnami https://charts.bitnami.com/bitnami;
+        helm repo update;
+
+        info_message "Deploying postgresql Helm chart";
+
+        helm upgrade -f $POSTGRES_CONF_FILE postgresql bitnami/postgresql --namespace $NAMESPACE --version 11.8.2 --install;
     else
         error_message "Unexpected DATABASE_PROVIDER value: $DATABASE_PROVIDER";
     fi
-}
-
-uninstall_database() {
-    info_message "Uninstalling $DATABASE_PROVIDER database ..."
-
-    if [ "$DATABASE_PROVIDER" == "postgresql" ]; then
-        uninstall_postgresql;
-    else
-        error_message "Unexpected DATABASE_PROVIDER value: $DATABASE_PROVIDER";
-    fi
-}
-
-wait_for_database_ready() {
-    if [ "$DATABASE_PROVIDER" == "postgresql" ]; then
-        wait_for_postgres_ready;
-    else
-        error_message "Unexpected DATABASE_PROVIDER value: $DATABASE_PROVIDER";
-    fi
-}
-
-get_conf_filename() {
-    local conf_filename
-
-    if [ "$DATABASE_PROVIDER" == "postgresql" ]; then
-        if [ "$MOBIUS_CUSTOM_THEME" != "" ]; then
-            conf_filename="base-configuration-postgres-custom-theme.yaml"
-        else
-            conf_filename="base-configuration-postgres.yaml"
-        fi
-    fi
-
-    echo $conf_filename
-}
-
-postinstall_database() {
-    info_message ""
-    #if [ "$DATABASE_PROVIDER" == "postgresql" ]; then
-    #    configure_postgres;
-    #else
-    #    error_message "Unexpected DATABASE_PROVIDER value: $DATABASE_PROVIDER";
-    #fi
-}
-
-database_ssl_certificates() {
-    local solution_namespace=$1;
-
+    
     
 }
 
+uninstall_database() {
+    helm uninstall postgresql --namespace $NAMESPACE;
+    kubectl delete -f $kube_dir/database/storage/local/$POSTGRES_STORAGE_FILE --namespace $NAMESPACE;
+}
+
+get_database_status() {
+    kubectl get pods --namespace $NAMESPACE postgresql-0 -o jsonpath="{.status.phase}" 2>/dev/null
+}
+
+configure_port_forwarding() {
+    kubectl port-forward --namespace $NAMESPACE postgresql-0 5432:5432 &
+}
+
+wait_for_database_ready() {
+    until [ "$(get_database_status)" == "Running" ]
+    do
+        info_progress "...";
+        sleep 3;
+    done
+    info_message "database started successfully";
+}
+
+#configure_postgres() {
+#    pushd $kube_dir/pgadmin
+#    install_pgadmin;
+#    popd
+#}
+
 get_database_service() {
-    local service_name;
-
-    if [ "$DATABASE_PROVIDER" == "postgresql" ]; then
-        service_name="$(get_postgres_service)";
-    else
-        error_message "Unexpected DATABASE_PROVIDER value: $DATABASE_PROVIDER";
-    fi
-
-    echo "$service_name"
+    echo $POSTGRESQL_HOST
 }
 
 get_database_port() {
-    local port;
-
-    if [ "$DATABASE_PROVIDER" == "postgresql" ]; then
-        port="$(get_postgres_port)";
-    else
-        error_message "Unexpected DATABASE_PROVIDER value: $DATABASE_PROVIDER";
-    fi
-
-    echo "$port"
+    echo $POSTGRESQL_PORT
 }
+
