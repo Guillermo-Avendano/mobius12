@@ -112,7 +112,7 @@ TF_VAR_MOBIUS_FTS_INDEX_NAME="mobius12"
 TF_VAR_KAFKA_BOOTSTRAP_URL=$KAFKA_BOOTSTRAP_URL
 
 # mobius service/port for comunication mobius with mobiusviews
-TF_VAR_MOBIUS_HOST="mobius"
+TF_VAR_MOBIUS_HOST="mobius12"
 TF_VAR_MOBIUS_HOST="8080"
 
 ########################################################################
