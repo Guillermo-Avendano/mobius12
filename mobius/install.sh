@@ -9,9 +9,17 @@ fi
 
 if ! [ -e "cert/$TF_VAR_MOBIUS_VIEW_URL.key" ] && ! [ -e "cert/$TF_VAR_MOBIUS_VIEW_URL.crt" ]; then
 
+  CERT_NAME=mobius-view-certificate
+  HOSTNAME=$TF_VAR_MOBIUS_VIEW_URL
+  CERT_FILE=cert//$HOSTNAME.crt
+  KEY_FILE=cert/nginx/$HOSTNAME.key
+
   highlight_message "Generating certificates: cert/$TF_VAR_MOBIUS_VIEW_URL.key and cert/$TF_VAR_MOBIUS_VIEW_URL.crt"
 
-  openssl req -x509 -newkey rsa:2048 -sha256 -days 3650 -nodes -keyout "cert/$TF_VAR_MOBIUS_VIEW_URL.key" -out "cert/$TF_VAR_MOBIUS_VIEW_URL.crt" -subj "/CN=$TF_VAR_MOBIUS_VIEW_URL/O=$TF_VAR_MOBIUS_VIEW_URL" -addext "subjectAltName=DNS:$TF_VAR_MOBIUS_VIEW_URL" -addext 'extendedKeyUsage=serverAuth,clientAuth'
+  #openssl req -x509 -newkey rsa:2048 -sha256 -days 3650 -nodes -keyout "cert/$TF_VAR_MOBIUS_VIEW_URL.key" -out "cert/$TF_VAR_MOBIUS_VIEW_URL.crt" -subj "/CN=$TF_VAR_MOBIUS_VIEW_URL/O=$TF_VAR_MOBIUS_VIEW_URL" -addext "subjectAltName=DNS:$TF_VAR_MOBIUS_VIEW_URL" -addext 'extendedKeyUsage=serverAuth,clientAuth'
+  openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${KEY_FILE} -out ${CERT_FILE} -subj "/CN=$HOSTNAME/O=$HOSTNAME" -addext "subjectAltName = DNS:$HOSTNAME";
+  base64 -w0 "${hostname}.key" > "base64_${hostname}.key"
+  base64 -w0 "${hostname}.crt" > "base64_${hostname}.crt"
 
 fi
 

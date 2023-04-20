@@ -1,6 +1,6 @@
 locals {
-  mobius_tls_key = "${path.module}/cert/${var.MOBIUS_VIEW_URL}.key"
-  mobius_tls_crt = "${path.module}/cert/${var.MOBIUS_VIEW_URL}.crt"
+  mobius_tls_key = "${path.module}/cert/base64_${var.MOBIUS_VIEW_URL}.key"
+  mobius_tls_crt = "${path.module}/cert/base64_${var.MOBIUS_VIEW_URL}.crt"
   my_registry = "${var.KUBE_LOCALREGISTRY_HOST}:${var.KUBE_LOCALREGISTRY_PORT}"
 }
 
@@ -146,8 +146,8 @@ resource "kubernetes_secret" "mobius-tls-secret" {
   }
   
   data = {
-    "tls.crt" = filebase64(local.mobius_tls_crt)
-    "tls.key" = filebase64(local.mobius_tls_key)
+    "tls.crt" = file(local.mobius_tls_crt)
+    "tls.key" = file(local.mobius_tls_key)
   }
 
   type = "kubernetes.io/tls"
