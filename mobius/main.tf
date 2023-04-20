@@ -190,7 +190,7 @@ resource "helm_release" "mobius12" {
     value = var.RDSPROVIDER
   }
   set {
-    name  = "mobius.rds.protocol"
+    name  = "mobius.rds.port"
     value = var.RDSPORT
   }
 
@@ -260,7 +260,26 @@ resource "helm_release" "mobiusview12" {
     name  = "master.presentations.persistentVolume.claimName"
     value = var.mobiusview-kube["master_presentations_persistentVolume_claimName"]
   }
- 
+
+  set {
+    name  = "datasource.databaseConnectivitySecretName"
+    value = var.mobiusview-kube["datasource_databaseConnectivitySecretName"]
+  }
+
+  set {
+    name  = "datasource.databaseUrlSecretValue"
+    value = var.mobiusview-kube["datasource_databaseUrlSecretValue"]
+  }
+
+  set {
+    name  = "datasource.databaseUsernameSecretValue"
+    value = var.mobiusview-kube["datasource_databaseUsernameSecretValue"]
+  }    
+
+  set {
+    name  = "datasource.databasePasswordSecretValue"
+    value = var.mobiusview-kube["datasource_databasePasswordSecretValue"]
+  }  
 
   set {
     name  = "initRepository.host"
@@ -306,12 +325,14 @@ resource "helm_release" "mobiusview12" {
             ]
           }
         ]
+        /*
         tls = [
         {
           secretName = var.MOBIUS_VIEW_TLS_SECRET
           hosts = [ var.MOBIUS_VIEW_URL ]
         }
       ]
+      */
       }
     })
   ]
