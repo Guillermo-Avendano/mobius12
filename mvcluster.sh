@@ -2,6 +2,7 @@
 
 source "./env.sh"
 source "$kube_dir/cluster/cluster.sh"
+source "$kube_dir/cluster/kubernetes.sh"
 
 if [[ $# -eq 0 ]]; then
   echo "Parameters:"
@@ -14,6 +15,7 @@ if [[ $# -eq 0 ]]; then
   echo " - create  : create mobius cluster"  
   echo " - remove  : remove mobius cluster"
   echo " - debug   : generate outputs for get/describe of each kubernetes resources"
+  echo " - install : install k3d, helm, kubectl and terraform"
 else
   for option in "$@"; do
     if [[ $option == "on" ]]; then
@@ -79,7 +81,38 @@ else
          else
             echo "$KUBE_CLUSTER_NAME cluster is not active"            
          fi  
+         
+    elif [[ $option == "install" ]]; then
+         
+         if ! docker --version  >/dev/null 2>&1; then
+            # cluster/kubernetes.sh
+            install_docker;
+         fi
 
+         if ! docker-compose --version  >/dev/null 2>&1; then
+            # cluster/kubernetes.sh
+            install_docker_compose;
+         fi
+
+         if ! k3d --version >/dev/null 2>&1; then
+            # cluster/kubernetes.sh
+            install_k3d;
+         fi
+
+         if ! kubectl version >/dev/null 2>&1; then
+            # cluster/kubernetes.sh
+            install_kubectl;
+         fi
+
+         if helm version  >/dev/null 2>&1; then
+            # cluster//kubernetes.sh
+            install_helm;
+         fi
+
+         if ! terraform -version  >/dev/null 2>&1; then
+            # cluster/kubernetes.sh
+            install_terraform;
+         fi
     else    
       echo "($option) is not valid."
     fi

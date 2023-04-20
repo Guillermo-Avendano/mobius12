@@ -23,16 +23,9 @@
 - Check versions for mobius-server. mobius-view, and eventanalytics
   ./mvcluster.sh imgls
 
-- Adapt the following variables in "./env.sh" with the rigth values for the versions:
-    export KUBE_IMAGES=("mobius-server:12.1.0004" "mobius-view:12.1.1" "eventanalytics:1.3.8")
-    MOBIUS_SERVER_VERSION="12.1.0004"
-    MOBIUS_VIEW_VERSION="12.1.1"
-    EVENTANALYTICS_VERSION="1.3.8"
-
-- Adapt the variables:
+- Review variables in "./env.sh", example:
       TF_VAR_MOBIUS_VIEW_URL = "mobius12.local.net"
-      TF_VAR_PGADMIN_URL     = "pgadmin.local.net"
-      TF_VAR_ELASTIC_URL     = "elastic.local.net"
+
    in "./env.sh", and add these values to /etc/hosts c:/windows/system32/drivers/etc/hosts
   with the IP where the custer will run, example:
 
@@ -42,8 +35,7 @@
 
 1; Install k3d, helm, kubectl and terraform
 
-- cd kube
-  install.sh
+- ./mvcluster.sh install
 
 2; set environment
 
@@ -55,15 +47,12 @@
 
 4; Initilize Terraform providers
 
-- cd shared
-- terraform init
 - cd ../mobius
 - terraform init
 
-5; Install shared namespace with: postgres, pgadmin, kafka, elasticsearch
+5; Install shared namespace with: postgres, kafka, elasticsearch
 
 - cd shared
-- terraform init
 - ./install.sh
 
 6; Install mobius-server and mobius-view
@@ -83,21 +72,21 @@
 | mvcluster.sh create     | create mobius cluster
 | mvcluster.sh remove     | remove mobius cluster
 | mvcluster.sh debug      | generate outputs for get/describe of each kubernetes resources
+| mvcluster.sh install    | install k3d, kubectl, helm, and terraform
 
 ### Install of shared componnets
 
 - cd shared
 - ./install.sh
+### Remove shared componnets with the namespece associated. The cluster and images are maintained
+
+- cd shared
+- ./remove.sh
 
 ### Install of mobius componnets
 
 - cd mobius
 - ./install.sh
-
-### Remove shared componnets with the namespece associated. The cluster and images are maintained
-
-- cd shared
-- ./remove.sh
 
 ### Remove mobius componnets with the namespece associated. The cluster and images are maintained
 
