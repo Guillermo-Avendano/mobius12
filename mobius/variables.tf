@@ -67,17 +67,42 @@ variable "RDSPORT" {
   default = "5432"
 }
 
+
+variable "RDSPROVIDER" {
+  type    = string
+  default = "POSTGRESQL"
+}
+
+variable "ENABLEINDEX" {
+  type    = string
+  default = "YES"
+}
+
+variable "MOBIUS_FTS_HOST" {
+  type    = string
+  default = "elasticsearch-master.shared"
+}
+
+variable "MOBIUS_FTS_PORT" {
+  type    = string
+  default = "9200"
+}
+
+variable "MOBIUS_FTS_INDEX_NAME" {
+  type    = string
+  default = "mobius12"
+}
+
+variable "KAFKA_BOOTSTRAP_URL" {
+  type    = string
+  default = "kafka.shared.svc.cluster.local:9092"
+}
+
+
 variable "mobius" {
   type = map(string)
   default = {
-      RDSPROVIDER                = "POSTGRESQL"
       DEFAULT_SSO_KEY            = "ADASDFASDFXGGEG25585"
-      ENABLEINDEX                = "YES"
-      MOBIUS_FTS_ENGINE_TYPE     = "elasticsearch"
-      MOBIUS_FTS_SERVER_PROTOCOL = "HTTP"
-      MOBIUS_FTS_HOST            = "elasticsearch-master.shared"
-      MOBIUS_FTS_PORT            = "9200"
-      MOBIUS_FTS_INDEX_NAME      = "mobius12"
       MOBIUS_ADMIN_USER          = "admin"
       MOBIUS_ADMIN_GROUP         = "mobiusadmin"
     }
@@ -87,7 +112,7 @@ variable "mobius" {
 variable "mobius-kube" {
   type = map(string)
   default = {
-      storageClassName                              = "manual"
+      storageClassName                              = "local-path"
       persistentVolume_claimName                    = "pvc-mobius12-efs"
       mobiusDiagnostics_persistentVolume_claimName  = "pvc-mobius12-diagnose"
     }
@@ -109,13 +134,14 @@ variable "MOBIUS_VIEW_TLS_SECRET" {
   default = "mobius-tls-secret"
 }
 
-variable "mobiusview" {
-  type = map(string)
-  default = {
-      # mobius service
-      MOBIUS_HOST                = "mobius12"
-      MOBIUS_PORT                = "8080"
-    }
+variable "MOBIUS_HOST" {
+  type    = string
+  default = "mobius"
+}
+
+variable "MOBIUS_PORT" {
+  type    = string
+  default = "8080"
 }
 
 variable "mobiusview-kube" {

@@ -52,6 +52,6 @@ ingress:
   className: "nginx"
   pathtype: ImplementationSpecific
   hosts:
-    - host: <ELASTICSEARCH_HOST>
+    - host: <ELASTICSEARCH_URL>
       paths:
         - path: /    

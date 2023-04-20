@@ -20,7 +20,7 @@ install_elasticsearch() {
     
     cp ../elasticsearch/templates/$ELASTICSEARCH_CONF_FILE ../elasticsearch/$ELASTICSEARCH_CONF_FILE;
     replace_tag_in_file ../elasticsearch/$ELASTICSEARCH_CONF_FILE "<ELASTICSEARCH_VERSION>" $ELASTICSEARCH_VERSION; 
-    replace_tag_in_file ../elasticsearch/$ELASTICSEARCH_CONF_FILE "<ELASTICSEARCH_HOST>" $ELASTICSEARCH_HOST; 
+    replace_tag_in_file ../elasticsearch/$ELASTICSEARCH_CONF_FILE "<ELASTICSEARCH_URL>" $ELASTICSEARCH_URL; 
 
     info_message "Updating local Helm repository";
 

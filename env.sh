@@ -48,7 +48,7 @@ POSTGRESQL_PASSWORD=postgres
 POSTGRESQL_DBNAME_MOBIUSVIEW=mobiusview
 POSTGRESQL_DBNAME_MOBIUS=mobiusserver
 POSTGRESQL_DBNAME_EVENTANALYTICS=eventanalytics
-POSTGRESQL_HOST=postgresql.mobius.svc.cluster.local
+POSTGRESQL_HOST=postgresql.shared.svc.cluster.local
 POSTGRESQL_PORT=5432
 export POSTGRES_VALUES_TEMPLATE=postgres-mobius.yaml
 
@@ -57,14 +57,16 @@ export POSTGRES_VALUES_TEMPLATE=postgres-mobius.yaml
 ################################################################################
 ELASTICSEARCH_ENABLED=true
 ELASTICSEARCH_VERSION=7.17.3
-ELASTICSEARCH_HOST=elastic.local.net
+ELASTICSEARCH_URL=elastic.local.net
+ELASTICSEARCH_HOST=elasticsearch-master.shared.svc.cluster.local
+ELASTICSEARCH_PORT=9200
 
 ################################################################################
 # KAFKA
 ################################################################################
 KAFKA_ENABLED=true
 KAFKA_VERSION=3.3.1-debian-11-r3
-KAFKA_BOOTSTRAP_URL=kafka.mobius.svc.cluster.local:9092
+KAFKA_BOOTSTRAP_URL=kafka.shared.svc.cluster.local:9092
 
 
 ################################################################################
@@ -102,7 +104,16 @@ export TF_VAR_MOBIUS_VIEW_URL="mobius12.local.net"  # mobius/main.tf used in ing
 
 export TF_VAR_MOBIUS_LICENSE="01MOBIUS52464A464C4BC95859518381908FAEA4434F46515E53539681955B454D6240534556564351471D454D12405303565672514759454D1640530556560B51470E454D6040537C56560D514715454D1040536556560351470A454D0540531356560951472A454D2A40531556561D5642BB544F4A095454A4A7A744454B0C4A4FB2A2A0365456594348D9B486"
 
+TF_VAR_ENABLEINDEX=$ELASTICSEARCH_ENABLED
+TF_VAR_MOBIUS_FTS_HOST=$ELASTICSEARCH_HOST
+TF_VAR_MOBIUS_FTS_PORT=$ELASTICSEARCH_PORT
+TF_VAR_MOBIUS_FTS_INDEX_NAME="mobius12"
 
+TF_VAR_KAFKA_BOOTSTRAP_URL=$KAFKA_BOOTSTRAP_URL
+
+# mobius service/port for comunication mobius with mobiusviews
+TF_VAR_MOBIUS_HOST="mobius"
+TF_VAR_MOBIUS_HOST="8080"
 
 ########################################################################
 # In processing

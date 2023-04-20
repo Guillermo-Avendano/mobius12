@@ -1,7 +1,7 @@
 locals {
   mobius_tls_key = "${path.module}/cert/${var.MOBIUS_VIEW_URL}.key"
   mobius_tls_crt = "${path.module}/cert/${var.MOBIUS_VIEW_URL}.crt"
-  my_registry = "${var.KUBE_LOCALREGISTRY_HOST}:${KUBE_LOCALREGISTRY_PORT}"
+  my_registry = "${var.KUBE_LOCALREGISTRY_HOST}:${var.KUBE_LOCALREGISTRY_PORT}"
 }
 
 ############### KUUBERNETES NAMESPACE #############
@@ -106,7 +106,7 @@ resource "kubernetes_secret" "mobius12" {
     password = var.POSTGRESQL_PASSWORD
     endpoint = var.RDSENDPOINT
     port = var.RDSPORT
-    topicUrl = "jdbc:postgresql://${var.RDSENDPOINT}:${var.RDSPORT}/${POSTGRESQL_DBNAME_EVENTANALYTICS}"
+    topicUrl = "jdbc:postgresql://${var.RDSENDPOINT}:${var.RDSPORT}/${var.POSTGRESQL_DBNAME_EVENTANALYTICS}"
     topicUser = var.POSTGRESQL_USERNAME
     topicPassword = var.POSTGRESQL_PASSWORD
   }
@@ -120,7 +120,7 @@ resource "kubernetes_secret" "mobiusview-server-secrets" {
     namespace  = var.NAMESPACE
   }
   data = {
-    url      = "jdbc:postgresql://${var.RDSENDPOINT}:${var.RDSPORT}/${POSTGRESQL_DBNAME_MOBIUSVIEW}"
+    url      = "jdbc:postgresql://${var.RDSENDPOINT}:${var.RDSPORT}/${var.POSTGRESQL_DBNAME_MOBIUSVIEW}"
     username = var.POSTGRESQL_USERNAME
     password = var.POSTGRESQL_PASSWORD
   }
@@ -195,10 +195,28 @@ resource "helm_release" "mobius12" {
   }
 
   set {
+    name  = "mobius.fts.enabled"
+    value = var.ENABLEINDEX
+     }
+  set {
     name  = "mobius.fts.host"
-    value = var.mobius["MOBIUS_FTS_HOST"]
-  }
+    value = var.MOBIUS_FTS_HOST
+     }
+   
+  set {
+    name  = "mobius.fts.port"
+    value = var.MOBIUS_FTS_PORT
+     }        
 
+  set {
+    name  = "mobius.fts.indexName"
+    value = var.MOBIUS_FTS_INDEX_NAME
+     } 
+
+   set {
+    name  = "spring.kafka.bootstrap.servers"
+    value = var.KAFKA_BOOTSTRAP_URL
+     } 
   set {
     name  = "mobius.persistentVolume.claimName"
     value = var.mobius-kube["persistentVolume_claimName"]
@@ -246,12 +264,12 @@ resource "helm_release" "mobiusview12" {
 
   set {
     name  = "initRepository.host"
-    value = var.mobiusview["MOBIUS_HOST"]
-  }
+    value = var.MOBIUS_HOST 
+     }
 
   set {
     name  = "initRepository.port"
-    value = var.mobiusview["MOBIUS_PORT"]
+    value = var.MOBIUS_PORT
   }
   set {
     name  = "service.port"
