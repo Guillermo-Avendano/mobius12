@@ -1,6 +1,9 @@
 #!/bin/bash
 set -Eeuo pipefail
 
+source "../env.sh"
+source "../common/common.sh"
+
 install_elasticsearch() {
     info_message "Installing elastic search";  
     info_message "Configuring elasticsearch $ELASTICSEARCH_VERSION resources";
@@ -57,15 +60,14 @@ wait_for_elasticsearch_ready() {
     info_message "elasticsearch started successfully";
 }
 
-source "../env.sh"
-source "../common/common.sh"
 
 
 
-ELASTICSEARCH_VERSION="${ELASTICSEARCH_VERSION:-7.17.3}";
-ELASTICSEARCH_CONF_FILE=elasticsearch.yaml;
-ELASTICSEARCH_VOLUME=`eval echo ~/${NAMESPACE}_data/elasticsearch`
-ELASTICSEARCH_STORAGE_FILE=elasticsearch-storage.yaml;
 
-install_elasticsearch;
-wait_for_elasticsearch_ready;
+#ELASTICSEARCH_VERSION="${ELASTICSEARCH_VERSION:-7.17.3}";
+#ELASTICSEARCH_CONF_FILE=elasticsearch.yaml;
+#ELASTICSEARCH_VOLUME=`eval echo ~/${NAMESPACE}_data/elasticsearch`
+#ELASTICSEARCH_STORAGE_FILE=elasticsearch-storage.yaml;
+
+#install_elasticsearch;
+#wait_for_elasticsearch_ready;

@@ -1,6 +1,9 @@
 #!/bin/bash
 set -Eeuo pipefail
 
+source "../env.sh"
+source "../common/common.sh"
+
 install_kafka() {
     
     if ! kubectl get namespace "$NAMESPACE" >/dev/null 2>&1; then
@@ -52,14 +55,13 @@ wait_for_kafka_ready() {
     info_message "Kafka started successfully";
 }
 
-source "../env.sh"
-source "../common/common.sh"
 
-NAMESPACE=$TF_VAR_NAMESPACE_SHARED
-KAFKA_VOLUME=`eval echo ~/${NAMESPACE}_data/kafka`
-KAFKA_CONF_FILE=kafka-statefulset.yaml;
-KAFKA_VERSION="${KAFKA_VERSION:-3.3.1-debian-11-r3}";
-KAFKA_STORAGE_FILE=kafka-storage.yaml;
 
-install_kafka;
-wait_for_kafka_ready;
+#NAMESPACE=$TF_VAR_NAMESPACE_SHARED
+#KAFKA_VOLUME=`eval echo ~/${NAMESPACE}_data/kafka`
+#KAFKA_CONF_FILE=kafka-statefulset.yaml;
+#KAFKA_VERSION="${KAFKA_VERSION:-3.3.1-debian-11-r3}";
+#KAFKA_STORAGE_FILE=kafka-storage.yaml;
+
+#install_kafka;
+#wait_for_kafka_ready;
