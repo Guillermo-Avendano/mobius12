@@ -25,6 +25,7 @@ fi
 if ! kubectl get namespace "$NAMESPACE" >/dev/null 2>&1; then
    kubectl create namespace "$NAMESPACE";
    kubectl apply -f pvc/mobius-pvc.yaml -n "$NAMESPACE"
+   kubectl apply -f pvc/mobiusview-pvc.yaml -n "$NAMESPACE"
 fi 
 
 terraform apply

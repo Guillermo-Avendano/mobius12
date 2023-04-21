@@ -400,16 +400,16 @@ extraEnv: {}
 spring:
   #Enable Kafka section to enable auditing to kafka. Configure the topic
   # in audit.kafka section  
-  #kafka:
-    #bootstrap:
-    #  servers: broker:29092
-    #security:
-    #  protocol: PLAINTEXT
-    #producer:
-    #  acks: all
-    #  properties:
-    #    enable:
-    #      idempotence: true        
+  kafka:
+    bootstrap:
+      servers: broker:29092
+    security:
+      protocol: PLAINTEXT
+    producer:
+      acks: all
+      properties:
+        enable:
+          idempotence: true        
   cloud:
     discovery:
       client:
