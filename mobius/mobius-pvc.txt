@@ -1,0 +1,32 @@
+############### PVC FOR MOBIUS #############
+resource "kubernetes_persistent_volume_claim" "mobius12-efs" {
+  metadata {
+    name = var.mobius_persistentVolume_claimName
+    namespace  = var.NAMESPACE
+  }
+  spec {
+    access_modes = ["ReadWriteOnce"]
+    resources {
+      requests = {
+        storage = "1Gi"
+      }
+    }
+  }
+
+}
+
+resource "kubernetes_persistent_volume_claim" "mobius12-diag" {
+  metadata {
+    name = var.mobius_mobiusDiagnostics_persistentVolume_claimName
+    namespace  = var.NAMESPACE
+  }
+  spec {
+    access_modes = ["ReadWriteOnce"]
+    resources {
+      requests = {
+        storage = "1Gi"
+      }
+    }
+  }
+
+  }

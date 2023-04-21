@@ -84,7 +84,7 @@ readinessProbe:
 master:
   persistence:
 #enabled is the flag to indicate whether persistence claim is required or not
-   enabled: false
+   enabled: true
 #claimName is the name of the claim created by the user, which will be bound to the mapped persistence volume
    claimName: mobius-pv-claim-dev
 #accessMode is the access specified to claim from persistence volume
@@ -95,13 +95,13 @@ master:
   mobiusViewDiagnostics:
     persistentVolume:
  #enabled is the flag to indicate whether persistence claim is required for mobius diagnostics reports or not
-      enabled: false
+      enabled: true
  #claimName is the name of the claim created by the user, which will be bound to the mapped persistence volume
       claimName: tci-testing-pv-claim
  #accessMode is the access specified to claim from persistence volume
-      accessMode: ReadWriteMany
+      accessMode: ReadWriteOnce
  #size is the storage claimed from persistence volume
-      size: 10Gi
+      size: 1Gi
     # In auto scaling environment then the lifetime of the containers depends on the
     # system load, if the system load is more then new containers will be created and if the load is reduced the
     # containers will be deleted, even after the containers are removed , the logs are still available in the shared
@@ -120,7 +120,8 @@ master:
       enabled: false
       #claimName is the name of the claim created by the user, which will be bound to the mapped persistence volume
       claimName: mobius-pv-presentation-images-claim-dev
-#resources is the CPU/Memory resource requests/limits	
+
+#xresources is the CPU/Memory resource requests/limits	
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
@@ -144,7 +145,7 @@ affinity: {}
 datasource:
 # If value for the below "databaseConnectivitySecretName" is specified, "url", "username" and "password" will be fetched from the corresponding secret keys. If value for "databaseConnectivitySecretName" is not specifed, "url", "username" and "password" values will be mapped from the below corresponding key-value pairs
 # Uncomment the below 'databaseConnectivitySecretName' and provide value for fetching corresponding secret keys.
-#   databaseConnectivitySecretName:
+   databaseConnectivitySecretName: my-secret-name
 
 # Key for fetching "url" value from  the secret
    databaseUrlSecretValue: url
@@ -440,3 +441,32 @@ initRepository:
     server:
       user: "ADMIN"
       #password: 
+
+#Define ingress rules to be deployed on the EKS cluster
+#Certificate must be loaded into the LoadBalancer
+#Internal traffic should be non SSL
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations: 
+    nginx.ingress.kubernetes.io/rewrite-target: /mobius$1
+    nginx.ingress.kubernetes.io/proxy-body-size: "32m"
+    nginx.ingress.kubernetes.io/affinity: "cookie"
+    nginx.ingress.kubernetes.io/session-cookie-name: "session-cookie"
+    nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
+    nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/affinity-mode: "persistent"
+    nginx.ingress.kubernetes.io/session-cookie-change-on-failure: "false"
+    nginx.ingress.kubernetes.io/session-cookie-hash: sha1
+    nginx.ingress.kubernetes.io/session-cookie-path: /mobius
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "8k"
+  hosts:
+    - host: a2534655bdfb1477dad77ef8098772c6-b4d79949f02533a9.elb.us-east-1.amazonaws.com
+      paths:
+        - path: /mobius(.*)$
+          pathType: ImplementationSpecific
+  #tls:
+  #  - hosts:
+  #    - a2534655bdfb1477dad77ef8098772c6-b4d79949f02533a9.elb.us-east-1.amazonaws.com
+  #    secretName: "tls-mobiusview" 

@@ -1,166 +1,14 @@
+############### HELM FOR MOBIUS AND MOBIUS-VIEW #############
 locals {
-  mobius_tls_key = "${path.module}/cert/base64_${var.MOBIUS_VIEW_URL}.key"
-  mobius_tls_crt = "${path.module}/cert/base64_${var.MOBIUS_VIEW_URL}.crt"
   my_registry = "${var.KUBE_LOCALREGISTRY_HOST}:${var.KUBE_LOCALREGISTRY_PORT}"
 }
-
-############### KUUBERNETES NAMESPACE #############
-resource "kubernetes_namespace" "mobius" {
-  metadata {
-    annotations = {
-      name = var.NAMESPACE
-    }
-
-    labels = {
-      mylabel = var.NAMESPACE
-    }
-
-    name = var.NAMESPACE
-  }
-}
-
-############### PVC FOR MOBIUS AND MOBIUS-VIEW #############
-resource "kubernetes_persistent_volume_claim" "mobius12-efs" {
-  metadata {
-    name = var.mobius-kube["persistentVolume_claimName"]
-    namespace  = var.NAMESPACE
-  }
-  spec {
-    access_modes = ["ReadWriteOnce"]
-    resources {
-      requests = {
-        storage = "1Gi"
-      }
-    }
-  }
-  # 
-}
-
-resource "kubernetes_persistent_volume_claim" "mobius12-diag" {
-  metadata {
-    name = var.mobius-kube["mobiusDiagnostics_persistentVolume_claimName"]
-    namespace  = var.NAMESPACE
-  }
-  spec {
-    access_modes = ["ReadWriteOnce"]
-    resources {
-      requests = {
-        storage = "1Gi"
-      }
-    }
-  }
-}
-resource "kubernetes_persistent_volume_claim" "mobiusview12-storage" {
-  metadata {
-    name = var.mobiusview-kube["master_persistence_claimName"]
-    namespace  = var.NAMESPACE
-  }
-  spec {
-    access_modes = ["ReadWriteOnce"]
-    resources {
-      requests = {
-        storage = "1Gi"
-      }
-    }
-  }
-}
-resource "kubernetes_persistent_volume_claim" "mobiusview12-diag" {
-  metadata {
-    name = var.mobiusview-kube["master_mobiusViewDiagnostics_persistentVolume_claimName"]
-    namespace  = var.NAMESPACE
-  }
-  spec {
-    access_modes = ["ReadWriteOnce"]
-    resources {
-      requests = {
-        storage = "1Gi"
-      }
-    }
-  }
-}
-resource "kubernetes_persistent_volume_claim" "mobiusview12-pres" {
-  metadata {
-    name = var.mobiusview-kube["master_presentations_persistentVolume_claimName"]
-    namespace  = var.NAMESPACE
-  }
-  spec {
-    access_modes = ["ReadWriteOnce"]
-    resources {
-      requests = {
-        storage = "1Gi"
-      }
-    }
-  }
-}
-
-############### SECRETS FOR MOBIUS AND MOBIUS-VIEW #############
-
-resource "kubernetes_secret" "mobius12" {
-  metadata {
-    name = "mobius-server-secrets"
-    namespace  = var.NAMESPACE
-  }
-  data = {
-    user = var.POSTGRESQL_USERNAME
-    schema = var.POSTGRESQL_USERNAME
-    password = var.POSTGRESQL_PASSWORD
-    endpoint = var.RDSENDPOINT
-    port = var.RDSPORT
-    topicUrl = "jdbc:postgresql://${var.RDSENDPOINT}:${var.RDSPORT}/${var.POSTGRESQL_DBNAME_EVENTANALYTICS}"
-    topicUser = var.POSTGRESQL_USERNAME
-    topicPassword = var.POSTGRESQL_PASSWORD
-  }
-  # 
-}
-
-
-resource "kubernetes_secret" "mobiusview-server-secrets" {
-  metadata {
-    name = var.mobiusview-kube["datasource_databaseConnectivitySecretName"]
-    namespace  = var.NAMESPACE
-  }
-  data = {
-    url      = "jdbc:postgresql://${var.RDSENDPOINT}:${var.RDSPORT}/${var.POSTGRESQL_DBNAME_MOBIUSVIEW}"
-    username = var.POSTGRESQL_USERNAME
-    password = var.POSTGRESQL_PASSWORD
-  }
-  
-}
-
-resource "kubernetes_secret" "mobiusview_license" {
-  metadata {
-    name = "mobius-license"
-    namespace  = var.NAMESPACE
-  }
-  data = {
-    license = var.MOBIUS_LICENSE
-  }
-  
-}
-
-
-resource "kubernetes_secret" "mobius-tls-secret" {
-  metadata {
-    name = var.MOBIUS_VIEW_TLS_SECRET
-    namespace  = var.NAMESPACE
-  }
-  
-  data = {
-    "tls.crt" = file(local.mobius_tls_crt)
-    "tls.key" = file(local.mobius_tls_key)
-  }
-
-  type = "kubernetes.io/tls"
-}
-
-############### HELM FOR MOBIUS AND MOBIUS-VIEW #############
 resource "helm_release" "mobius12" {
   name             = "mobius12"
-  chart            = "${path.module}/helm/mobius-12.0.0"
+  chart            = "${path.module}/helm/mobius.tgz"
   namespace        = var.NAMESPACE
   create_namespace = true
 
-  set {
+ set {
     name  = "image.repository"
     value = "${local.my_registry}/mobius-server"
   }
@@ -172,17 +20,17 @@ resource "helm_release" "mobius12" {
 
   set {
     name  = "storageClassName"
-    value = var.mobius-kube["storageClassName"]
+    value = var.mobius_storageClassName
   }
 
   set {
     name  = "mobius.admin.user"
-    value = var.mobius["MOBIUS_ADMIN_USER"]
+    value = var.MOBIUS_ADMIN_USER
   }
 
   set {
     name  = "mobius.admin.group"
-    value = var.mobius["MOBIUS_ADMIN_GROUP"]
+    value = var.MOBIUS_ADMIN_GROUP
   }
 
   set {
@@ -219,125 +67,55 @@ resource "helm_release" "mobius12" {
      } 
   set {
     name  = "mobius.persistentVolume.claimName"
-    value = var.mobius-kube["persistentVolume_claimName"]
+    value = var.mobius_persistentVolume_claimName
+  }
+  set {
+    name  = "mobius.persistentVolume.enabled"
+    value = "true"
   }
   set {
     name  = "mobius.mobiusDiagnostics.persistentVolume.claimName"
-    value = var.mobius-kube["mobiusDiagnostics_persistentVolume_claimName"]
+    value = var.mobius_mobiusDiagnostics_persistentVolume_claimName
+  }
+   set {
+    name  = "mobius.mobiusDiagnostics.persistentVolume.enabled"
+    value = "true"
   }
   set {
     name  = "mobius.clustering.kubernetes.namespace"
     value = var.NAMESPACE
   }
-  depends_on = [kubernetes_secret.mobius12]
-}
 
+}  
+/*
 resource "helm_release" "mobiusview12" {
   name             = "mobiusview12"
-  chart            = "${path.module}/helm/mobiusview-12.0.0"
+  chart            = "${path.module}/helm/mobiusview.tgz"
   namespace        = var.NAMESPACE
   create_namespace = true
 
-  set {
-    name  = "image.repository"
-    value = "${local.my_registry}/mobius-view"
-  }
-
-  set {
-    name  = "image.tag"
-    value = var.IMAGE_VERSION_MOBIUSVIEW
-  }
-  #---------------
-  set {
-    name  = "master.persistence.claimName"
-    value = var.mobiusview-kube["master_persistence_claimName"]
-  }
-  set {
-    name  = "master.mobiusViewDiagnostics.persistentVolume.claimName"
-    value = var.mobiusview-kube["master_mobiusViewDiagnostics_persistentVolume_claimName"]
-  }
-  set {
-    name  = "master.presentations.persistentVolume.claimName"
-    value = var.mobiusview-kube["master_presentations_persistentVolume_claimName"]
-  }
-
-  set {
-    name  = "datasource.databaseConnectivitySecretName"
-    value = var.mobiusview-kube["datasource_databaseConnectivitySecretName"]
-  }
-
-  set {
-    name  = "datasource.databaseUrlSecretValue"
-    value = var.mobiusview-kube["datasource_databaseUrlSecretValue"]
-  }
-
-  set {
-    name  = "datasource.databaseUsernameSecretValue"
-    value = var.mobiusview-kube["datasource_databaseUsernameSecretValue"]
-  }    
-
-  set {
-    name  = "datasource.databasePasswordSecretValue"
-    value = var.mobiusview-kube["datasource_databasePasswordSecretValue"]
-  }  
-
-  set {
-    name  = "initRepository.host"
-    value = var.MOBIUS_HOST 
-     }
-
-  set {
-    name  = "initRepository.port"
-    value = var.MOBIUS_PORT
-  }
-  set {
-    name  = "service.port"
-    value = var.mobiusview-kube["service_port"]
-  }
-
- values = [
-    jsonencode({
-      ingress = {
-        enabled = true
-        className = "nginx"
-        annotations = {
-          "nginx.ingress.kubernetes.io/rewrite-target"             = "/mobius$1"
-          "nginx.ingress.kubernetes.io/proxy-body-size"            = "32m"
-          "nginx.ingress.kubernetes.io/affinity"                   = "cookie"
-          "nginx.ingress.kubernetes.io/session-cookie-name"        = "session-cookie"
-          "nginx.ingress.kubernetes.io/session-cookie-expires"     = "172800"
-          "nginx.ingress.kubernetes.io/session-cookie-max-age"     = "172800"
-          "nginx.ingress.kubernetes.io/ssl-redirect"               = "false"
-          "nginx.ingress.kubernetes.io/affinity-mode"              = "persistent"
-          "nginx.ingress.kubernetes.io/session-cookie-change-on-failure" = "false"
-          "nginx.ingress.kubernetes.io/session-cookie-hash"        = "sha1"
-          "nginx.ingress.kubernetes.io/session-cookie-path"        = "/mobius"
-          "nginx.ingress.kubernetes.io/proxy-buffer-size"          = "8k"
-        }
-        hosts = [
-          {
-            host  = var.MOBIUS_VIEW_URL # new host
-            paths = [
-              {
-                path     = "/mobius(.*)$"
-                pathType = "ImplementationSpecific"
-              }
-            ]
-          }
-        ]
-        /*
-        tls = [
-        {
-          secretName = var.MOBIUS_VIEW_TLS_SECRET
-          hosts = [ var.MOBIUS_VIEW_URL ]
-        }
-      ]
-      */
-      }
+  values = [
+    templatefile("${path.module}/helm/mobiusview.tpl", {
+      NAMESPACE = var.NAMESPACE
+      KUBE_LOCALREGISTRY_HOST = var.KUBE_LOCALREGISTRY_HOST
+      KUBE_LOCALREGISTRY_PORT = var.KUBE_LOCALREGISTRY_PORT
+      IMAGE_NAME_MOBIUSVIEW = var.IMAGE_NAME_MOBIUSVIEW
+      IMAGE_VERSION_MOBIUSVIEW = var.IMAGE_VERSION_MOBIUSVIEW
+      POSTGRESQL_HOST = var.POSTGRESQL_HOST
+      POSTGRESQL_PORT = var.POSTGRESQL_PORT
+      POSTGRESQL_DBNAME_MOBIUSVIEW = var. POSTGRESQL_DBNAME_MOBIUSVIEW 
+      POSTGRESQL_USERNAME = var.POSTGRESQL_USERNAME
+      POSTGRESQL_PASSWORD = var.POSTGRESQL_PASSWORD
+      MOBIUS_FTS_INDEX_NAME = var.MOBIUS_FTS_INDEX_NAME
+      MOBIUS_HOST = var.MOBIUS_HOST
+      MOBIUS_PORT = var.MOBIUS_PORT
+      KAFKA_BOOTSTRAP_URL = var.KAFKA_BOOTSTRAP_URL
+      MOBIUS_VIEW_URL = var.MOBIUS_VIEW_URL
+      master_persistence_claimName = var.mobiusview_master_persistence_claimName
+      master_mobiusViewDiagnostics_persistentVolume_claimName = var.mobiusview_master_mobiusViewDiagnostics_persistentVolume_claimName
+      master_presentations_persistentVolume_claimName = var.mobiusview_master_presentations_persistentVolume_claimName
+      
     })
   ]
-
-  depends_on = [kubernetes_secret.mobiusview-server-secrets,
-                kubernetes_secret.mobiusview_license,
-                kubernetes_secret.mobius-tls-secret]
 }
+*/

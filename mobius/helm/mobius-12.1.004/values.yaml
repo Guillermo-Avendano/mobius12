@@ -113,13 +113,22 @@ affinity: {}
 
 mobius:
   #Uncomment to enable topic export to eventanalytics
-  
-  #topic:
-      #export:
-        #url: "jdbc:postgresql://postgres-postgresql:5432/eventanalytics"
-        #user: "postgres"
-        #password: "postgres"
-        #driver: "org.postgresql.Driver"
+  topic:
+    export:
+      # secret name for fetching database information
+      topicConnectivitySecretName: mobius-server-secrets
+      # Key for fetching "url" value from  the secret
+      topicURLSecretValue: topicUrl
+      # Key for fetching "user" value from  the secret
+      topicUserSecretValue: topicUser
+      # Key for fetching "password" value from  the secret
+      topicPasswordSecretValue: topicPassword
+      # If topicConnectivitySecretName is defined, url, user and password will be retrieved from it, otherwise uncomment from below
+      #url: jdbc:postgresql://mobius-sales-psql-1.c9oyct7ugcth.us-east-1.rds.amazonaws.com:5432/eventanalytics
+      #user: eventanalytics
+      #password: M0biu$2023
+      driver: org.postgresql.Driver
+      
   admin:
     #Adding a group to the document server to be accessed from. Accepts comma separated values
     group: "mobiusadmin"
@@ -127,7 +136,7 @@ mobius:
     #provider is the DBMS System being used. "ORACLE" or "POSTGRESQL".
     provider: "POSTGRESQL"
     #endpoint is the hostname of the RDS Database
-    endpoint: "postgres-postgresql"
+    #endpoint: "postgres-postgresql"
     #port is the port used by the Database
     port: "5432"
     #protocol is the protocol to be used to connect to the Oracle Database (TCP or TCPS for non-secure and secure respectively).
@@ -137,27 +146,27 @@ mobius:
     #svcname is the Service Name to be used (for secure ORA_SSL and non-secure connections ORA_NO_SSL) Only required if RDSPROVIDER is set to ORACLE.
     serviceName: "ORA_NO_SSL"
     #credentials
-    user: "mobius_tenant1"
-    password: "mobius_123"
-    schema: "mobius_tenant1"
+    #user: "mobius_tenant1"
+    #password: "mobius_123"
+    #schema: "mobius_tenant1"
     # secret name for fetching database information
-    # databaseConnectivitySecretName:
+    databaseConnectivitySecretName: mobius-server-secrets
     # Key for fetching "user" value from  the secret
-    # databaseUserSecretValue: user
+    databaseUserSecretValue: user
     # Key for fetching "password" value from  the secret
-    # databasePasswordSecretValue: password
+    databasePasswordSecretValue: password
     # Key for fetching "endpoint" value from  the secret
-    # databaseEndpointSecretValue: endpoint
+    databaseEndpointSecretValue: endpoint
     # Key for fetching "port" value from  the secret
-    # databasePortSecretValue: port
+    databasePortSecretValue: port
     # Key for fetching "schema" value from  the secret
-    # databaseSchemaSecretValue: schema
+    databaseSchemaSecretValue: schema
     #During container startup if values is YES, initialize or upgrade database.
     initOrUpgrade: "YES"
 
   persistentVolume:
     #enabled is the flag to indicate whether persistence claim is required or not
-    enabled: false
+    enabled: true
     claimName: mobius-pv-claim-dev
     #accessMode is the access specified to claim from persistence volume
     accessMode: ReadWriteOnce
@@ -177,7 +186,7 @@ mobius:
       #accessMode is the access specified to claim from persistence volume
       accessMode: ReadWriteMany
       #size is the storage claimed from persistence volume
-      size: 10Gi
+      size: 1Gi
       # In auto scaling environment, the lifetime of the containers depends on the
       # system load, if the system load is more then new containers will be created 
       # and if the load is reduced then the containers will be deleted,
@@ -221,7 +230,7 @@ mobius:
 
   fts:
      #enabled set to yes to turn on full text search
-     enabled: "NO"
+     enabled: "YES"
 
      persistentVolume:
        enabled: false
@@ -271,11 +280,11 @@ mobius:
       claimName: mobius-pv-sap-claim-dev
 spring:
   # Provide kafka server and topic to enable kafka auditing. Configure the topic in asg.audit.kafka section
-  #kafka:
-  #  bootstrap:
-  #    servers: broker:29092
-  #  security:
-  #    protocol: PLAINTEXT
+  kafka:
+    bootstrap:
+      servers: broker:29092
+    security:
+      protocol: PLAINTEXT
   cloud:
     discovery:
       client:

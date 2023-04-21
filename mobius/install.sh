@@ -20,8 +20,12 @@ if ! [ -e "cert/$TF_VAR_MOBIUS_VIEW_URL.key" ] && ! [ -e "cert/$TF_VAR_MOBIUS_VI
   openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${KEY_FILE} -out ${CERT_FILE} -subj "/CN=$HOSTNAME/O=$HOSTNAME" -addext "subjectAltName = DNS:$HOSTNAME";
   base64 -w0 "${hostname}.key" > "base64_${hostname}.key"
   base64 -w0 "${hostname}.crt" > "base64_${hostname}.crt"
-
 fi
+
+if ! kubectl get namespace "$NAMESPACE" >/dev/null 2>&1; then
+   kubectl create namespace "$NAMESPACE";
+   kubectl apply -f pvc/mobius-pvc.yaml -n "$NAMESPACE"
+fi 
 
 terraform apply
 

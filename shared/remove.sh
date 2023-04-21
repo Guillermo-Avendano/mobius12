@@ -34,3 +34,5 @@ if [ "$KAFKA_ENABLED" == "true" ]; then
    highlight_message "Uninstalling kafka"
    uninstall_kafka;
 fi
+
+kubectl delete ns $NAMESPACE
