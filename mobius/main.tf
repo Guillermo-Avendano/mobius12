@@ -39,7 +39,7 @@ resource "helm_release" "mobius12" {
   }
   set {
     name  = "mobius.rds.port"
-    value = var.RDSPORT
+    value = var.POSTGRESQL_PORT
   }
 
   set {
