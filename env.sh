@@ -9,7 +9,7 @@ kube_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 ################################################################################
 # KUBERNETES CONFIG
 ################################################################################
-KUBE_CLUSTER_NAME="mobius12"                               # cluster/cluster.sh
+KUBE_CLUSTER_NAME="mobius"                               # cluster/cluster.sh
 NAMESPACE=mobius
 
 export KUBECONFIG=$kube_dir/cluster/cluster-config.yaml    # cluster/cluster.sh
