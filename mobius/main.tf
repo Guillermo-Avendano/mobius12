@@ -4,10 +4,15 @@ locals {
 }
 resource "helm_release" "mobius12" {
   name             = "mobius12"
-  chart            = "${path.module}/helm/mobius.tgz"
+  chart            = "${path.module}/helm/mobius-12.1.004"
   namespace        = var.NAMESPACE
   create_namespace = true
 
+
+ set {
+    name  = "namespace"
+    value = var.NAMESPACE
+  }
  set {
     name  = "image.repository"
     value = "${local.my_registry}/mobius-server"
@@ -18,6 +23,98 @@ resource "helm_release" "mobius12" {
     value = var.IMAGE_VERSION_MOBIUS
   }
 
+  set {
+    name  = "mobius.rds.provider"
+    value = var.RDSPROVIDER
+  }
+
+  set {
+    name  = "mobius.rds.endpoint"
+    value = var.POSTGRESQL_HOST
+  }
+  set {
+    name  = "mobius.rds.port"
+    value = var.POSTGRESQL_PORT
+  }
+
+  set {
+    name  = "mobius.rds.user"
+    value = var.POSTGRESQL_USERNAME
+  }
+
+  set {
+    name  = "mobius.rds.password"
+    value = var.POSTGRESQL_PASSWORD
+  }
+
+  set {
+    name  = "mobius.rds.schema"
+    value = var.POSTGRESQL_DBNAME_MOBIUS
+  }
+  set {
+    name  = "mobius.persistentVolume.enabled"
+    value = "true"
+  }
+  set {
+    name  = "mobius.persistentVolume.claimName"
+    value = var.mobius_persistentVolume_claimName
+  }
+  set {
+    name  = "mobius.mobiusDiagnostics.persistentVolume.enabled"
+    value = "true"
+  }
+  set {
+    name  = "mobius.mobiusDiagnostics.persistentVolume.claimName"
+    value = var.mobius_mobiusDiagnostics_persistentVolume_claimName
+  }
+  set {
+    name  = "mobius.createDocumentServer"
+    value = "YES"
+  }
+
+  set {
+    name  = "mobius.fts.enabled"
+    value = var.ENABLEINDEX
+     }
+  set {
+    name  = "mobius.fts.engineType"
+    value = "elasticsearch"
+     }
+        
+  set {
+    name  = "mobius.fts.host"
+    value = var.MOBIUS_FTS_HOST
+     }
+   
+  set {
+    name  = "mobius.fts.port"
+    value = var.MOBIUS_FTS_PORT
+     }        
+  set {
+    name  = "mobius.fts.serverProtocol"
+    value = "HTTP"
+     } 
+  set {
+    name  = "mobius.fts.indexName"
+    value = var.MOBIUS_FTS_INDEX_NAME
+     } 
+
+  set {
+    name  = "mobius.topic.export.url"
+    value = "jdbc:postgresql://${var.POSTGRESQL_HOST}:${var.POSTGRESQL_PORT}/${var.POSTGRESQL_DBNAME_EVENTANALYTICS}"
+     } 
+  set {
+    name  = "mobius.topic.export.user"
+    value = var.POSTGRESQL_USERNAME
+     } 
+  set {
+    name  = "mobius.topic.export.password"
+    value = var.POSTGRESQL_PASSWORD
+     } 
+  set {
+    name  = "mobius.topic.export.driver"
+    value = "org.postgresql.Driver"
+     }    
   set {
     name  = "storageClassName"
     value = var.mobius_storageClassName
@@ -34,53 +131,11 @@ resource "helm_release" "mobius12" {
   }
 
   set {
-    name  = "mobius.rds.provider"
-    value = var.RDSPROVIDER
-  }
-  set {
-    name  = "mobius.rds.port"
-    value = var.POSTGRESQL_PORT
-  }
-
-  set {
-    name  = "mobius.fts.enabled"
-    value = var.ENABLEINDEX
-     }
-  set {
-    name  = "mobius.fts.host"
-    value = var.MOBIUS_FTS_HOST
-     }
-   
-  set {
-    name  = "mobius.fts.port"
-    value = var.MOBIUS_FTS_PORT
-     }        
-
-  set {
-    name  = "mobius.fts.indexName"
-    value = var.MOBIUS_FTS_INDEX_NAME
-     } 
-
-   set {
     name  = "spring.kafka.bootstrap.servers"
     value = var.KAFKA_BOOTSTRAP_URL
      } 
-  set {
-    name  = "mobius.persistentVolume.claimName"
-    value = var.mobius_persistentVolume_claimName
-  }
-  set {
-    name  = "mobius.persistentVolume.enabled"
-    value = "true"
-  }
-  set {
-    name  = "mobius.mobiusDiagnostics.persistentVolume.claimName"
-    value = var.mobius_mobiusDiagnostics_persistentVolume_claimName
-  }
-   set {
-    name  = "mobius.mobiusDiagnostics.persistentVolume.enabled"
-    value = "true"
-  }
+ 
+
   set {
     name  = "mobius.clustering.kubernetes.namespace"
     value = var.NAMESPACE
