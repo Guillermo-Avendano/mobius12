@@ -1,4 +1,0 @@
-[0418/150443.002:ERROR:filesystem_win.cc(130)] GetFileAttributes C:\Users\gavendano\AppData\Local\Google\Chrome\User Data\Crashpad\attachments\971dea13-450e-40b3-bdc7-3047722ce77b: El sistema no puede encontrar el archivo especificado. (0x2)
-[0418/150443.006:ERROR:filesystem_win.cc(130)] GetFileAttributes C:\Users\gavendano\AppData\Local\Google\Chrome\User Data\Crashpad\attachments\971dea13-450e-40b3-bdc7-3047722ce77b: El sistema no puede encontrar el archivo especificado. (0x2)
-[0418/150443.009:ERROR:filesystem_win.cc(130)] GetFileAttributes C:\Users\gavendano\AppData\Local\Google\Chrome\User Data\Crashpad\attachments\971dea13-450e-40b3-bdc7-3047722ce77b: El sistema no puede encontrar el archivo especificado. (0x2)
-[0418/150443.011:ERROR:filesystem_win.cc(130)] GetFileAttributes C:\Users\gavendano\AppData\Local\Google\Chrome\User Data\Crashpad\attachments\971dea13-450e-40b3-bdc7-3047722ce77b: El sistema no puede encontrar el archivo especificado. (0x2)
