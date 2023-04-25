@@ -80,8 +80,6 @@ remove_cluster() {
         echo "Deleting existing registry $registry_name"
         k3d registry delete $registry_name
     fi  
-    k3d registry delete $KUBE_LOCALREGISTRY_NAME    
-    docker network rm k3d-$KUBE_CLUSTER_NAME
 }
 
 start_cluster() {

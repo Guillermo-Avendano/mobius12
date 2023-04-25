@@ -30,13 +30,13 @@ fi
 
 terraform apply
 
-#pod_name="view"
+pod_name="view"
 
-#pod=$(kubectl -n $TF_VAR_NAMESPACE get pods --output=name | grep "$pod_name")
+pod=$(kubectl -n $TF_VAR_NAMESPACE get pods --output=name | grep "$pod_name")
 
-#if kubectl -n $TF_VAR_NAMESPACE get pods --output=name | grep "$pod_name"; then
-#    kubectl -n $TF_VAR_NAMESPACE delete "$pod"
-#fi
+if kubectl -n $TF_VAR_NAMESPACE get pods --output=name | grep "$pod_name"; then
+    kubectl -n $TF_VAR_NAMESPACE delete "$pod"
+fi
 
 highlight_message "kubectl -n $TF_VAR_NAMESPACE get pods"
 kubectl -n $TF_VAR_NAMESPACE get pods
