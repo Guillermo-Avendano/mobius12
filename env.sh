@@ -11,6 +11,7 @@ kube_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 ################################################################################
 KUBE_CLUSTER_NAME="mobius"                               # cluster/cluster.sh
 NAMESPACE=mobius
+PRODUCT="Mobius"
 
 export KUBECONFIG=$kube_dir/cluster/cluster-config.yaml    # cluster/cluster.sh
 
@@ -22,6 +23,7 @@ KUBE_LOCALREGISTRY_NAME="mobius.localhost"          # cluster/local_registry.sh
 KUBE_LOCALREGISTRY_HOST="localhost"                 # cluster/local_registry.sh 
 KUBE_LOCALREGISTRY_PORT="5000"                      # cluster/local_registry.sh 
 NGINX_EXTERNAL_TLS_PORT=443
+KUBE_IMAGE_PULL="YES"
 
 ################################################################################
 # MOBIUS IMAGES

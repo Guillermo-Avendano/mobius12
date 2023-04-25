@@ -21,7 +21,7 @@
         export DOCKER_PASSWORD=[RCC password encripted base64]
 
 - Check versions for mobius-server. mobius-view, and eventanalytics
-  ./mvcluster.sh imgls
+  ./cluster.sh imgls
 
 - Review variables in "./env.sh", example:
       TF_VAR_MOBIUS_VIEW_URL = "mobius12.local.net"
@@ -35,7 +35,7 @@
 
 1; Install k3d, helm, kubectl and terraform
 
-- ./mvcluster.sh install
+- ./cluster.sh install
 
 2; set environment
 
@@ -43,7 +43,7 @@
 
 3; Create the cluster for mobius, and pull images from registry.rocketsoftware.com
 
-- ./mvcluster.sh create
+- ./cluster.sh create
 
 4; Initilize Terraform providers
 
@@ -64,15 +64,15 @@
 ## Summary of commands
 
 |-------------------------|-----------------------------------------------------------------|
-| mvcluster.sh on         | start mobius cluster
-| mvcluster.sh off        | stop mobius cluster
-| mvcluster.sh imgls      | list images from registry.rocketsoftware.com
-| mvcluster.sh imgpull    | pull images from registry.rocketsoftware.com
-| mvcluster.sh list       | list clusters
-| mvcluster.sh create     | create mobius cluster
-| mvcluster.sh remove     | remove mobius cluster
-| mvcluster.sh debug      | generate outputs for get/describe of each kubernetes resources
-| mvcluster.sh install    | install k3d, kubectl, helm, and terraform
+| cluster.sh on         | start mobius cluster
+| cluster.sh off        | stop mobius cluster
+| cluster.sh imgls      | list images from registry.rocketsoftware.com
+| cluster.sh imgpull    | pull images from registry.rocketsoftware.com
+| cluster.sh list       | list clusters
+| cluster.sh create     | create mobius cluster
+| cluster.sh remove     | remove mobius cluster
+| cluster.sh debug      | generate outputs for get/describe of each kubernetes resources
+| cluster.sh install    | install k3d, kubectl, helm, and terraform
 
 ### Install of shared componnets
 
