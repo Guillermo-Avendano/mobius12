@@ -21,7 +21,7 @@
         export DOCKER_PASSWORD=[RCC password encripted base64]
 
 - Check versions for mobius-server. mobius-view, and eventanalytics
-  ./cluster.sh imgls
+  ./rockcluster.sh imgls
 
 - Review variables in "./env.sh", example:
       TF_VAR_MOBIUS_VIEW_URL = "mobius12.local.net"
@@ -29,13 +29,13 @@
    in "./env.sh", and add these values to /etc/hosts c:/windows/system32/drivers/etc/hosts
   with the IP where the custer will run, example:
 
-     192.168.0.5     mobius12.local.net pgadmin.local.net elactic.local.net
+     192.168.0.5     mobius12.local.net 
 
 ## Installation sequence
 
 1; Install k3d, helm, kubectl and terraform
 
-- ./cluster.sh install
+- ./rockcluster.sh install
 
 2; set environment
 
@@ -43,7 +43,7 @@
 
 3; Create the cluster for mobius, and pull images from registry.rocketsoftware.com
 
-- ./cluster.sh create
+- ./rockcluster.sh create
 
 4; Initilize Terraform providers
 
@@ -64,15 +64,15 @@
 ## Summary of commands
 
 |-------------------------|-----------------------------------------------------------------|
-| cluster.sh on         | start mobius cluster
-| cluster.sh off        | stop mobius cluster
-| cluster.sh imgls      | list images from registry.rocketsoftware.com
-| cluster.sh imgpull    | pull images from registry.rocketsoftware.com
-| cluster.sh list       | list clusters
-| cluster.sh create     | create mobius cluster
-| cluster.sh remove     | remove mobius cluster
-| cluster.sh debug      | generate outputs for get/describe of each kubernetes resources
-| cluster.sh install    | install k3d, kubectl, helm, and terraform
+| rockcluster.sh on         | start mobius cluster
+| rockcluster.sh off        | stop mobius cluster
+| rockcluster.sh imgls      | list images from registry.rocketsoftware.com
+| rockcluster.sh imgpull    | pull images from registry.rocketsoftware.com
+| rockcluster.sh list       | list clusters
+| rockcluster.sh create     | create mobius cluster
+| rockcluster.sh remove     | remove mobius cluster
+| rockcluster.sh debug      | generate outputs for get/describe of each kubernetes resources
+| rockcluster.sh install    | install k3d, kubectl, helm, and terraform
 
 ### Install of shared componnets
 
