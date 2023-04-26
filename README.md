@@ -63,9 +63,10 @@
 
 ## Summary of commands
 
-|-------------------------|-----------------------------------------------------------------|
+|---------------------------|-----------------------------------------------------------------|
 | rockcluster.sh on         | start mobius cluster
 | rockcluster.sh off        | stop mobius cluster
+| rockcluster.sh pgport     | Open postgres port if active for remote access from other tools
 | rockcluster.sh imgls      | list images from registry.rocketsoftware.com
 | rockcluster.sh imgpull    | pull images from registry.rocketsoftware.com
 | rockcluster.sh list       | list clusters
