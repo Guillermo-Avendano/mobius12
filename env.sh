@@ -10,7 +10,10 @@ kube_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 # KUBERNETES CONFIG
 ################################################################################
 KUBE_CLUSTER_NAME="mobius"                               # cluster/cluster.sh
+
 NAMESPACE=mobius
+NAMESPACE_SHARED=shared
+
 PRODUCT="Mobius"
 
 export KUBECONFIG=$kube_dir/cluster/cluster-config.yaml    # cluster/cluster.sh
@@ -23,7 +26,8 @@ KUBE_LOCALREGISTRY_NAME="mobius.localhost"          # cluster/local_registry.sh
 KUBE_LOCALREGISTRY_HOST="localhost"                 # cluster/local_registry.sh 
 KUBE_LOCALREGISTRY_PORT="5000"                      # cluster/local_registry.sh 
 NGINX_EXTERNAL_TLS_PORT=443
-KUBE_IMAGE_PULL="YES"
+KUBE_IMAGE_PULL="YES"                               # cluster/cluster.sh
+export KUBE_NS_LIST=( "$NAMESPACE" "$NAMESPACE_SHARED" )
 
 ################################################################################
 # MOBIUS IMAGES
@@ -81,9 +85,7 @@ export TF_VAR_NAMESPACE=$NAMESPACE                  # shared/variables.tf
                                                     # mobius/install.sh
                                                     # mobius/main.tf 
                                                     # mobius/remove.sh 
-export TF_VAR_NAMESPACE_SHARED="shared"             # shared/variables.tf 
-                                                    # shared/main.tf
-                                                    # shared/install.sh
+export TF_VAR_NAMESPACE_SHARED=$NAMESPACE_SHARED    # shared/install.sh
                                                     # shared/remove.sh 
 
 export TF_VAR_KUBE_LOCALREGISTRY_HOST=$KUBE_LOCALREGISTRY_HOST          # cluster/local_registry.sh 
