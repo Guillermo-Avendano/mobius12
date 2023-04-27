@@ -114,10 +114,8 @@ else
          # cluster//kubernetes.sh
          install_helm;
 
-         if ! k3d --version >/dev/null 2>&1; then
-            # cluster/kubernetes.sh
-            install_k3d;
-         fi
+         # cluster/kubernetes.sh
+         install_k3d;
 
          if ! terraform -version  >/dev/null 2>&1; then
             # cluster/kubernetes.sh
