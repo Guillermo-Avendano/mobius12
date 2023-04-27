@@ -100,10 +100,8 @@ else
          
     elif [[ $option == "install" ]]; then
          
-         if ! docker --version  >/dev/null 2>&1; then
-            # cluster/kubernetes.sh
-            install_docker;
-         fi
+         # cluster/kubernetes.sh
+         install_docker;
 
          # cluster/kubernetes.sh
          install_docker_compose;
@@ -117,10 +115,9 @@ else
          # cluster/kubernetes.sh
          install_k3d;
 
-         if ! terraform -version  >/dev/null 2>&1; then
-            # cluster/kubernetes.sh
-            install_terraform;
-         fi
+         # cluster/kubernetes.sh
+         install_terraform;
+
     else    
       echo "($option) is not valid."
     fi
