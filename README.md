@@ -13,8 +13,8 @@
 ## Preinstallation actions
 ### Ubuntu: get installations scripts (don't use root user)
 ```bash
-git clone https://github.com/guillermo-avendano/orchestrator.git
-cd orchestrator
+git clone https://github.com/guillermo-avendano/mobius12.git
+cd mobius12
 ```
 ### Define variables DOCKER_USERNAME, and DOCKER_PASSWORD in "$HOME/.profile" for pulling images from "registry.rocketsoftware.com"
 - Encrypt password
@@ -144,7 +144,7 @@ cd tools
 - user: admin@admin.com
 - password: admin
 
-server: IP Address where cluster is running , database=aeo, user=aeo, password=aeo
+server: IP Address where cluster is running , database=mobiusserver12, user=mobius, password=postgres
 #### grafana: http://mobius12.local.net:3000
 
 ### Stop pgadmin & grafana
