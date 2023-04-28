@@ -79,6 +79,8 @@ install_helm;
 
 install_k3d;
 
+install_terraform;
+
 sudo systemctl restart docker.service
 
 sudo chmod 666 //var/run/docker.sock
