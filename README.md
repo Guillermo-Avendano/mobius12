@@ -112,6 +112,8 @@ cd ..
 ```bash
 # mobius12 folder
 cd mobius-terraform
+# "terraform init" - only 1st time required
+terraform init
 ./install.sh
 ```
 6; Mobius URL: http://mobius12.local.net/mobius/admin
