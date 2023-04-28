@@ -44,7 +44,7 @@ source ./env.sh
 ./rockcluster.sh imgls
 ```
 
-### Variables in "./env.sh", update image versions, and AEO_URL if needed:
+### Variables in "./env.sh", update image versions, and MOBIUS_VIEW_URL if needed:
 ```bash
 IMAGE_NAME_MOBIUS=mobius-server
 IMAGE_VERSION_MOBIUS=12.1.0004
