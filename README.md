@@ -57,7 +57,7 @@ IMAGE_VERSION_EVENTANALYTICS=1.3.8
 MOBIUS_VIEW_URL="mobius12.local.net"
 ```
 
-###  Add AEO_URL to /etc/hosts, or c:/windows/system32/drivers/etc/hosts with the IP where the custer is running, example:
+###  Add MOBIUS_VIEW_URL to /etc/hosts, or c:/windows/system32/drivers/etc/hosts with the IP where the custer is running, example:
 ```bash
 192.168.0.5     mobius12.local.net
 ```
