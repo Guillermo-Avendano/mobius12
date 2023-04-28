@@ -17,7 +17,6 @@ if [[ $# -eq 0 ]]; then
   echo " - create  : create $PRODUCT cluster"  
   echo " - remove  : remove $PRODUCT cluster"
   echo " - debug   : generate outputs for get/describe of each kubernetes resources"
-  echo " - install : install k3d, helm, kubectl and terraform"
 else
   for option in "$@"; do
     if [[ $option == "on" ]]; then
@@ -44,8 +43,8 @@ else
 
          if get_database_status; then
             # cluster/cluster.sh
+            sudo ufw allow 5432
             configure_port_forwarding;
-            echo "Configure firewall, execute: sudo ufw allow 5432"
          else
             echo "$POSTGRESQL_PORT is not active"
          fi
@@ -97,27 +96,6 @@ else
          else
             echo "$KUBE_CLUSTER_NAME cluster is not active"            
          fi  
-         
-    elif [[ $option == "install" ]]; then
-         
-         # cluster/kubernetes.sh
-         install_docker;
-
-         # cluster/kubernetes.sh
-         install_docker_compose;
-
-         # cluster/kubernetes.sh
-         install_kubectl;
-
-         # cluster//kubernetes.sh
-         install_helm;
-
-         # cluster/kubernetes.sh
-         install_k3d;
-
-         # cluster/kubernetes.sh
-         install_terraform;
-
     else    
       echo "($option) is not valid."
     fi
