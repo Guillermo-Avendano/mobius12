@@ -2,8 +2,7 @@
 
 ## Introduction
 
-- This project includes the installation of k3d, helm, and terraform as infrastructure for installing Mobius 12.
-- bash scripts + terraform + helm for mobius12
+- Mobius 12.1 installation k3d
 
 ## Prerequisites
 
