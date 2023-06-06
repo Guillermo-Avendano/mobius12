@@ -1,4 +1,44 @@
 ############### HELM FOR MOBIUS AND MOBIUS-VIEW #############
+############### HELM FOR MOBIUS AND MOBIUS-VIEW #############
+resource "helm_release" "eventanalytics" {
+  name             = "eventanalytics"
+  chart            = "${path.module}/helm/eventanalytics-1.3.8"
+  namespace        = var.NAMESPACE
+  create_namespace = true
+
+
+ set {
+    name  = "namespace"
+    value = var.NAMESPACE
+  }
+  
+ set {
+    name  = "image.repository"
+    value = "${var.KUBE_LOCALREGISTRY_HOST}:${var.KUBE_LOCALREGISTRY_PORT}/${var.IMAGE_NAME_EVENTANALYTICS}"
+  }
+
+  set {
+    name  = "image.tag"
+    value = var.IMAGE_VERSION_EVENTANALYTICS
+  }
+  set {
+    name  = "datasource.url"
+    value = "jdbc:postgresql://${var.POSTGRESQL_HOST}:${var.POSTGRESQL_PORT}/${var.POSTGRESQL_DBNAME_EVENTANALYTICS}"
+     } 
+  set {
+    name  = "datasource.username"
+    value = var.POSTGRESQL_USERNAME
+     } 
+  set {
+    name  = "datasource.password"
+    value = var.POSTGRESQL_PASSWORD
+     }
+  set {
+    name  = "spring.kafka.security.bootstrap.servers"
+    value = var.KAFKA_BOOTSTRAP_URL
+     }     
+
+}
 resource "helm_release" "mobius12" {
   name             = "mobius12"
   chart            = "${path.module}/helm/mobius-12.1.004"

@@ -55,7 +55,7 @@ POSTGRESQL_PASSWORD=postgres
 POSTGRESQL_DBNAME_MOBIUSVIEW=mobiusview
 POSTGRESQL_DBNAME_MOBIUS=mobiusserver
 POSTGRESQL_DBNAME_EVENTANALYTICS=eventanalytics
-POSTGRESQL_HOST=postgresql.shared
+POSTGRESQL_HOST=postgresql.$NAMESPACE_SHARED
 POSTGRESQL_PORT=5432
 export POSTGRES_VALUES_TEMPLATE=postgres-mobius.yaml
 
@@ -65,7 +65,7 @@ export POSTGRES_VALUES_TEMPLATE=postgres-mobius.yaml
 ELASTICSEARCH_ENABLED=true
 ELASTICSEARCH_VERSION=7.17.3
 ELASTICSEARCH_URL=elastic.local.net
-ELASTICSEARCH_HOST=elasticsearch-master.shared
+ELASTICSEARCH_HOST=elasticsearch-master.$NAMESPACE_SHARED
 ELASTICSEARCH_PORT=9200
 
 ################################################################################
@@ -73,7 +73,7 @@ ELASTICSEARCH_PORT=9200
 ################################################################################
 KAFKA_ENABLED=true
 KAFKA_VERSION=3.3.1-debian-11-r3
-KAFKA_BOOTSTRAP_URL=kafka.shared:9092
+KAFKA_BOOTSTRAP_URL=kafka.$NAMESPACE_SHARED:9092
 
 
 ################################################################################
