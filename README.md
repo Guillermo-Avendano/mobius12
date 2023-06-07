@@ -111,11 +111,11 @@ source $HOME/.profile
 source ./env.sh
 ```
 
-3; Install docker, k3d, helm, kubectl and terraform
+3; Install docker (use docker_install.sh for Ubuntu no-WSL)
 
 ```bash
 # mobius12 folder
-./pre-reqs-install.sh
+./docker_install-wsl-ubuntu.sh
 ```
 
 4; Verify docker (more information <https://docs.docker.com/desktop/install/ubuntu/>)
@@ -124,14 +124,21 @@ source ./env.sh
 docker version
 ```
 
-5; Create the cluster for mobius, and pull images from registry.rocketsoftware.com
+5; Install k3d, helm, kubectl and terraform
+
+```bash
+# mobius12 folder
+./pre-reqs-install.sh
+```
+
+6; Create the cluster for mobius, and pull images from registry.rocketsoftware.com
 
 ```bash
 # mobius12 folder
 ./rockcluster.sh create
 ```
 
-6; Install database, kafka, elasticsearch
+7; Install database, kafka, elasticsearch
 
 ```bash
 # mobius12 folder
@@ -140,7 +147,7 @@ cd shared
 cd ..
 ```
 
-6; Install mobius and mobiusview
+8; Install mobius and mobiusview
 
 ```bash
 # mobius12 folder
@@ -150,7 +157,7 @@ terraform init
 ./install.sh
 ```
 
-6; Mobius URL: <http://mobius12.local.net/mobius/admin>
+9; Mobius URL: <http://mobius12.local.net/mobius/admin>
 
 - user: admin
 - password: admin
