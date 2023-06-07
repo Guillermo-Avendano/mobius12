@@ -7,7 +7,7 @@ source ../database/database.sh
 source ../elasticsearch/elasticsearch.sh
 source ../kafka/kafka.sh
 
-export NAMESPACE=$TF_VAR_NAMESPACE_SHARED;
+export NAMESPACE=$NAMESPACE_SHARED;
 
 #install database
 highlight_message "Deploying database services"

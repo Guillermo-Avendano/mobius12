@@ -10,8 +10,8 @@ install_database() {
     if [ "$DATABASE_PROVIDER" == "postgresql" ]; then
         info_message "Creating database namespace and storage";
             
-        if ! kubectl get namespace "$NAMESPACE" >/dev/null 2>&1; then
-            kubectl create namespace "$NAMESPACE";
+        if ! kubectl get namespace "$NAMESPACE_SHARED" >/dev/null 2>&1; then
+            kubectl create namespace "$NAMESPACE_SHARED_SHARED";
         fi 
         
         #POSTGRES_VOLUME=`eval echo ~/${NAMESPACE}_data/postgres`
@@ -34,7 +34,7 @@ install_database() {
         replace_tag_in_file $POSTGRES_CONF_FILE "<database_name_eventanalytics>" $POSTGRESQL_DBNAME_EVENTANALYTICS;
         replace_tag_in_file $POSTGRES_CONF_FILE "<postgres_port>" $POSTGRESQL_PORT;
 
-        kubectl apply -f $kube_dir/database/storage/local/$POSTGRES_STORAGE_FILE --namespace $NAMESPACE;
+        kubectl apply -f $kube_dir/database/storage/local/$POSTGRES_STORAGE_FILE --namespace $NAMESPACE_SHARED;
         
         info_message "Updating local Helm repository";
 
@@ -43,7 +43,7 @@ install_database() {
 
         info_message "Deploying postgresql Helm chart";
 
-        helm upgrade -f $POSTGRES_CONF_FILE postgresql bitnami/postgresql --namespace $NAMESPACE --version 11.8.2 --install;
+        helm upgrade -f $POSTGRES_CONF_FILE postgresql bitnami/postgresql --namespace $NAMESPACE_SHARED --version 11.8.2 --install;
     else
         error_message "Unexpected DATABASE_PROVIDER value: $DATABASE_PROVIDER";
     fi
@@ -53,16 +53,16 @@ install_database() {
 
 uninstall_database() {
     POSTGRES_STORAGE_FILE=postgres-storage.yaml
-    helm uninstall postgresql --namespace $NAMESPACE;
-    kubectl delete -f $kube_dir/database/storage/local/$POSTGRES_STORAGE_FILE --namespace $NAMESPACE;
+    helm uninstall postgresql --namespace $NAMESPACE_SHARED;
+    kubectl delete -f $kube_dir/database/storage/local/$POSTGRES_STORAGE_FILE --namespace $NAMESPACE_SHARED;
 }
 
 get_database_status() {
-    kubectl get pods --namespace $NAMESPACE postgresql-0 -o jsonpath="{.status.phase}" 2>/dev/null
+    kubectl get pods --namespace $NAMESPACE_SHARED postgresql-0 -o jsonpath="{.status.phase}" 2>/dev/null
 }
 
 configure_port_forwarding() {
-    nohup kubectl port-forward --namespace $NAMESPACE --address 0.0.0.0 svc/postgresql 5432:5432 &
+    nohup kubectl port-forward --namespace $NAMESPACE_SHARED --address 0.0.0.0 svc/postgresql 5432:5432 &
 }
 
 wait_for_database_ready() {
