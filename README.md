@@ -85,6 +85,8 @@ MOBIUS_VIEW_URL="mobius12.local.net"
 - Install dos2unix
 
 ```bash
+sudo apt-get -y update
+sudo apt-get -y upgrade
 sudo apt install -y dos2unix
 ```
 
@@ -147,7 +149,7 @@ cd shared
 cd ..
 ```
 
-8; Install mobius and mobiusview
+8; Install eventanalytics, mobius and mobiusview
 
 ```bash
 # mobius12 folder
