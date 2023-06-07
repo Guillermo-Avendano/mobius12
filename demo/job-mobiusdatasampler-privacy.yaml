@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-mobiusdatasampler-privacy
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: my-job-mobiusdatasampler-privacy
+        image: mobiusdatasampler:1.0
+        command: ["/bin/sh", "-ec", "/RocketSoftware/DataSampler/08-Privacy.sh"]
+        env:
+          - name: MV_URL
+            value: "http://mobiusview12:8080/mobius"
+          - name: MV_REPOSITORY
+            value: "Mobius"       
+        volumeMounts:
+          - mountPath: /mnt/efs
+            name:  mobius-pv-storage
+      volumes:
+        - name: mobius-pv-storage
+          persistentVolumeClaim: 
+            claimName: pvc-mobius12-efs

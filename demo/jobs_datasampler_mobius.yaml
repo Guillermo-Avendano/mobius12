@@ -141,6 +141,13 @@ spec:
             value: "http://mobiusview12:8080/mobius"
           - name: MV_REPOSITORY
             value: "Mobius"       
+        volumeMounts:
+          - mountPath: /mnt/efs
+            name:  mobius-pv-storage
+      volumes:
+        - name: mobius-pv-storage
+          persistentVolumeClaim: 
+            claimName: pvc-mobius12-efs           
 ---
 apiVersion: batch/v1
 kind: Job

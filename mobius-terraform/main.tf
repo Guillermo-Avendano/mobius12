@@ -1,5 +1,4 @@
-############### HELM FOR MOBIUS AND MOBIUS-VIEW #############
-############### HELM FOR MOBIUS AND MOBIUS-VIEW #############
+############### HELM FOR EVENTANALYTICS #############
 resource "helm_release" "eventanalytics" {
   name             = "eventanalytics"
   chart            = "${path.module}/helm/eventanalytics-1.3.8"
@@ -39,6 +38,7 @@ resource "helm_release" "eventanalytics" {
      }     
 
 }
+############### HELM FOR MOBIUS #############
 resource "helm_release" "mobius12" {
   name             = "mobius12"
   chart            = "${path.module}/helm/mobius-12.1.004"
@@ -179,6 +179,8 @@ resource "helm_release" "mobius12" {
   }
 
 }  
+
+############### HELM FOR MOBIUS-VIEW #############
 resource "helm_release" "mobiusview12" {
   name             = "mobiusview12"
   chart            = "${path.module}/helm/mobiusview-12.1.1"
