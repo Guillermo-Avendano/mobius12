@@ -34,7 +34,7 @@ resource "helm_release" "eventanalytics" {
     value = var.POSTGRESQL_PASSWORD
      }
   set {
-    name  = "spring.kafka.security.bootstrap.servers"
+    name  = "spring.kafka.bootstrap.servers"
     value = var.KAFKA_BOOTSTRAP_URL
      }     
 

@@ -9,12 +9,12 @@ kube_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 ################################################################################
 # KUBERNETES CONFIG
 ################################################################################
-KUBE_CLUSTER_NAME="mobius"                               # cluster/cluster.sh
+KUBE_CLUSTER_NAME="mobius12"                               # cluster/cluster.sh
 
-NAMESPACE=mobius
+NAMESPACE=mobius12
 NAMESPACE_SHARED=shared
 
-PRODUCT="Mobius"
+PRODUCT="Mobius 12.1"
 
 export KUBECONFIG=$kube_dir/cluster/cluster-config.yaml    # cluster/cluster.sh
 
@@ -129,7 +129,7 @@ TF_VAR_MOBIUS_HOST="8080"
 ########################################################################
 # In processing
 # NAMESPACE=test
-declare -A pv
+# declare -A pv
 # pv['MOBIUS_PV_VOLUME']=~/${NAMESPACE}_data/mobius/pv
 # pv['MOBIUS_FTS_VOLUME']=~/${NAMESPACE}_data/mobius/fts
 # pv['MOBIUS_DIAGNOSTIC_VOLUME']=~/${NAMESPACE}_data/mobius/log

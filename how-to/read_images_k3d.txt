@@ -1,0 +1,2 @@
+docker exec -it k3d-mobius12-server-0 sh
+/ # crictl images
