@@ -179,7 +179,7 @@ spec:
       volumes:
         - name: mobius-pv-storage
           persistentVolumeClaim: 
-            claimName: "pvc-mobius12-efs"              
+            claimName: "@MV_EFS_VOLUME@"              
 ---
 apiVersion: batch/v1
 kind: Job

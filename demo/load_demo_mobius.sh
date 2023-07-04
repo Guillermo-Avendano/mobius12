@@ -4,7 +4,7 @@
 JOB_NAME="job-mobiusdatasampler-main"
 NAMESPACE="mobius12"
 
-MV_REPOSITORY="http://mobiusview12:8080/mobius"
+MV_URL="http://mobiusview12:8080/mobius"
 MV_REPOSITORY="Mobius" 
 MV_BASIC_AUTH_USER="admin"
 MV_BASIC_AUTH_PASS="ASG_ENC(c1LpoXEIRe3h7b6TVoDfNP91rGK/9wGM)"  #admin
