@@ -10,6 +10,15 @@ spec:
       - name: my-job-mobiusdatasampler-personal
         image: mobiusdatasampler:1.0
         command: ["/bin/sh", "-ec", "/RocketSoftware/DataSampler/01-Personal.sh"]
+        env:
+          - name: MV_URL
+            value: "@MV_URL@"
+          - name: MV_REPOSITORY
+            value: "@MV_REPOSITORY@"
+          - name: MV_BASIC_AUTH_USER
+            value: "@MV_BASIC_AUTH_USER@"
+          - name: MV_BASIC_AUTH_PASS 
+            value: "@MV_BASIC_AUTH_PASS@"       
 ---
 apiVersion: batch/v1
 kind: Job
@@ -23,6 +32,15 @@ spec:
       - name: my-job-mobiusdatasampler-health
         image: mobiusdatasampler:1.0
         command: ["/bin/sh", "-ec", "/RocketSoftware/DataSampler/02-Health.sh"]
+        env:
+          - name: MV_URL
+            value: "@MV_URL@"
+          - name: MV_REPOSITORY
+            value: "@MV_REPOSITORY@"
+          - name: MV_BASIC_AUTH_USER
+            value: "@MV_BASIC_AUTH_USER@"
+          - name: MV_BASIC_AUTH_PASS 
+            value: "@MV_BASIC_AUTH_PASS@"        
 ---
 apiVersion: batch/v1
 kind: Job
@@ -37,6 +55,15 @@ spec:
       - name: my-job-mobiusdatasampler-oneperuser
         image: mobiusdatasampler:1.0
         command: ["/bin/sh", "-ec", "/RocketSoftware/DataSampler/03-OnePerUser.sh"]
+        env:
+          - name: MV_URL
+            value: "@MV_URL@"
+          - name: MV_REPOSITORY
+            value: "@MV_REPOSITORY@"
+          - name: MV_BASIC_AUTH_USER
+            value: "@MV_BASIC_AUTH_USER@"
+          - name: MV_BASIC_AUTH_PASS 
+            value: "@MV_BASIC_AUTH_PASS@"        
 ---
 apiVersion: batch/v1
 kind: Job
@@ -50,6 +77,15 @@ spec:
       - name: my-job-mobiusdatasampler-manyperuser
         image: mobiusdatasampler:1.0
         command: ["/bin/sh", "-ec", "/RocketSoftware/DataSampler/04-ManyPerUser.sh"]
+        env:
+          - name: MV_URL
+            value: "@MV_URL@"
+          - name: MV_REPOSITORY
+            value: "@MV_REPOSITORY@"
+          - name: MV_BASIC_AUTH_USER
+            value: "@MV_BASIC_AUTH_USER@"
+          - name: MV_BASIC_AUTH_PASS 
+            value: "@MV_BASIC_AUTH_PASS@"        
 ---
 apiVersion: batch/v1
 kind: Job
@@ -63,6 +99,15 @@ spec:
       - name: my-job-mobiusdatasampler-claimdata
         image: mobiusdatasampler:1.0
         command: ["/bin/sh", "-ec", "/RocketSoftware/DataSampler/05-ClaimData.sh"]
+        env:
+          - name: MV_URL
+            value: "@MV_URL@"
+          - name: MV_REPOSITORY
+            value: "@MV_REPOSITORY@"
+          - name: MV_BASIC_AUTH_USER
+            value: "@MV_BASIC_AUTH_USER@"
+          - name: MV_BASIC_AUTH_PASS 
+            value: "@MV_BASIC_AUTH_PASS@"        
 ---
 apiVersion: batch/v1
 kind: Job
@@ -76,6 +121,15 @@ spec:
       - name: my-job-mobiusdatasampler-bigreport
         image: mobiusdatasampler:1.0
         command: ["/bin/sh", "-ec", "/RocketSoftware/DataSampler/06-LargerTextReports.sh"]
+        env:
+          - name: MV_URL
+            value: "@MV_URL@"
+          - name: MV_REPOSITORY
+            value: "@MV_REPOSITORY@"
+          - name: MV_BASIC_AUTH_USER
+            value: "@MV_BASIC_AUTH_USER@"
+          - name: MV_BASIC_AUTH_PASS 
+            value: "@MV_BASIC_AUTH_PASS@"        
 ---
 apiVersion: batch/v1
 kind: Job
@@ -89,6 +143,15 @@ spec:
       - name: my-job-mobiusdatasampler-smallreport
         image: mobiusdatasampler:1.0
         command: ["/bin/sh", "-ec", "/RocketSoftware/DataSampler/07-SmallerTextReports.sh"]
+        env:
+          - name: MV_URL
+            value: "@MV_URL@"
+          - name: MV_REPOSITORY
+            value: "@MV_REPOSITORY@"
+          - name: MV_BASIC_AUTH_USER
+            value: "@MV_BASIC_AUTH_USER@"
+          - name: MV_BASIC_AUTH_PASS 
+            value: "@MV_BASIC_AUTH_PASS@"        
 ---
 apiVersion: batch/v1
 kind: Job
@@ -102,6 +165,15 @@ spec:
       - name: my-job-mobiusdatasampler-privacy
         image: mobiusdatasampler:1.0
         command: ["/bin/sh", "-ec", "/RocketSoftware/DataSampler/08-Privacy.sh"]
+        env:
+          - name: MV_URL
+            value: "@MV_URL@"
+          - name: MV_REPOSITORY
+            value: "@MV_REPOSITORY@"
+          - name: MV_BASIC_AUTH_USER
+            value: "@MV_BASIC_AUTH_USER@"
+          - name: MV_BASIC_AUTH_PASS 
+            value: "@MV_BASIC_AUTH_PASS@"        
 ---
 apiVersion: batch/v1
 kind: Job
@@ -115,3 +187,12 @@ spec:
       - name: my-job-mobiusdatasampler-statements
         image: mobiusdatasampler:1.0
         command: ["/bin/sh", "-ec", "/RocketSoftware/DataSampler/09-Statements.sh"]
+        env:
+          - name: MV_URL
+            value: "@MV_URL@"
+          - name: MV_REPOSITORY
+            value: "@MV_REPOSITORY@"
+          - name: MV_BASIC_AUTH_USER
+            value: "@MV_BASIC_AUTH_USER@"
+          - name: MV_BASIC_AUTH_PASS 
+            value: "@MV_BASIC_AUTH_PASS@"        

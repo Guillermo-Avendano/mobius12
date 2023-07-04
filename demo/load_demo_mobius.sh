@@ -2,9 +2,9 @@
 
 # Nombre del job y espacio de nombres
 JOB_NAME="job-mobiusdatasampler-main"
-NAMESPACE="mobius"
+NAMESPACE="mobius12"
 
-MV_REPOSITORY="http://mobiusview:80/mobius"
+MV_REPOSITORY="http://mobiusview12:8080/mobius"
 MV_REPOSITORY="Mobius" 
 MV_BASIC_AUTH_USER="admin"
 MV_BASIC_AUTH_PASS="ASG_ENC(c1LpoXEIRe3h7b6TVoDfNP91rGK/9wGM)"  #admin
@@ -40,9 +40,7 @@ spec:
           - name: MV_BASIC_AUTH_USER
             value: "$MV_BASIC_AUTH_USER"
           - name: MV_BASIC_AUTH_PASS 
-            value: "$MV_BASIC_AUTH_PASS"
-          - name: MV_SECRET_SEC
-            value: "$MV_SECRET_SEC"               
+            value: "$MV_BASIC_AUTH_PASS"               
 EOF
 
 # Wait till the Job finished
