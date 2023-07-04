@@ -14,12 +14,12 @@ KUBE_CLUSTER_NAME="mobius12"                               # cluster/cluster.sh
 NAMESPACE=mobius12
 NAMESPACE_SHARED=shared
 
-PRODUCT="Mobius 12.1"
+PRODUCT="Mobius 12.2"
 
 export KUBECONFIG=$kube_dir/cluster/cluster-config.yaml    # cluster/cluster.sh
 
-DOCKER_USER=$DOCKER_USERNAME                       # cluster/local_registry.sh  
-DOCKER_PASS=`echo $DOCKER_PASSWORD | base64 -d`    # $HOME/.profile -> DOCKER_PASSWORD encoded base64
+DOCKER_USER=$DOCKER_USERNAME                       # cluster/local_registry.sh  $HOME/.profile
+DOCKER_PASS=$DOCKER_PASSWORD                       # cluster/local_registry.sh  $HOME/.profile
 
 KUBE_SOURCE_REGISTRY="registry.rocketsoftware.com"  # cluster/local_registry.sh 
 KUBE_LOCALREGISTRY_NAME="mobius.localhost"          # cluster/local_registry.sh
@@ -27,16 +27,19 @@ KUBE_LOCALREGISTRY_HOST="localhost"                 # cluster/local_registry.sh
 KUBE_LOCALREGISTRY_PORT="5000"                      # cluster/local_registry.sh 
 NGINX_EXTERNAL_TLS_PORT=443
 KUBE_IMAGE_PULL="YES"                               # cluster/cluster.sh
+KUBE_PORTAINER="NO"                                 # cluster/cluster.sh
+KUBE_PGADMIN="YES"                                  # database/database.sh
+
 export KUBE_NS_LIST=( "$NAMESPACE" "$NAMESPACE_SHARED" )
 
 ################################################################################
 # MOBIUS IMAGES
 ################################################################################
 IMAGE_NAME_MOBIUS=mobius-server
-IMAGE_VERSION_MOBIUS=12.1.0004
+IMAGE_VERSION_MOBIUS=12.2.0
 IMAGE_EXTRA_ARGS_MOBIUS=
 IMAGE_NAME_MOBIUSVIEW=mobius-view
-IMAGE_VERSION_MOBIUSVIEW=12.1.2
+IMAGE_VERSION_MOBIUSVIEW=12.2.0
 IMAGE_EXTRA_ARGS_MOBIUSVIEW=
 IMAGE_NAME_EVENTANALYTICS=eventanalytics
 IMAGE_VERSION_EVENTANALYTICS=1.3.8

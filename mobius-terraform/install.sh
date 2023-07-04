@@ -28,7 +28,7 @@ if ! kubectl get namespace "$NAMESPACE" >/dev/null 2>&1; then
    kubectl apply -f pvc/mobiusview-pvc.yaml -n "$NAMESPACE"
 fi 
 
-terraform apply
+terraform apply -auto-approve
 
 pod_name="view"
 

@@ -11,7 +11,7 @@ install_database() {
         info_message "Creating database namespace and storage";
             
         if ! kubectl get namespace "$NAMESPACE_SHARED" >/dev/null 2>&1; then
-            kubectl create namespace "$NAMESPACE_SHARED_SHARED";
+            kubectl create namespace "$NAMESPACE_SHARED";
         fi 
         
         #POSTGRES_VOLUME=`eval echo ~/${NAMESPACE}_data/postgres`
@@ -42,8 +42,12 @@ install_database() {
         helm repo update;
 
         info_message "Deploying postgresql Helm chart";
-
         helm upgrade -f $POSTGRES_CONF_FILE postgresql bitnami/postgresql --namespace $NAMESPACE_SHARED --version 11.8.2 --install;
+
+        if [[ "$KUBE_PGADMIN" == "YES" ]]; then
+           info_message "Deploying pgadmin Helm chart";
+           helm upgrade pgadmin $kube_dir/database/pgadmin-chart/ --namespace $NAMESPACE_SHARED -f $kube_dir/database/pgadmin-chart/values.yaml --install --wait;
+        fi
     else
         error_message "Unexpected DATABASE_PROVIDER value: $DATABASE_PROVIDER";
     fi
@@ -53,6 +57,11 @@ install_database() {
 
 uninstall_database() {
     POSTGRES_STORAGE_FILE=postgres-storage.yaml
+
+    if [[ "$KUBE_PGADMIN" == "YES" ]]; then
+       helm uninstall pgadmin --namespace $NAMESPACE;
+    fi
+
     helm uninstall postgresql --namespace $NAMESPACE_SHARED;
     kubectl delete -f $kube_dir/database/storage/local/$POSTGRES_STORAGE_FILE --namespace $NAMESPACE_SHARED;
 }

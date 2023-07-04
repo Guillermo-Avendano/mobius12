@@ -19,20 +19,12 @@ git clone https://github.com/guillermo-avendano/mobius12.git
 cd mobius12
 ```
 
-### Define variables DOCKER_USERNAME, and DOCKER_PASSWORD in "$HOME/.profile" for pulling images from "registry.rocketsoftware.com"
-
-- Encrypt password
-
-```bash
-echo "RCC password" | base64
-```
-
-- Edit "$HOME/.profile" (nano $HOME/.profile), and define the variables DOCKER_USERNAME with your RCC username, and DOCKER_PASWORD with the output of previous "echo"
+### Edit "$HOME/.profile" (nano $HOME/.profile), and define the variables DOCKER_USERNAME with your RCC username, and DOCKER_PASWORD with the output of previous "echo"
 
 ```bash
 
 export DOCKER_USERNAME="[RCC user]@rs.com"
-export DOCKER_PASSWORD="[RCC password encripted base64]"
+export DOCKER_PASSWORD="[RCC password]"
 ```
 
 ### Optional: add these lines to "$HOME/.profile" for facilitate the commnads' typing
@@ -65,7 +57,7 @@ IMAGE_NAME_MOBIUS=mobius-server
 IMAGE_VERSION_MOBIUS=12.1.0004
 IMAGE_EXTRA_ARGS_MOBIUS=
 IMAGE_NAME_MOBIUSVIEW=mobius-view
-IMAGE_VERSION_MOBIUSVIEW=12.1.2
+IMAGE_VERSION_MOBIUSVIEW=12.1.0
 IMAGE_EXTRA_ARGS_MOBIUSVIEW=
 IMAGE_NAME_EVENTANALYTICS=eventanalytics
 IMAGE_VERSION_EVENTANALYTICS=1.3.8
@@ -75,7 +67,7 @@ MOBIUS_VIEW_URL="mobius12.local.net"
 ### Add MOBIUS_VIEW_URL to /etc/hosts, or c:/windows/system32/drivers/etc/hosts with the IP where the custer is running, example
 
 ```bash
-192.168.0.5     mobius12.local.net
+192.168.0.5     mobius12.local.net  pgadmin.local.net
 ```
 
 ## Installation sequence
@@ -170,7 +162,6 @@ terraform init
 |:---|:---|
 | ./rockcluster.sh on | start mobius cluster |
 | ./rockcluster.sh off | stop mobius cluster |
-| ./rockcluster.sh pgport | Open postgres port if active for remote access from SQL tools |
 | ./rockcluster.sh imgls | list images from registry.rocketsoftware.com |
 | ./rockcluster.sh imgpull | pull images from registry.rocketsoftware.com |
 | ./rockcluster.sh list | list clusters |
@@ -188,19 +179,9 @@ cd tools
 ./run.sh
 ```
 
-#### pgadmin: <http://mobius12.local.net:5050>
+#### pgadmin: <http://pgadmin.local.net>
 
 - user: <admin@admin.com>
 - password: admin
 
-server: IP Address where cluster is running , database=mobiusserver12, user=mobius, password=postgres
-
-#### grafana: <http://mobius12.local.net:3000>
-
-### Stop pgadmin & grafana
-
-```bash
-# mobius12 folder
-cd tools
-./stop.sh
-```
+server: postgresql , database=mobiusserver, user=mobius, password=postgres

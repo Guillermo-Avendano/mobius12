@@ -10,11 +10,6 @@ spec:
       - name: my-job-mobiusdatasampler-personal
         image: mobiusdatasampler:1.0
         command: ["/bin/sh", "-ec", "/RocketSoftware/DataSampler/01-Personal.sh"]
-        env:
-          - name: MV_URL
-            value: "http://mobiusview12:8080/mobius"
-          - name: MV_REPOSITORY
-            value: "Mobius"    
 ---
 apiVersion: batch/v1
 kind: Job
@@ -28,16 +23,12 @@ spec:
       - name: my-job-mobiusdatasampler-health
         image: mobiusdatasampler:1.0
         command: ["/bin/sh", "-ec", "/RocketSoftware/DataSampler/02-Health.sh"]
-        env:
-          - name: MV_URL
-            value: "http://mobiusview12:8080/mobius"
-          - name: MV_REPOSITORY
-            value: "Mobius"   
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
   name: job-mobiusdatasampler-oneperuser
+  dependencies:
 spec:
   template:
     spec:
@@ -46,11 +37,6 @@ spec:
       - name: my-job-mobiusdatasampler-oneperuser
         image: mobiusdatasampler:1.0
         command: ["/bin/sh", "-ec", "/RocketSoftware/DataSampler/03-OnePerUser.sh"]
-        env:
-          - name: MV_URL
-            value: "http://mobiusview12:8080/mobius"
-          - name: MV_REPOSITORY
-            value: "Mobius"        
 ---
 apiVersion: batch/v1
 kind: Job
@@ -64,11 +50,6 @@ spec:
       - name: my-job-mobiusdatasampler-manyperuser
         image: mobiusdatasampler:1.0
         command: ["/bin/sh", "-ec", "/RocketSoftware/DataSampler/04-ManyPerUser.sh"]
-        env:
-          - name: MV_URL
-            value: "http://mobiusview12:8080/mobius"
-          - name: MV_REPOSITORY
-            value: "Mobius"        
 ---
 apiVersion: batch/v1
 kind: Job
@@ -82,11 +63,6 @@ spec:
       - name: my-job-mobiusdatasampler-claimdata
         image: mobiusdatasampler:1.0
         command: ["/bin/sh", "-ec", "/RocketSoftware/DataSampler/05-ClaimData.sh"]
-        env:
-          - name: MV_URL
-            value: "http://mobiusview12:8080/mobius"
-          - name: MV_REPOSITORY
-            value: "Mobius"       
 ---
 apiVersion: batch/v1
 kind: Job
@@ -100,11 +76,6 @@ spec:
       - name: my-job-mobiusdatasampler-bigreport
         image: mobiusdatasampler:1.0
         command: ["/bin/sh", "-ec", "/RocketSoftware/DataSampler/06-LargerTextReports.sh"]
-        env:
-          - name: MV_URL
-            value: "http://mobiusview12:8080/mobius"
-          - name: MV_REPOSITORY
-            value: "Mobius"        
 ---
 apiVersion: batch/v1
 kind: Job
@@ -118,11 +89,6 @@ spec:
       - name: my-job-mobiusdatasampler-smallreport
         image: mobiusdatasampler:1.0
         command: ["/bin/sh", "-ec", "/RocketSoftware/DataSampler/07-SmallerTextReports.sh"]
-        env:
-          - name: MV_URL
-            value: "http://mobiusview12:8080/mobius"
-          - name: MV_REPOSITORY
-            value: "Mobius"        
 ---
 apiVersion: batch/v1
 kind: Job
@@ -136,18 +102,6 @@ spec:
       - name: my-job-mobiusdatasampler-privacy
         image: mobiusdatasampler:1.0
         command: ["/bin/sh", "-ec", "/RocketSoftware/DataSampler/08-Privacy.sh"]
-        env:
-          - name: MV_URL
-            value: "http://mobiusview12:8080/mobius"
-          - name: MV_REPOSITORY
-            value: "Mobius"       
-        volumeMounts:
-          - mountPath: /mnt/efs
-            name:  mobius-pv-storage
-      volumes:
-        - name: mobius-pv-storage
-          persistentVolumeClaim: 
-            claimName: pvc-mobius12-efs           
 ---
 apiVersion: batch/v1
 kind: Job
@@ -161,8 +115,3 @@ spec:
       - name: my-job-mobiusdatasampler-statements
         image: mobiusdatasampler:1.0
         command: ["/bin/sh", "-ec", "/RocketSoftware/DataSampler/09-Statements.sh"]
-        env:
-          - name: MV_URL
-            value: "http://mobiusview12:8080/mobius"
-          - name: MV_REPOSITORY
-            value: "Mobius"     
