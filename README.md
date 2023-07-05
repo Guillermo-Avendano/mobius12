@@ -27,6 +27,12 @@ export DOCKER_USERNAME="[RCC user]@rs.com"
 export DOCKER_PASSWORD="[RCC password]"
 ```
 
+### Edit "$HOME/.profile", and define the variable MOBIUS_LICENSE with MobiusView License
+
+```bash
+export MOBIUS_LICENSE="[mobius view license]"
+```
+
 ### Optional: add these lines to "$HOME/.profile" for facilitate the commnads' typing
 
 ```bash
