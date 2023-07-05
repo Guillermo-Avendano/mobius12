@@ -138,7 +138,7 @@ docker version
 ./rockcluster.sh create
 ```
 
-7; Install database, kafka, elasticsearch
+7; Install database, kafka, elasticsearch, pgadmin, and grafana
 
 ```bash
 # mobius12 folder
@@ -169,7 +169,7 @@ terraform init
 | ./rockcluster.sh start | start mobius cluster |
 | ./rockcluster.sh stop | stop mobius cluster |
 | ./rockcluster.sh imgls | list images from registry.rocketsoftware.com |
-| ./rockcluster.sh imgpull | pull images from registry.rocketsoftware.com |
+| ./rockcluster.sh imgpull | pull images from registry.rocketsoftware.com, and push them into cluster |
 | ./rockcluster.sh list | list clusters |
 | ./rockcluster.sh create | create mobius cluster |
 | ./rockcluster.sh remove | remove mobius cluster |
