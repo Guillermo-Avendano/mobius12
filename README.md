@@ -160,8 +160,8 @@ terraform init
 
 | Command | Description |
 |:---|:---|
-| ./rockcluster.sh on | start mobius cluster |
-| ./rockcluster.sh off | stop mobius cluster |
+| ./rockcluster.sh start | start mobius cluster |
+| ./rockcluster.sh stop | stop mobius cluster |
 | ./rockcluster.sh imgls | list images from registry.rocketsoftware.com |
 | ./rockcluster.sh imgpull | pull images from registry.rocketsoftware.com |
 | ./rockcluster.sh list | list clusters |

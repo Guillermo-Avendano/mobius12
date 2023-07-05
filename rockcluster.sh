@@ -8,18 +8,18 @@ source "$kube_dir/database/database.sh"
 if [[ $# -eq 0 ]]; then
   echo "Parameters:"
   echo "==========="
-  echo " - on      : start $PRODUCT cluster"
-  echo " - off     : stop $PRODUCT cluster"
+  echo " - start   : start $PRODUCT cluster"
+  echo " - stop    : stop $PRODUCT cluster"
   echo " - pgport  : Open postgres port $POSTGRESQL_PORT if active"
-  echo " - imgls   : list images from $KUBE_SOURCE_REGISTRY (var KUBE_IMAGES in env.sh)"
-  echo " - imgpull : pull images from $KUBE_SOURCE_REGISTRY (var KUBE_IMAGES in env.sh)"
+  echo " - imgls   : list images from $KUBE_SOURCE_REGISTRY"
+  echo " - imgpull : pull images from $KUBE_SOURCE_REGISTRY and push to local registry"
   echo " - list    : list clusters"
   echo " - create  : create $PRODUCT cluster"  
   echo " - remove  : remove $PRODUCT cluster"
   echo " - debug   : generate outputs for get/describe of each kubernetes resources"
 else
   for option in "$@"; do
-    if [[ $option == "on" ]]; then
+    if [[ $option == "start" ]]; then
 
          if ! exist_cluster; then
             echo "$KUBE_CLUSTER_NAME cluster doesn't exist"
@@ -30,7 +30,7 @@ else
             start_cluster;
          fi
 
-    elif [[ $option == "off" ]]; then
+    elif [[ $option == "stop" ]]; then
 
          if isactive_cluster; then
             # cluster/cluster.sh
