@@ -48,20 +48,31 @@ install_database() {
            info_message "Deploying pgadmin Helm chart";
            helm upgrade pgadmin $kube_dir/database/pgadmin-chart/ --namespace $NAMESPACE_SHARED -f $kube_dir/database/pgadmin-chart/values.yaml --install --wait;
         fi
+
+        if [[ "$KUBE_GRAFANA" == "YES" ]]; then
+           info_message "Deploying Grafana Helm chart";
+           helm upgrade grafana $kube_dir/database/grafana/ --namespace $NAMESPACE_SHARED -f $kube_dir/database/grafana/values.yaml --install --wait;
+
+           info_message "Grafana: password for user 'admin'";
+           kubectl get secret --namespace shared grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+        fi
+
     else
         error_message "Unexpected DATABASE_PROVIDER value: $DATABASE_PROVIDER";
-    fi
-    
-    
+    fi    
 }
 
 uninstall_database() {
     POSTGRES_STORAGE_FILE=postgres-storage.yaml
 
     if [[ "$KUBE_PGADMIN" == "YES" ]]; then
-       helm uninstall pgadmin --namespace $NAMESPACE;
+       helm uninstall pgadmin --namespace $NAMESPACE_SHARED;
     fi
 
+    if [[ "$KUBE_GRAFANA" == "YES" ]]; then
+       helm uninstall grafana --namespace $NAMESPACE_SHARED;
+    fi
+    
     helm uninstall postgresql --namespace $NAMESPACE_SHARED;
     kubectl delete -f $kube_dir/database/storage/local/$POSTGRES_STORAGE_FILE --namespace $NAMESPACE_SHARED;
 }

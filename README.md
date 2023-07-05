@@ -67,7 +67,7 @@ MOBIUS_VIEW_URL="mobius12.local.net"
 ### Add MOBIUS_VIEW_URL to /etc/hosts, or c:/windows/system32/drivers/etc/hosts with the IP where the custer is running, example
 
 ```bash
-192.168.0.5     mobius12.local.net  pgadmin.local.net
+192.168.0.5     mobius12.local.net  pgadmin.local.net  grafana.local.net
 ```
 
 ## Installation sequence
@@ -169,19 +169,16 @@ terraform init
 | ./rockcluster.sh remove | remove mobius cluster |
 | ./rockcluster.sh debug | output of kubectl get/describe of mobius' kubernetes resources |
 
-### Activate pgadmin & grafana (pre-requisite: "./rockcluster.sh pgport")
-
-- Start pgadmin & Grafana
-
-```bash
-# mobius12 folder
-cd tools
-./run.sh
-```
-
 #### pgadmin: <http://pgadmin.local.net>
 
 - user: <admin@admin.com>
 - password: admin
 
 server: postgresql , database=mobiusserver, user=mobius, password=postgres
+
+#### Grafana: <http://grafana.local.net>
+
+- user: admin
+- password: admin
+
+server: postgresql , database=eventanalytics, user=mobius, password=postgres

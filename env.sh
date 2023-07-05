@@ -29,6 +29,7 @@ NGINX_EXTERNAL_TLS_PORT=443
 KUBE_IMAGE_PULL="YES"                               # cluster/cluster.sh
 KUBE_PORTAINER="NO"                                 # cluster/cluster.sh
 KUBE_PGADMIN="YES"                                  # database/database.sh
+KUBE_GRAFANA="YES"                                  # database/database.sh
 
 export KUBE_NS_LIST=( "$NAMESPACE" "$NAMESPACE_SHARED" )
 
