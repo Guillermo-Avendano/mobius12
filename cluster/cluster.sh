@@ -21,11 +21,11 @@ create_cluster(){
     k3d registry create $KUBE_LOCALREGISTRY_NAME --port 0.0.0.0:${KUBE_LOCALREGISTRY_PORT}
 
     info_message "Creating $KUBE_CLUSTER_NAME cluster..."
-    gen_registry_yaml;
+    #gen_registry_yaml;
 
     KUBE_CLUSTER_REGISTRY="--registry-use k3d-$KUBE_LOCALREGISTRY_NAME:$KUBE_LOCALREGISTRY_PORT --registry-config $kube_dir/cluster/registries.yaml"
 
-    k3d cluster create $KUBE_CLUSTER_NAME -p "30776:30776@loadbalancer" -p "30779:30779@loadbalancer" -p "80:80@loadbalancer" -p "$NGINX_EXTERNAL_TLS_PORT:443@loadbalancer" -p "5432:5432" --agents 2 --k3s-arg "--disable=traefik@server:0" $KUBE_CLUSTER_REGISTRY
+    k3d cluster create $KUBE_CLUSTER_NAME -p "30776:30776@loadbalancer" -p "30779:30779@loadbalancer" -p "80:80@loadbalancer" -p "$NGINX_EXTERNAL_TLS_PORT:443@loadbalancer" --agents 2 --k3s-arg "--disable=traefik@server:0" $KUBE_CLUSTER_REGISTRY
     
     #k3d kubeconfig get $KUBE_CLUSTER_NAME > $kube_dir/cluster/cluster-config.yaml
 

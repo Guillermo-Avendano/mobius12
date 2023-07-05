@@ -10,7 +10,6 @@ if [[ $# -eq 0 ]]; then
   echo "==========="
   echo " - start   : start $PRODUCT cluster"
   echo " - stop    : stop $PRODUCT cluster"
-  echo " - pgport  : Open postgres port $POSTGRESQL_PORT if active"
   echo " - imgls   : list images from $KUBE_SOURCE_REGISTRY"
   echo " - imgpull : pull images from $KUBE_SOURCE_REGISTRY and push to local registry"
   echo " - list    : list clusters"
@@ -39,22 +38,12 @@ else
             echo "$KUBE_CLUSTER_NAME cluster is not active"
          fi
 
-    elif [[ $option == "pgport" ]]; then
-
-         if get_database_status; then
-            # cluster/cluster.sh
-            sudo ufw allow 5432
-            configure_port_forwarding;
-         else
-            echo "$POSTGRESQL_PORT is not active"
-         fi
-
     elif [[ $option == "imgls" ]]; then
          # cluster/local_registry.sh
          list_images;
 
     elif [[ $option == "imgpull" ]]; then
-         
+
          if isactive_cluster; then
             # cluster/local_registry.sh
             push_images_to_local_registry; 
