@@ -21,6 +21,9 @@ export KUBECONFIG=$kube_dir/cluster/cluster-config.yaml    # cluster/cluster.sh
 DOCKER_USER=$DOCKER_USERNAME                       # cluster/local_registry.sh  $HOME/.profile
 DOCKER_PASS=$DOCKER_PASSWORD                       # cluster/local_registry.sh  $HOME/.profile
 
+# Storage Class
+KUBE_CLUSTER_STORAGE=$kube_dir/pv-cluster           # cluster/cluster.sh
+
 KUBE_SOURCE_REGISTRY="registry.rocketsoftware.com"  # cluster/local_registry.sh 
 KUBE_LOCALREGISTRY_NAME="mobius.localhost"          # cluster/local_registry.sh
 KUBE_LOCALREGISTRY_HOST="localhost"                 # cluster/local_registry.sh 
