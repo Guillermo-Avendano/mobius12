@@ -28,7 +28,9 @@ create_cluster(){
 
     KUBE_CLUSTER_REGISTRY="--registry-use k3d-$KUBE_LOCALREGISTRY_NAME:$KUBE_LOCALREGISTRY_PORT --registry-config $kube_dir/cluster/registries.yaml"
 
-    k3d cluster create $KUBE_CLUSTER_NAME -p "30776:30776@loadbalancer" -p "30779:30779@loadbalancer" -p "80:80@loadbalancer" -p "$NGINX_EXTERNAL_TLS_PORT:443@loadbalancer" --volume $KUBE_CLUSTER_STORAGE:/var/lib/rancher/k3s/storage --agents 2 --k3s-arg "--disable=traefik@server:0" $KUBE_CLUSTER_REGISTRY
+    k3d cluster create $KUBE_CLUSTER_NAME -p "30776:30776@loadbalancer" -p "30779:30779@loadbalancer" -p "80:80@loadbalancer" -p "$NGINX_EXTERNAL_TLS_PORT:443@loadbalancer" --agents 2 --k3s-arg "--disable=traefik@server:0" $KUBE_CLUSTER_REGISTRY
+
+    #k3d cluster create $KUBE_CLUSTER_NAME -p "30776:30776@loadbalancer" -p "30779:30779@loadbalancer" -p "80:80@loadbalancer" -p "$NGINX_EXTERNAL_TLS_PORT:443@loadbalancer" --volume $KUBE_CLUSTER_STORAGE:/var/lib/rancher/k3s/storage --agents 2 --k3s-arg "--disable=traefik@server:0" $KUBE_CLUSTER_REGISTRY
     
     #k3d kubeconfig get $KUBE_CLUSTER_NAME > $kube_dir/cluster/cluster-config.yaml
 
