@@ -3,13 +3,14 @@ kubectl create ns eosdemo
 # cluster name=mobius12
 k3d image load server/eosopenserver-demo.tar -c mobius12
 
-kubectl apply -f server/persistence.yaml -n eosdemo
+#NOOOOO --> kubectl apply -f server/persistence.yaml -n eosdemo
+
 kubectl apply -f server/deployment.yaml -n eosdemo
 kubectl apply -f server/service.yaml -n eosdemo
 
 #----------------------------------------------------------------
 # cluster name=mobius12
-k3d image load access/eosaccess.3.1.0.tar -c mobius12
+k3d image load access/eosaccess3.1.1.0.tar -c mobius12
 
 kubectl apply -f access/persistence.yaml -n eosdemo
 kubectl apply -f access/deployment.yaml -n eosdemo

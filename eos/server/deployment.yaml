@@ -18,10 +18,10 @@ spec:
         imagePullPolicy: IfNotPresent      
         ports:
         - containerPort: 36000         
-        volumeMounts:
-        - mountPath: /home/rsduser/rsdbase
-          name: pvc-rsdbase
-      volumes:
-        - name: pvc-rsdbase
-          persistentVolumeClaim:
-            claimName: pvc-rsdbase   
+#        volumeMounts:
+#        - mountPath: /home/rsduser/rsdbase
+#          name: pvc-rsdbase
+#      volumes:
+#        - name: pvc-rsdbase
+#          persistentVolumeClaim:
+#            claimName: pvc-rsdbase   

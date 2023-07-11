@@ -14,7 +14,7 @@ spec:
     spec: 
       containers:
       - name: eosaccess
-        image: rocketsoftware/eos-access.3.1.0:1.0
+        image: registry.rocketsoftware.com/eosacess:3.1.1.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
